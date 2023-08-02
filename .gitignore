@@ -1,0 +1,53 @@
+# .NET build output directories
+bin/
+obj/
+
+# User-specific files
+*.user
+
+# NuGet packages
+*.nuget.props
+*.nuget.targets
+packages/
+
+# Visual Studio files
+*.suo
+*.cache
+*.sln.docstates
+*.userprefs
+*.vs/
+
+# Resharper files
+_resharper*/ 
+*.resharper*
+*.DotSettings.user
+
+# MSTest test Results
+[Tt]est[Rr]esult*
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+
+# Node.js related files
+node_modules/
+
+# Log files
+*.log
+logs/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Other temporary files
+*.tmp
+*.temp
+*.bak
+*.cache
+
+# Ignore generated project files
+*.csproj.user
+*.xproj.user
+*.xproj
+*.sw?
