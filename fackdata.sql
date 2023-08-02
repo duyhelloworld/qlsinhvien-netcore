@@ -1,4 +1,4 @@
--- Active: 1690861638105@@127.0.0.1@1433@qlsinhvien
+-- Active: 1690859523497@@127.0.0.1@1433@qlsinhvien
 INSERT INTO [GiangVien] ([HoTen], [GioiTinh], [NgaySinh], [DiaChiThuongTru], [QueQuan], [Email], [PhoneNumber])
 VALUES
   ('Nguyễn Trung Hoà', 1, '1980-05-21', 'Đà Nẵng', 'Huế', 'hoanguyen@example.com', '0123456789'),
@@ -38,15 +38,15 @@ VALUES
   (N'66IT5', 1, 2),
   (N'68KT1', 2, 3),
   (N'66IT3', 3, 1),
-  (N'68KT2', 1, 3),
-  (N'67KT1', 2, 3),
-  (N'67IT1', 4, 1),
-  (N'69IT1', 3, 1),
-  (N'69KT1', 5, 3),
-  (N'66KT1', 1, 3),
-  (N'69KT2', 2, 3);
+  (N'68KT2', 4, 3),
+  (N'67KT1', 5, 3),
+  (N'67IT1', 6, 1),
+  (N'69IT1', 7, 1),
+  (N'69KT1', 8, 3),
+  (N'66KT1', 9, 3),
+  (N'69KT2', 10, 3);
 
-INSERT INTO [KhoaMonHoc] ([MaKhoa], [MaMonHoc])
+INSERT INTO [Khoa-MonHoc] ([MaKhoa], [MaMonHoc])
 VALUES
   (1, 3),
   (2, 3),
