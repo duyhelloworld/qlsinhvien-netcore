@@ -72,7 +72,7 @@ VALUES
   (N'Lop 5A', 9, 1),
   (N'Lop 5B', 10, 2);
 
-INSERT INTO [SinhVien] ([NgayVaoTruong], [MaLopQuanLi], [HoTen], [GioiTinh], [NgaySinh], [DiaChiThuongTru], [QueQuan], [Email], [PhoneNumber])
+INSERT INTO [SinhVien] ([MaLopMonHoc], [NgayVaoTruong], [MaLopQuanLi], [HoTen], [GioiTinh], [NgaySinh], [DiaChiThuongTru], [QueQuan], [Email], [SoDienThoai])
 VALUES
   ('2008-09-01', 1, N'Nguyễn Văn An', 1, '1995-03-15', N'Hà Nội', N'Hưng Yên', N'nguyenvanan@gmail.com', '0987654321'),
   ('2009-08-15', 2, N'Phạm Thị Bình', 0, '1996-07-10', N'Thái Bình', N'Thái Bình', N'phamthibinh@gmail.com', '0976543210'),
@@ -107,6 +107,7 @@ VALUES
 
 INSERT INTO [DiemSinhVien] ([MaLopMonHoc], [MaSinhVien], [DiemChuyenCan], [DiemGiuaKi], [DiemCuoiKi], [HocKi], [GhiChu])
 VALUES
+  (1, 10, 9.5, 9.0, 9.5, 2, N'Giỏi'),
   (2, 1, 8.5, 7.0, 9.0, 1, N'Tốt'),
   (3, 2, 6.0, 7.5, 8.0, 2, N'Khá'),
   (4, 3, 7.5, 8.0, 9.5, 1, N'Giỏi'),
@@ -116,7 +117,7 @@ VALUES
   (8, 7, 7.0, 7.5, 8.0, 1, N'Tốt'),
   (9, 8, 8.5, 9.0, 9.0, 2, N'Khá'),
   (10, 9, 5.5, 6.0, 6.5, 1, N'Yếu'),
-  (11, 10, 9.5, 9.0, 9.5, 2, N'Giỏi'),
+  (1, 20, 8.0, 8.5, 9.0, 2, N'Giỏi'),
   (2, 11, 6.0, 7.0, 7.5, 1, N'Khá'),
   (3, 12, 8.0, 8.5, 8.0, 2, N'Tốt'),
   (4, 13, 7.5, 8.0, 8.5, 1, N'Giỏi'),
@@ -126,8 +127,8 @@ VALUES
   (8, 17, 8.5, 9.0, 9.0, 1, N'Giỏi'),
   (9, 18, 6.5, 7.0, 7.5, 2, N'Tốt'),
   (10, 19, 7.0, 7.5, 8.0, 1, N'Khá'),
-  (11, 20, 8.0, 8.5, 9.0, 2, N'Giỏi'),
   (2, 21, 8.5, 9.0, 9.5, 1, N'Tốt'),
+  (1, 30, 9.5, 9.0, 9.5, 2, N'Giỏi'),
   (3, 22, 7.0, 7.5, 8.0, 2, N'Khá'),
   (4, 23, 8.0, 8.0, 8.5, 1, N'Giỏi'),
   (5, 24, 6.5, 7.0, 7.0, 2, N'Khá'),
@@ -135,5 +136,8 @@ VALUES
   (7, 26, 7.5, 8.0, 8.0, 2, N'Khá'),
   (8, 27, 8.5, 9.0, 9.5, 1, N'Giỏi'),
   (9, 28, 6.0, 6.5, 7.0, 2, N'Tốt'),
-  (10, 29, 7.0, 7.5, 8.0, 1, N'Khá'),
-  (11, 30, 9.5, 9.0, 9.5, 2, N'Giỏi');
+  (10, 29, 7.0, 7.5, 8.0, 1, N'Khá');
+
+EXEC sp_rename 'SinhVien.PhoneNumber',
+'SoDienThoai',
+'COLUMN';

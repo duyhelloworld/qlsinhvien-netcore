@@ -23,5 +23,5 @@ public class ConNguoi
     public string Email { get; set; }
 
     [StringLength(10)]
-    public string PhoneNumber { get; set; }
+    public string SoDienThoai { get; set; }
 }

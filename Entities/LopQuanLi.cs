@@ -16,12 +16,13 @@ namespace qlsinhvien.Entities
         public string TenLopQuanLi { get; set; }
 
         [Required]
-        public int MaGiangVien;
+        public int MaGiangVien {set; get; }
         [ForeignKey("MaGiangVien")]
-        public GiangVien GiangVien { get; set; }
+        public GiangVien? GiangVien { get; set; }
 
+        [Required]
         public int MaKhoa { get; set; }
         [ForeignKey("MaKhoa")]
-        public Khoa Khoa { get; set; }
+        public Khoa? Khoa { get; set; }
     }
 }

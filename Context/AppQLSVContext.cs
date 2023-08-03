@@ -6,7 +6,7 @@ namespace qlsinhvien.Context;
 public class AppQLSVContext : DbContext
 {
     public AppQLSVContext(DbContextOptions<AppQLSVContext> dbContextOptions) : base(dbContextOptions) {
-
+        
     }
     public DbSet<SinhVien> SinhViens {get; set;}
     public DbSet<DiemSinhVien> DiemSinhViens {get; set;}

@@ -27,8 +27,5 @@ namespace qlsinhvien.Entities
         [ForeignKey("MaMonTienQuyet")]
         [DeleteBehavior(DeleteBehavior.NoAction)]
         public MonHoc? MonTienQuyet { get; set; }
-
-        // public ICollection<LopMonHoc> LopMonHocs { get; } 
-        //      = new HashSet<LopMonHoc>();
     }
 }

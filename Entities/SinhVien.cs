@@ -5,8 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace qlsinhvien.Entities
 {
-    [Table("SinhVien")]
     // [Index(nameof(MaLopQuanLi), IsUnique = true)]
+    [Table("SinhVien")]
     public class SinhVien : ConNguoi
     {
         [Key]
@@ -16,10 +16,10 @@ namespace qlsinhvien.Entities
         [DataType(DataType.Date)]
         public DateTime NgayVaoTruong { get; set; }
 
-        // [Required]
+        [Required]
         public int MaLopQuanLi {get; set;}
+
         [ForeignKey("MaLopQuanLi")]
-        [JsonIgnore]
-        public LopQuanLi LopQuanLi { get; set; }
+        public LopQuanLi? LopQuanLi { get; set; }
     }
 }
