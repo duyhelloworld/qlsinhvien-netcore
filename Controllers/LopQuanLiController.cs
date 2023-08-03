@@ -8,17 +8,17 @@ namespace qlsinhvien.Controllers
     [Route("[controller]")]
     public class LopQuanLiController
     {
-        private readonly AppQLSVContext appContext;
+        private readonly LopQuanLiDbContext lopQuanLiDbContext;
 
-        public LopQuanLiController(AppQLSVContext appContext)
+        public LopQuanLiController(LopQuanLiDbContext lopQuanLiDbContext)
         {
-            this.appContext = appContext;
+            this.lopQuanLiDbContext = lopQuanLiDbContext;
         }
 
         [HttpGet]
         public ActionResult<IEnumerable<LopQuanLi>> GetAllLopQuanLi()
         {
-            return appContext.LopQuanLis.ToList();
+            return lopQuanLiDbContext.LopQuanLis.ToList();
         }        
     }
 }
