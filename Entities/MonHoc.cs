@@ -19,9 +19,8 @@ namespace qlsinhvien.Entities
 
         public bool BatBuoc { get; set; }
 
-
         [MaxLength]
-        public string MoTa { get; set; }
+        public string? MoTa { get; set; }
 
         public int? MaMonTienQuyet {get; set;} 
         [ForeignKey("MaMonTienQuyet")]
