@@ -1,7 +1,10 @@
-using Microsoft.AspNetCore.Http.HttpResults;
+using System.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using qlsinhvien.Context;
+using qlsinhvien.Dto;
 using qlsinhvien.Entities;
+using qlsinhvien.Mapper;
 
 namespace qlsinhvien.Controllers
 {
@@ -9,91 +12,134 @@ namespace qlsinhvien.Controllers
     [Route("/[controller]")]
     public class SinhVienController : ControllerBase
     {
-        private readonly AppQLSVContext appContext;
+        private readonly SinhVienDbContext sinhVienDbContext;
+        private readonly HttpClient httpClient;
 
-        public SinhVienController(AppQLSVContext appContext) {
-            this.appContext = appContext;
+        public SinhVienController(SinhVienDbContext sinhVienDbContext, IHttpClientFactory httpClientFactory) {
+            this.sinhVienDbContext = sinhVienDbContext;
+            httpClient = httpClientFactory.CreateClient();
+            httpClient.BaseAddress = new Uri("http://localhost:5277");
         }
 
         [HttpGet]
-        public ActionResult<ICollection<SinhVien>> GetAll(){
-            return appContext.SinhViens.ToList();
+        public ActionResult<IEnumerable<SinhVienDto>> GetAll(){
+            var sinhVienDtos =  from sinhVien in sinhVienDbContext.SinhViens.ToList()
+                    select SinhVienMapper.ToDto(sinhVien);
+            return Ok(sinhVienDtos);
         }
 
         [HttpGet("{id}")]
         public ActionResult<SinhVien> GetById(int id)
         {
-            var sinhVien = appContext.SinhViens.Find(id);
+            var sinhVien = sinhVienDbContext.SinhViens.Find(id);
             return sinhVien == null ? NotFound() : Ok(sinhVien);
         }
 
         [HttpGet("search")]
-        public ActionResult<ICollection<SinhVien>> GetByName([FromQuery] string hoTen)
+        public ActionResult<IEnumerable<SinhVienDto>> GetByName([FromQuery] string hoTen)
         {
-            var student = from sinhVien in appContext.SinhViens
+            var ketQua = from sinhVien in sinhVienDbContext.SinhViens
                             where sinhVien.HoTen.Contains(hoTen)
-                            select sinhVien;
-            return student == null ? NotFound() : Ok(student);
+                            select SinhVienMapper.ToDto(sinhVien);
+            return ketQua == null ? NotFound() : Ok(ketQua);
         }
 
         [HttpGet("search")]
-        public ActionResult<ICollection<SinhVien>> GetByEmail([FromQuery] string email)
+        public ActionResult<IEnumerable<SinhVien>> GetByEmail([FromQuery] string email)
         {
-            var student = from sinhVien in appContext.SinhViens
+            var ketQua = from sinhVien in sinhVienDbContext.SinhViens
                           where sinhVien.Email.StartsWith(email)
-                          select sinhVien;
-            return student == null ? NotFound() : Ok(student);
+                          select SinhVienMapper.ToDto(sinhVien);
+            return ketQua == null ? NotFound() : Ok(ketQua);
         }
 
         [HttpGet("search")]
-        public ActionResult<ICollection<SinhVien>> GetByNumberPhone([FromQuery] string email)
+        public ActionResult<IEnumerable<SinhVienDto>> GetByNumberPhone([FromQuery] string email)
         {
-            var student = from sinhVien in appContext.SinhViens
+            var ketQua = from sinhVien in sinhVienDbContext.SinhViens
                           where sinhVien.Email.StartsWith(email)
-                          select sinhVien;
-            return student == null ? NotFound() : Ok(student);
+                          select SinhVienMapper.ToDto(sinhVien);
+            return ketQua == null ? NotFound() : Ok(ketQua);
         }
 
         [HttpPost]
-        public ActionResult AddSinhVien([FromBody] SinhVien sinhVien)
+        public ActionResult AddSinhVien([FromBody] SinhVienDto sinhVienDto)
         {
+            var sinhVien = SinhVienMapper.ToEntity(sinhVienDto);
             if (sinhVien.MaSinhVien != 0 
                     || sinhVien.MaLopQuanLi == 0)
                 return BadRequest("Chứa tham số không hợp lệ");
-
-            var LopQuanLi = appContext.LopQuanLis.Find(sinhVien.MaLopQuanLi);
-            if (LopQuanLi == null)
+            
+            var responseJson = httpClient
+                .GetAsync(new Uri(httpClient.BaseAddress, "lopquanli")).Result;
+            try
             {
-                return NotFound("Giá trị mã lớp quản lí không hợp lệ");
-            } 
+                responseJson.EnsureSuccessStatusCode();
+                var LopQuanLi = responseJson.Content.ReadFromJsonAsync<LopQuanLi>().Result;
+                if (LopQuanLi == null)
+                {
+                    return BadRequest("Giá trị mã lớp quản lí không hợp lệ");
+                }
 
-            appContext.SinhViens.Add(sinhVien);
-            appContext.SaveChanges();
-            return Ok(new {
-                maSoSinhVien = sinhVien.MaSinhVien,
-                hoTen = sinhVien.HoTen,
-                maLopQuanLi = sinhVien.MaLopQuanLi,
-                giangVien = LopQuanLi.GiangVien.HoTen,
-                khoa = LopQuanLi.Khoa
-            });
-        }
-
-        [HttpPut("maSinhVien")]
-        public ActionResult<SinhVien> UpdateSinhVien(int maSinhVien, [FromBody] SinhVien sinhVien)
-        {
-            if (maSinhVien != sinhVien.MaSinhVien)
+                sinhVienDbContext.SinhViens.Add(sinhVien);
+                sinhVienDbContext.SaveChanges();
+                return CreatedAtAction(nameof(GetById), new {
+                    maSoSinhVien = sinhVien.MaSinhVien,
+                    hoTen = sinhVien.HoTen,
+                    maLopQuanLi = sinhVien.MaLopQuanLi,
+                    tenLopQuanLi = LopQuanLi.TenLopQuanLi,
+                    giaoVienChuNhiem = LopQuanLi.GiangVien?.HoTen,
+                    khoa = LopQuanLi.Khoa
+                });
+            }
+            catch (HttpRequestException)
             {
                 return BadRequest();
             }
-            var inDb = appContext.SinhViens.Find(maSinhVien);
+        }
+
+        [HttpPut("{maSinhVien}")]
+        public ActionResult<SinhVienDto> UpdateSinhVien(int maSinhVien,  [FromBody] SinhVien sinhVien)
+        {
+            if (maSinhVien != sinhVien.MaSinhVien)
+            {
+                return BadRequest("Tham số không hợp lệ");
+            }
+            var inDb = sinhVienDbContext.SinhViens.Find(maSinhVien);
             if (inDb == null)
             {
-                return NotFound();
+                return NotFound("Không tồn tại sinh viên mã số " + maSinhVien);
             }
-            inDb = sinhVien;
-            appContext.SaveChanges();
-            Console.WriteLine("Updated");
-            return sinhVien;
+            try
+            {
+                sinhVienDbContext.Entry(inDb).State = EntityState.Detached;
+                sinhVienDbContext.Entry(sinhVien).State = EntityState.Modified;
+                sinhVienDbContext.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+                return BadRequest("Vi phạm nguyên tắc tham số. Chi tiết tại blabla.com"); 
+            }
+            catch (DBConcurrencyException) {
+                return BadRequest("Vui lòng chậm lại");
+            }
+            return SinhVienMapper.ToDto(sinhVien);
         }
+
+        [HttpDelete("{maSinhVien}")]
+        public ActionResult RemoveSinhVien(int maSinhVien, [FromQuery] bool confirm)
+        {
+            var inDb = sinhVienDbContext.SinhViens.Find(maSinhVien);
+            if (inDb == null)
+            {
+                return NotFound("Không tồn tại sinh viên mã số " + maSinhVien);
+            }
+            throw new NotImplementedException("Chưa cài đặt được");
+            // sinhVienDbContext.SinhViens.Remove(inDb);
+            // sinhVienDbContext.SaveChanges();
+            // // Thay đổi cả số sinh viên trong lớp quản lí mà sinh viên bị xoá thuộc về
+            // return NoContent();
+        }
+
     }
 }

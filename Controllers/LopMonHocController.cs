@@ -8,21 +8,21 @@ namespace qlsinhvien.Controllers
     [Route("api/[controller]")]
     public class LopMonHocController : ControllerBase
     {
-        private readonly AppQLSVContext appContext;
-        public LopMonHocController(AppQLSVContext appQLSVContext)
+        private readonly LopMonHocDbContext lopMonHocDbContext;
+        public LopMonHocController(LopMonHocDbContext lopMonHocDbContext)
         {
-            appContext = appQLSVContext;
+            this.lopMonHocDbContext = lopMonHocDbContext;
         }
 
         // [HttpGet]
         // public async Task<IActionResult> Get()
         // {
-        //     appContext.LopMonHocs.Add(
+        //     lopMonHocDbContext.LopMonHocs.Add(
         //         new LopMonHoc() {
         //             MaGiangVien = 1,
         //             MaMonHoc = 1
         //         });
-        //     appContext.SaveChanges();
+        //     lopMonHocDbContext.SaveChanges();
         //     return Ok();
         // }
     }
