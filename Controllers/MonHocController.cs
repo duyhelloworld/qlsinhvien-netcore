@@ -10,39 +10,40 @@ namespace qlsinhvien.Controllers
     [Route("/[controller]")]
     public class MonHocController : ControllerBase
     {
-        private readonly MonHocDbContext monHocDbConText;
+        private readonly AppQLSVContext appContext;
         private readonly HttpClient httpClient;
 
-        public MonHocController(MonHocDbContext monHocDbConText)
+        public MonHocController(AppQLSVContext appContext, IHttpClientFactory httpClientFactory)
         {
-            this.monHocDbConText = monHocDbConText;
-            httpClient = 
+            this.appContext = appContext;
+            httpClient = httpClientFactory.CreateClient();
+            httpClient.BaseAddress = new Uri("http://localhost:5277");
         }
 
         [HttpGet]
         public ActionResult<ICollection<MonHoc>> GetAll()
         {
-            return monHocDbConText.MonHocs.ToList();
+            return appContext.MonHocs.ToList();
         }
 
         [HttpGet("{id}")]
         public ActionResult<MonHoc> GetById(int id)
         {
-            var monHoc = monHocDbConText.MonHocs.Find(id);
+            var monHoc = appContext.MonHocs.Find(id);
             return monHoc == null ? NotFound() : Ok(monHoc);
         }
         [HttpGet("{ten mon}")]
         public ActionResult<MonHoc> GetByName(string name)
         {
-            var monHoc = monHocDbConText.MonHocs.Find(name);
+            var monHoc = appContext.MonHocs.Find(name);
             return monHoc == null ? NotFound() : Ok(monHoc);
         }
         [HttpGet("{khoa}")]
         public ActionResult<MonHoc> GetByKhoa(string khoa)
         {
-            var monHoc = from mh in monHocDbConText.MonHocs
-                         join kmh in khoaDbContext.KhoaMonHocs on mh.MaMonHoc equals kmh.MaMonHoc
-                         join k in khoaDbContext.Khoas on kmh.MaKhoa equals k.MaKhoa
+            var monHoc = from mh in appContext.MonHocs
+                         join kmh in appContext.KhoaMonHocs on mh.MaMonHoc equals kmh.MaMonHoc
+                         join k in appContext.Khoas on kmh.MaKhoa equals k.MaKhoa
                          where k.TenKhoa.Contains(khoa)
                          select new
                          {
@@ -62,12 +63,12 @@ namespace qlsinhvien.Controllers
             MonHoc monHoc = khoaMonHoc.MonHoc;
             Khoa khoa = khoaMonHoc.Khoa;
 
-            var khoaId = monHocDbConText.Khoas.Find(khoa);
-            var monHocId = monHocDbConText.MonHocs.Find(monHoc.MaMonHoc);
+            var khoaId = appContext.Khoas.Find(khoa);
+            var monHocId = appContext.MonHocs.Find(monHoc.MaMonHoc);
             if (khoaId != null)
             {
-                monHocDbConText.KhoaMonHocs.Add(khoaMonHoc);
-                monHocDbConText.SaveChanges();
+                appContext.KhoaMonHocs.Add(khoaMonHoc);
+                appContext.SaveChanges();
                 // return Ok(new
                 // {
                 //     maMonHoc = khoaMonHoc.MaMonHoc,
@@ -75,8 +76,8 @@ namespace qlsinhvien.Controllers
                 // });
                 if (monHocId == null)
                 {
-                    monHocDbConText.MonHocs.Add(monHoc);
-                    monHocDbConText.SaveChanges();
+                    appContext.MonHocs.Add(monHoc);
+                    appContext.SaveChanges();
                     return Ok(new
                     {
                         maMonHoc = monHoc.MaMonHoc,
