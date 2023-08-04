@@ -12,10 +12,10 @@ namespace qlsinhvien.Controllers
     [Route("/[controller]")]
     public class SinhVienController : ControllerBase
     {
-        private readonly SinhVienDbContext sinhVienDbContext;
+        private readonly ApplicationContext sinhVienDbContext;
         private readonly HttpClient httpClient;
 
-        public SinhVienController(SinhVienDbContext sinhVienDbContext, IHttpClientFactory httpClientFactory) {
+        public SinhVienController(ApplicationContext sinhVienDbContext, IHttpClientFactory httpClientFactory) {
             this.sinhVienDbContext = sinhVienDbContext;
             httpClient = httpClientFactory.CreateClient();
             httpClient.BaseAddress = new Uri("http://localhost:5277");
@@ -29,10 +29,10 @@ namespace qlsinhvien.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<SinhVien> GetById(int id)
+        public ActionResult<SinhVienDto> GetById(int id)
         {
             var sinhVien = sinhVienDbContext.SinhViens.Find(id);
-            return sinhVien == null ? NotFound() : Ok(sinhVien);
+            return sinhVien == null ? NotFound() : Ok(SinhVienMapper.ToDto(sinhVien));
         }
 
         [HttpGet("search")]
@@ -71,7 +71,7 @@ namespace qlsinhvien.Controllers
                 return BadRequest("Chứa tham số không hợp lệ");
             
             var responseJson = httpClient
-                .GetAsync(new Uri(httpClient.BaseAddress, "lopquanli")).Result;
+                .GetAsync(new Uri(httpClient.BaseAddress, $"lopquanli/{sinhVien.MaLopQuanLi}")).Result;
             try
             {
                 responseJson.EnsureSuccessStatusCode();
@@ -83,7 +83,7 @@ namespace qlsinhvien.Controllers
 
                 sinhVienDbContext.SinhViens.Add(sinhVien);
                 sinhVienDbContext.SaveChanges();
-                return CreatedAtAction(nameof(GetById), new {
+                return Created(nameof(GetById), new {
                     maSoSinhVien = sinhVien.MaSinhVien,
                     hoTen = sinhVien.HoTen,
                     maLopQuanLi = sinhVien.MaLopQuanLi,
