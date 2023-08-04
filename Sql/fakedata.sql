@@ -1,4 +1,3 @@
--- Active: 1690859523497@@127.0.0.1@1433@qlsinhvien
 INSERT INTO [GiangVien] ([HoTen], [GioiTinh], [NgaySinh], [DiaChiThuongTru], [QueQuan], [Email], [PhoneNumber])
 VALUES
   ('Nguyễn Trung Hoà', 1, '1980-05-21', 'Đà Nẵng', 'Huế', 'hoanguyen@example.com', '0123456789'),

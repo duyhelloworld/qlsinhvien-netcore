@@ -1,24 +1,24 @@
-using Microsoft.AspNetCore.Mvc;
-using qlsinhvien.Context;
-using qlsinhvien.Entities;
+// using Microsoft.AspNetCore.Mvc;
+// using qlsinhvien.Context;
+// using qlsinhvien.Entities;
 
-namespace qlsinhvien.Controllers
-{
-    [ApiController]
-    [Route("[controller]")]
-    public class LopQuanLiController
-    {
-        private readonly LopQuanLiDbContext lopQuanLiDbContext;
+// namespace qlsinhvien.Controllers
+// {
+//     [ApiController]
+//     [Route("[controller]")]
+//     public class LopQuanLiController
+//     {
+//         private readonly LopQuanLiDbContext lopQuanLiDbContext;
 
-        public LopQuanLiController(LopQuanLiDbContext lopQuanLiDbContext)
-        {
-            this.lopQuanLiDbContext = lopQuanLiDbContext;
-        }
+//         public LopQuanLiController(LopQuanLiDbContext lopQuanLiDbContext)
+//         {
+//             this.lopQuanLiDbContext = lopQuanLiDbContext;
+//         }
 
-        [HttpGet]
-        public ActionResult<IEnumerable<LopQuanLi>> GetAllLopQuanLi()
-        {
-            return lopQuanLiDbContext.LopQuanLis.ToList();
-        }        
-    }
-}
+//         [HttpGet]
+//         public ActionResult<IEnumerable<LopQuanLi>> GetAllLopQuanLi()
+//         {
+//             return lopQuanLiDbContext.LopQuanLis.ToList();
+//         }        
+//     }
+// }
