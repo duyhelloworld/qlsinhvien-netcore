@@ -8,8 +8,8 @@ namespace qlsinhvien.Controllers
     [Route("api/[controller]")]
     public class LopMonHocController : ControllerBase
     {
-        private readonly LopMonHocDbContext lopMonHocDbContext;
-        public LopMonHocController(LopMonHocDbContext lopMonHocDbContext)
+        private readonly ApplicationContext lopMonHocDbContext;
+        public LopMonHocController(ApplicationContext lopMonHocDbContext)
         {
             this.lopMonHocDbContext = lopMonHocDbContext;
         }
