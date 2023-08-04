@@ -12,13 +12,11 @@ namespace qlsinhvien.Entities
         public int MaLopMonHoc { get; set; }
         [ForeignKey("MaLopMonHoc")]
         [DeleteBehavior(DeleteBehavior.NoAction)]
-        [JsonIgnore]
         public LopMonHoc LopMonHoc { get; set; }
 
         public int MaSinhVien { get; set; }
         [ForeignKey("MaSinhVien")]
         [DeleteBehavior(DeleteBehavior.NoAction)]
-        [JsonIgnore]
         public SinhVien SinhVien { get; set; }
 
         public float DiemChuyenCan { get; set; }
