@@ -1,7 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace qlsinhvien.Entities;
 
+[Index(nameof(Email), nameof(SoDienThoai), IsUnique = true)]
 public class ConNguoi
 {
     [Required]
@@ -10,7 +13,7 @@ public class ConNguoi
 
     public bool GioiTinh { get; set; }
 
-    [DataType(DataType.Date)]
+    [Column(TypeName = "date")]
     public DateTime NgaySinh { get; set; }
 
     [StringLength(80)]
