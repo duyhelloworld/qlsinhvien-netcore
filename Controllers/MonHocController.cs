@@ -11,13 +11,14 @@ namespace qlsinhvien.Controllers
     public class MonHocController : ControllerBase
     {
         private readonly AppQLSVContext appContext;
-        private readonly HttpClient httpClient;
+        // private readonly HttpClient httpClient;
 
-        public MonHocController(AppQLSVContext appContext, IHttpClientFactory httpClientFactory)
+        public MonHocController(AppQLSVContext appContext)
+        // , IHttpClientFactory httpClientFactory)
         {
             this.appContext = appContext;
-            httpClient = httpClientFactory.CreateClient();
-            httpClient.BaseAddress = new Uri("http://localhost:5277");
+            // httpClient = httpClientFactory.CreateClient();
+            // httpClient.BaseAddress = new Uri("http://localhost:5277");
         }
 
         [HttpGet]
@@ -32,13 +33,13 @@ namespace qlsinhvien.Controllers
             var monHoc = appContext.MonHocs.Find(id);
             return monHoc == null ? NotFound() : Ok(monHoc);
         }
-        [HttpGet("{ten mon}")]
+        // [HttpGet("{name}")]
         public ActionResult<MonHoc> GetByName(string name)
         {
             var monHoc = appContext.MonHocs.Find(name);
             return monHoc == null ? NotFound() : Ok(monHoc);
         }
-        [HttpGet("{khoa}")]
+        // [HttpGet("{khoa}")]
         public ActionResult<MonHoc> GetByKhoa(string khoa)
         {
             var monHoc = from mh in appContext.MonHocs
@@ -99,7 +100,28 @@ namespace qlsinhvien.Controllers
                 return BadRequest("Khoa không hợp lệ.");
             }
         }
+        [HttpPut("{id}")]
+        public ActionResult UpdateMonHoc(int id, [FromBody] MonHoc monHoc)
+        {
+            // Tìm môn học trong cơ sở dữ liệu dựa vào id
+            var existingMonHoc = appContext.MonHocs.Find(id);
+            if (existingMonHoc == null)
+            {
+                return NotFound(); // Trả về 404 Not Found nếu không tìm thấy môn học với id tương ứng
+            }
+
+            // Cập nhật thông tin môn học với dữ liệu mới từ monHoc
+            existingMonHoc.TenMonHoc = monHoc.TenMonHoc;
+            existingMonHoc.SoTinChi = monHoc.SoTinChi;
+            existingMonHoc.BatBuoc = monHoc.BatBuoc;
+            existingMonHoc.MonTienQuyet = monHoc.MonTienQuyet;
+            existingMonHoc.MoTa = monHoc.MoTa;
+
+            appContext.MonHocs.Update(existingMonHoc); // Cập nhật môn học trong cơ sở dữ liệu
+            appContext.SaveChanges(); // Lưu các thay đổi vào cơ sở dữ liệu
+
+            return Ok(existingMonHoc); // Trả về môn học sau khi cập nhật thành công
+        }
     }
-    // [HttpPut]
-    // public ActionResult UpdateMonHoc([FromBody] MonHoc monHoc, )
+
 }
