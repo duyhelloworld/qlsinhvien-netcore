@@ -10,7 +10,7 @@ namespace qlsinhvien.Mapper
                 MaLopQuanLi = lopQuanLiDto.MaLopQuanLi,
                 TenLopQuanLi = lopQuanLiDto.TenLopQuanLi,
                 MaKhoa = lopQuanLiDto.MaKhoa,
-                MaGiangVien = lopQuanLiDto.MaGiangVien
+                MaGiangVien = lopQuanLiDto.MaGiangVien,
             };
         }
 
@@ -21,7 +21,9 @@ namespace qlsinhvien.Mapper
                 MaLopQuanLi = lopQuanLi.MaLopQuanLi,
                 TenLopQuanLi = lopQuanLi.TenLopQuanLi,
                 MaKhoa = lopQuanLi.MaKhoa,
-                MaGiangVien = lopQuanLi.MaGiangVien
+                MaGiangVien = lopQuanLi.MaGiangVien,
+                TenGiangVien = lopQuanLi.GiangVien.HoTen,
+                TenKhoa = lopQuanLi.Khoa.TenKhoa
             };
         }
     }

@@ -1,4 +1,5 @@
-INSERT INTO [GiangVien] ([HoTen], [GioiTinh], [NgaySinh], [DiaChiThuongTru], [QueQuan], [Email], [PhoneNumber])
+-- Active: 1690861638105@@127.0.0.1@1433@qlsinhvien
+INSERT INTO [GiangVien] ([HoTen], [GioiTinh], [NgaySinh], [DiaChiThuongTru], [QueQuan], [Email], [SoDienThoai])
 VALUES
   ('Nguyễn Trung Hoà', 1, '1980-05-21', 'Đà Nẵng', 'Huế', 'hoanguyen@example.com', '0123456789'),
   ('Đặng Trường Nam', 1, '1975-12-03', 'Hồ Chí Minh', 'Quảng Nam', 'namdang@example.com', '0987654321'),
@@ -45,6 +46,12 @@ VALUES
   (N'66KT1', 9, 3),
   (N'69KT2', 10, 3);
 
+-- Khi lỗi mất 1 số dòng
+-- SET IDENTITY_INSERT [LopQuanLi] ON;
+-- INSERT INTO [LopQuanLi] ([MaLopQuanLi], [TenLopQuanLi], [MaGiangVien], [MaKhoa] )
+-- VALUES (1, N'66IT4', 2, 2);
+-- DBCC CHECKIDENT ('LopQuanLi', RESEED, 1);
+
 INSERT INTO [Khoa-MonHoc] ([MaKhoa], [MaMonHoc])
 VALUES
   (1, 3),
@@ -71,7 +78,7 @@ VALUES
   (N'Lop 5A', 9, 1),
   (N'Lop 5B', 10, 2);
 
-INSERT INTO [SinhVien] ([MaLopMonHoc], [NgayVaoTruong], [MaLopQuanLi], [HoTen], [GioiTinh], [NgaySinh], [DiaChiThuongTru], [QueQuan], [Email], [SoDienThoai])
+INSERT INTO [SinhVien] ([NgayVaoTruong], [MaLopQuanLi], [HoTen], [GioiTinh], [NgaySinh], [DiaChiThuongTru], [QueQuan], [Email], [SoDienThoai])
 VALUES
   ('2008-09-01', 1, N'Nguyễn Văn An', 1, '1995-03-15', N'Hà Nội', N'Hưng Yên', N'nguyenvanan@gmail.com', '0987654321'),
   ('2009-08-15', 2, N'Phạm Thị Bình', 0, '1996-07-10', N'Thái Bình', N'Thái Bình', N'phamthibinh@gmail.com', '0976543210'),
@@ -96,7 +103,7 @@ VALUES
   ('2008-09-01', 1, N'Vũ Thị Sáng', 0, '1995-02-10', N'Hồ Chí Minh', N'Hưng Yên', N'vuthisang@gmail.com', '0787654321'),
   ('2009-08-15', 2, N'Trần Hoàng Sơn', 1, '1996-09-05', N'Hưng Yên', N'Hưng Yên', N'tranhoangson@gmail.com', '0776543210'),
   ('2010-09-01', 3, N'Trương Văn Tùng', 1, '1997-08-15', N'Hồ Chí Minh', N'Hưng Yên', N'truongvantung@gmail.com', '0765432109'),
-  ('2007-08-20', 4, N'Nguyễn Thị Út', 0, '1998-11-20', N'Thái Bình', N'Thái Bình', N'nguyenthaut@gmail.com', '0754321098'),
+  ('2007-08-20', 4, N'Nguyễn Thị Út', 0, '1998-1-20', N'Thái Bình', N'Thái Bình', N'nguyenthaut@gmail.com', '0754321098'),
   ('2008-09-01', 5, N'Đỗ Văn Ðức', 1, '1999-07-05', N'Hà Nội', N'Hà Nội', N'dovanduc@gmail.com', '0743210987'),
   ('2011-08-15', 6, N'Trần Thị Út', 0, '1995-06-10', N'Hưng Yên', N'Thái Bình', N'tranthiut@gmail.com', '0732109876'),
   ('2009-09-01', 7, N'Nguyễn Thị Vân', 0, '1996-05-15', N'Hồ Chí Minh', N'Thái Bình', N'nguyenthivan@gmail.com', '0721098765'),
@@ -107,7 +114,7 @@ VALUES
 INSERT INTO [DiemSinhVien] ([MaLopMonHoc], [MaSinhVien], [DiemChuyenCan], [DiemGiuaKi], [DiemCuoiKi], [HocKi], [GhiChu])
 VALUES
   (1, 10, 9.5, 9.0, 9.5, 2, N'Giỏi'),
-  (2, 1, 8.5, 7.0, 9.0, 1, N'Tốt'),
+  (2, 2, 8.5, 7.0, 9.0, 1, N'Tốt'),
   (3, 2, 6.0, 7.5, 8.0, 2, N'Khá'),
   (4, 3, 7.5, 8.0, 9.5, 1, N'Giỏi'),
   (5, 4, 9.0, 8.5, 9.0, 2, N'Tốt'),

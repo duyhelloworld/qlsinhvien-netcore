@@ -1,25 +1,23 @@
-// using System.Data;
-// using Microsoft.AspNetCore.Mvc;
-// using Microsoft.EntityFrameworkCore;
-// using qlsinhvien.Context;
-// using qlsinhvien.Dto;
-// using qlsinhvien.Entities;
-// using qlsinhvien.Mapper;
+using Microsoft.AspNetCore.Mvc;
+using qlsinhvien.Context;
+using qlsinhvien.Dto;
+using qlsinhvien.Entities;
+using qlsinhvien.Mapper;
 
-// namespace qlsinhvien.Controllers
-// {
-//     [ApiController]
-//     [Route("/[controller]")]
-//     public class SinhVienController : ControllerBase
-//     {
-//         private readonly SinhVienDbContext sinhVienDbContext;
-//         private readonly HttpClient httpClient;
+namespace qlsinhvien.Controllers
+{
+    [ApiController]
+    [Route("/[controller]")]
+    public class SinhVienController : ControllerBase
+    {
+        private readonly ApplicationContext sinhVienDbContext;
+        private readonly HttpClient httpClient;
 
-//         public SinhVienController(SinhVienDbContext sinhVienDbContext, IHttpClientFactory httpClientFactory) {
-//             this.sinhVienDbContext = sinhVienDbContext;
-//             httpClient = httpClientFactory.CreateClient();
-//             httpClient.BaseAddress = new Uri("http://localhost:5277");
-//         }
+        public SinhVienController(ApplicationContext sinhVienDbContext, IHttpClientFactory httpClientFactory) {
+            this.sinhVienDbContext = sinhVienDbContext;
+            httpClient = httpClientFactory.CreateClient();
+            httpClient.BaseAddress = new Uri("http://localhost:5277");
+        }
 
 //         [HttpGet]
 //         public ActionResult<IEnumerable<SinhVienDto>> GetAll(){
@@ -28,12 +26,12 @@
 //             return Ok(sinhVienDtos);
 //         }
 
-//         [HttpGet("{id}")]
-//         public ActionResult<SinhVien> GetById(int id)
-//         {
-//             var sinhVien = sinhVienDbContext.SinhViens.Find(id);
-//             return sinhVien == null ? NotFound() : Ok(sinhVien);
-//         }
+        [HttpGet("{id}")]
+        public ActionResult<SinhVienDto> GetById(int id)
+        {
+            var sinhVien = sinhVienDbContext.SinhViens.Find(id);
+            return sinhVien == null ? NotFound() : Ok(SinhVienMapper.ToDto(sinhVien));
+        }
 
 //         [HttpGet("search")]
 //         public ActionResult<IEnumerable<SinhVienDto>> GetByName([FromQuery] string hoTen)
@@ -62,41 +60,41 @@
 //             return ketQua == null ? NotFound() : Ok(ketQua);
 //         }
 
-//         [HttpPost]
-//         public ActionResult AddSinhVien([FromBody] SinhVienDto sinhVienDto)
-//         {
-//             var sinhVien = SinhVienMapper.ToEntity(sinhVienDto);
-//             if (sinhVien.MaSinhVien != 0 
-//                     || sinhVien.MaLopQuanLi == 0)
-//                 return BadRequest("Chứa tham số không hợp lệ");
+        [HttpPost]
+        public ActionResult AddSinhVien([FromBody] SinhVienDto sinhVienDto)
+        {
+            var sinhVien = SinhVienMapper.ToEntity(sinhVienDto);
+            if (sinhVien.MaSinhVien != 0 
+                    || sinhVien.MaLopQuanLi == 0)
+                return BadRequest("Chứa tham số không hợp lệ");
             
-//             var responseJson = httpClient
-//                 .GetAsync(new Uri(httpClient.BaseAddress, "lopquanli")).Result;
-//             try
-//             {
-//                 responseJson.EnsureSuccessStatusCode();
-//                 var LopQuanLi = responseJson.Content.ReadFromJsonAsync<LopQuanLi>().Result;
-//                 if (LopQuanLi == null)
-//                 {
-//                     return BadRequest("Giá trị mã lớp quản lí không hợp lệ");
-//                 }
+            var responseJson = httpClient
+                .GetAsync(new Uri(httpClient.BaseAddress, $"lopquanli/{sinhVien.MaLopQuanLi}")).Result;
+            try
+            {
+                responseJson.EnsureSuccessStatusCode();
+                var LopQuanLi = responseJson.Content.ReadFromJsonAsync<LopQuanLi>().Result;
+                if (LopQuanLi == null)
+                {
+                    return BadRequest("Giá trị mã lớp quản lí không hợp lệ");
+                }
 
-//                 sinhVienDbContext.SinhViens.Add(sinhVien);
-//                 sinhVienDbContext.SaveChanges();
-//                 return CreatedAtAction(nameof(GetById), new {
-//                     maSoSinhVien = sinhVien.MaSinhVien,
-//                     hoTen = sinhVien.HoTen,
-//                     maLopQuanLi = sinhVien.MaLopQuanLi,
-//                     tenLopQuanLi = LopQuanLi.TenLopQuanLi,
-//                     giaoVienChuNhiem = LopQuanLi.GiangVien?.HoTen,
-//                     khoa = LopQuanLi.Khoa
-//                 });
-//             }
-//             catch (HttpRequestException)
-//             {
-//                 return BadRequest();
-//             }
-//         }
+                sinhVienDbContext.SinhViens.Add(sinhVien);
+                sinhVienDbContext.SaveChanges();
+                return Created(nameof(GetById), new {
+                    maSoSinhVien = sinhVien.MaSinhVien,
+                    hoTen = sinhVien.HoTen,
+                    maLopQuanLi = sinhVien.MaLopQuanLi,
+                    tenLopQuanLi = LopQuanLi.TenLopQuanLi,
+                    giaoVienChuNhiem = LopQuanLi.GiangVien?.HoTen,
+                    khoa = LopQuanLi.Khoa
+                });
+            }
+            catch (HttpRequestException)
+            {
+                return BadRequest();
+            }
+        }
 
 //         [HttpPut("{maSinhVien}")]
 //         public ActionResult<SinhVienDto> UpdateSinhVien(int maSinhVien,  [FromBody] SinhVien sinhVien)
@@ -141,5 +139,5 @@
 //             // return NoContent();
 //         }
 
-//     }
-// }
+    }
+}

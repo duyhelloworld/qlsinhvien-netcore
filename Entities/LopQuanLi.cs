@@ -24,5 +24,8 @@ namespace qlsinhvien.Entities
         public int MaKhoa { get; set; }
         [ForeignKey("MaKhoa")]
         public Khoa? Khoa { get; set; }
+
+        [NotMapped]
+        public int? SiSo {get; set;}
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace qlsinhvien.Migrations
 {
     /// <inheritdoc />
-    public partial class qlsinhvien : Migration
+    public partial class tao_bang : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

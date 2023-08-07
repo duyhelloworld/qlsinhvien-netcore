@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using qlsinhvien.Context;
 
@@ -11,12 +10,10 @@ using qlsinhvien.Context;
 
 namespace qlsinhvien.Migrations
 {
-    [DbContext(typeof(AppQLSVContext))]
-    [Migration("20230804034129_qlsinhvien")]
-    partial class qlsinhvien
+    [DbContext(typeof(ApplicationContext))]
+    partial class ApplicationContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,6 +56,7 @@ namespace qlsinhvien.Migrations
             modelBuilder.Entity("qlsinhvien.Entities.GiangVien", b =>
                 {
                     b.Property<int>("MaGiangVien")
+                        .HasDefaultValue(0)
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -103,6 +101,7 @@ namespace qlsinhvien.Migrations
             modelBuilder.Entity("qlsinhvien.Entities.Khoa", b =>
                 {
                     b.Property<int>("MaKhoa")
+                        .HasDefaultValue(0)
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -136,6 +135,7 @@ namespace qlsinhvien.Migrations
             modelBuilder.Entity("qlsinhvien.Entities.LopMonHoc", b =>
                 {
                     b.Property<int>("MaLopMonHoc")
+                        .HasDefaultValue(0)
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -164,6 +164,7 @@ namespace qlsinhvien.Migrations
             modelBuilder.Entity("qlsinhvien.Entities.LopQuanLi", b =>
                 {
                     b.Property<int>("MaLopQuanLi")
+                        .HasDefaultValue(0)
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -193,6 +194,7 @@ namespace qlsinhvien.Migrations
             modelBuilder.Entity("qlsinhvien.Entities.MonHoc", b =>
                 {
                     b.Property<int>("MaMonHoc")
+                        .HasDefaultValue(0)
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -225,6 +227,7 @@ namespace qlsinhvien.Migrations
             modelBuilder.Entity("qlsinhvien.Entities.SinhVien", b =>
                 {
                     b.Property<int>("MaSinhVien")
+                        .HasDefaultValue(0)
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnOrder(1);
