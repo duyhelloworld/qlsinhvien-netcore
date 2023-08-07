@@ -10,10 +10,10 @@ namespace qlsinhvien.Controllers
     [Route("/[controller]")]
     public class MonHocController : ControllerBase
     {
-        private readonly AppQLSVContext appContext;
+        private readonly ApplicationContext appContext;
         // private readonly HttpClient httpClient;
 
-        public MonHocController(AppQLSVContext appContext)
+        public MonHocController(ApplicationContext appContext)
         // , IHttpClientFactory httpClientFactory)
         {
             this.appContext = appContext;

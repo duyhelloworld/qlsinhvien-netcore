@@ -9,8 +9,8 @@ namespace qlsinhvien.Controllers
     [Route("/[controller]")]
     public class DiemSinhVienController : ControllerBase
     {
-        private readonly AppQLSVContext appContext;
-        public DiemSinhVienController(AppQLSVContext appContext)
+        private readonly ApplicationContext appContext;
+        public DiemSinhVienController(ApplicationContext appContext)
         {
             this.appContext = appContext;
         }
