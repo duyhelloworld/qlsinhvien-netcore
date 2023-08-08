@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using qlsinhvien.Context;
 using qlsinhvien.Dto;
 using qlsinhvien.Entities;
@@ -20,38 +21,89 @@ namespace qlsinhvien.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<LopQuanLiDto>> GetAll()
         {
-            var ketQua = 
-                        // Lấy sĩ số
-                        from l in lopQuanLiDbContext.LopQuanLis
-                        join s in lopQuanLiDbContext.SinhViens
-                            on l.MaLopQuanLi equals s.MaLopQuanLi
-                        group s by s.MaLopQuanLi into sv
-                        let siSo = sv.Count()
-                        // Lấy tên khoa, tên giảng viên
-                        from lopQuanLi in lopQuanLiDbContext.LopQuanLis
-                        join giangVien in lopQuanLiDbContext.GiangViens
-                            on lopQuanLi.MaGiangVien equals giangVien.MaGiangVien
-                        join khoa in lopQuanLiDbContext.Khoas
-                            on lopQuanLi.MaKhoa equals khoa.MaKhoa
+            var ketQua = from lql in lopQuanLiDbContext.LopQuanLis
+                        join gv in lopQuanLiDbContext.GiangViens
+                            on lql.MaGiangVien equals gv.MaGiangVien
+                         join k in lopQuanLiDbContext.Khoas
+                             on lql.MaKhoa equals k.MaKhoa
                          select LopQuanLiMapper.ToDto(new LopQuanLi() {
-                            MaLopQuanLi = lopQuanLi.MaLopQuanLi,
-                            TenLopQuanLi = lopQuanLi.TenLopQuanLi,
-                            GiangVien = giangVien,
-                            Khoa = khoa,
-                            MaGiangVien = giangVien.MaGiangVien,
-                            MaKhoa = khoa.MaKhoa,
-                            SiSo = siSo
+                            MaLopQuanLi = lql.MaLopQuanLi,
+                            TenLopQuanLi = lql.TenLopQuanLi,
+                            GiangVien = gv,
+                            Khoa = k,
                         });
             return ketQua == null ? NotFound() : Ok(ketQua);
         }
-        
+
         [HttpGet("{MaLopQuanLi}")]
         public ActionResult<LopQuanLiDto> GetById(int MaLopQuanLi)
         {
             var ketQua = lopQuanLiDbContext.LopQuanLis
                 .FirstOrDefault(l => l.MaLopQuanLi == MaLopQuanLi);
-            Console.WriteLine($"Searched : {ketQua.GiangVien} {ketQua.Khoa}");
             return ketQua == null ? NotFound() : Ok(LopQuanLiMapper.ToDto(ketQua));
         }
+
+        [HttpGet("s")]
+        public ActionResult<IEnumerable<LopQuanLiDto>> GetByName([FromQuery] string tenlop)
+        {
+            var ketQua = from lql in lopQuanLiDbContext.LopQuanLis
+                where lql.TenLopQuanLi.Contains(tenlop)
+                select LopQuanLiMapper.ToDto(lql);
+            return ketQua == null ? NotFound() : Ok(ketQua);
+        }
+
+        [HttpPost]
+        public ActionResult AddLopQL([FromBody] LopQuanLiDto lopQuanLiDto)
+        {
+            if (lopQuanLiDto.MaLopQuanLi != 0)
+            {
+                return BadRequest();
+            }
+            try
+            {
+                var lql = LopQuanLiMapper.ToEntity(lopQuanLiDto);
+                lopQuanLiDbContext.LopQuanLis.Add(lql);
+                lopQuanLiDbContext.SaveChanges();
+                return Created(nameof(GetById), lql);
+            }
+            catch (DbUpdateException e)
+            {
+                Console.WriteLine(e.Message);
+                return BadRequest("Lỗi");
+            }
+        }
+
+        [HttpGet("info")]
+        public ActionResult GetBasicInfo()
+        {
+            // Lấy tên khoa, tên giảng viên
+            var joinedResult = from lopQuanLi in lopQuanLiDbContext.LopQuanLis
+                        join giangVien in lopQuanLiDbContext.GiangViens
+                            on lopQuanLi.MaGiangVien equals giangVien.MaGiangVien
+                        join khoa in lopQuanLiDbContext.Khoas
+                            on lopQuanLi.MaKhoa equals khoa.MaKhoa
+                        select new {
+                            lopQuanLi.MaLopQuanLi,
+                            lopQuanLi.TenLopQuanLi,
+                            giangVien,
+                            khoa
+                        };
+            // Lấy sĩ số
+            var groupByResult = from l in joinedResult
+                                join s in lopQuanLiDbContext.SinhViens
+                                    on l.MaLopQuanLi equals s.MaLopQuanLi
+                                group l by l.MaLopQuanLi into grouped
+                                select LopQuanLiMapper.ToDto(new LopQuanLi()
+                                {
+                                    MaLopQuanLi = grouped.First().MaLopQuanLi,
+                                    TenLopQuanLi = grouped.First().TenLopQuanLi,
+                                    GiangVien = grouped.First().giangVien,
+                                    Khoa = grouped.First().khoa,
+                                    SiSo = grouped.Count()
+                                });
+            return groupByResult == null ? NotFound() : Ok(groupByResult);
+        }
+
+
     }
 }
