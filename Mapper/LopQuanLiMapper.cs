@@ -9,8 +9,15 @@ namespace qlsinhvien.Mapper
             return new LopQuanLi() {
                 MaLopQuanLi = lopQuanLiDto.MaLopQuanLi,
                 TenLopQuanLi = lopQuanLiDto.TenLopQuanLi,
-                MaKhoa = lopQuanLiDto.MaKhoa,
-                MaGiangVien = lopQuanLiDto.MaGiangVien,
+                MaKhoa = lopQuanLiDto.Khoa == null ? lopQuanLiDto.MaKhoa : lopQuanLiDto.Khoa.MaKhoa,
+                MaGiangVien = lopQuanLiDto.GiangVien == null ? lopQuanLiDto.MaGiangVien : lopQuanLiDto.GiangVien.Value.MaGiangVien,
+                Khoa = lopQuanLiDto.Khoa,
+                GiangVien = new GiangVien() {
+                    MaGiangVien = lopQuanLiDto.MaGiangVien,
+                    HoTen = lopQuanLiDto.GiangVien?.TenGiangVien,
+                    Email = lopQuanLiDto.GiangVien?.Email,
+                    SoDienThoai = lopQuanLiDto.GiangVien?.SoDienThoai,
+                }
             };
         }
 
@@ -20,10 +27,15 @@ namespace qlsinhvien.Mapper
             {
                 MaLopQuanLi = lopQuanLi.MaLopQuanLi,
                 TenLopQuanLi = lopQuanLi.TenLopQuanLi,
-                MaKhoa = lopQuanLi.MaKhoa,
-                MaGiangVien = lopQuanLi.MaGiangVien,
-                TenGiangVien = lopQuanLi.GiangVien.HoTen,
-                TenKhoa = lopQuanLi.Khoa.TenKhoa
+                Khoa = lopQuanLi.Khoa,
+                MaKhoa = lopQuanLi.Khoa == null ? lopQuanLi.MaKhoa : lopQuanLi.Khoa.MaKhoa,
+                MaGiangVien = lopQuanLi.GiangVien == null ? lopQuanLi.MaGiangVien : lopQuanLi.GiangVien.MaGiangVien,
+                GiangVien = lopQuanLi.GiangVien == null ? null : new GiangVienContact {
+                    MaGiangVien = lopQuanLi.GiangVien.MaGiangVien,
+                    TenGiangVien = lopQuanLi.GiangVien.HoTen,
+                    Email = lopQuanLi.GiangVien.Email,
+                    SoDienThoai = lopQuanLi.GiangVien.SoDienThoai,
+                }
             };
         }
     }
