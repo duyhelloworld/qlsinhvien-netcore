@@ -103,25 +103,44 @@ namespace qlsinhvien.Controllers
         [HttpPut("{id}")]
         public ActionResult UpdateMonHoc(int id, [FromBody] MonHoc monHoc)
         {
-            // Tìm môn học trong cơ sở dữ liệu dựa vào id
-            var existingMonHoc = appContext.MonHocs.Find(id);
-            if (existingMonHoc == null)
+            var mon = appContext.MonHocs.Find(id);
+            if (mon == null)
             {
-                return NotFound(); // Trả về 404 Not Found nếu không tìm thấy môn học với id tương ứng
+                return NotFound();
             }
 
-            // Cập nhật thông tin môn học với dữ liệu mới từ monHoc
-            existingMonHoc.TenMonHoc = monHoc.TenMonHoc;
-            existingMonHoc.SoTinChi = monHoc.SoTinChi;
-            existingMonHoc.BatBuoc = monHoc.BatBuoc;
-            existingMonHoc.MonTienQuyet = monHoc.MonTienQuyet;
-            existingMonHoc.MoTa = monHoc.MoTa;
+            mon.TenMonHoc = monHoc.TenMonHoc;
+            mon.SoTinChi = monHoc.SoTinChi;
+            mon.BatBuoc = monHoc.BatBuoc;
+            mon.MonTienQuyet = monHoc.MonTienQuyet;
+            mon.MoTa = monHoc.MoTa;
 
-            appContext.MonHocs.Update(existingMonHoc); // Cập nhật môn học trong cơ sở dữ liệu
-            appContext.SaveChanges(); // Lưu các thay đổi vào cơ sở dữ liệu
+            appContext.MonHocs.Update(mon);
+            appContext.SaveChanges();
 
-            return Ok(existingMonHoc); // Trả về môn học sau khi cập nhật thành công
+            return Ok(mon);
+        }
+        [HttpDelete("{id}")]
+        public ActionResult DeleteMonHoc(int id)
+        {
+            var monHoc = appContext.MonHocs.Find(id);
+            if (monHoc == null)
+            {
+                return NotFound();
+            }
+            appContext.MonHocs.Remove(monHoc);
+            appContext.SaveChanges();
+
+            return Ok(new
+            {
+                message = "Xóa môn học thành công.",
+                maMonHoc = monHoc.MaMonHoc,
+                tenMonHoc = monHoc.TenMonHoc,
+                soTinChi = monHoc.SoTinChi,
+                batBuoc = monHoc.BatBuoc,
+                monTienQuyet = monHoc.MonTienQuyet,
+                moTa = monHoc.MoTa
+            });
         }
     }
-
 }
