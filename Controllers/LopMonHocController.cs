@@ -13,17 +13,5 @@ namespace qlsinhvien.Controllers
         {
             this.lopMonHocDbContext = lopMonHocDbContext;
         }
-
-        // [HttpGet]
-        // public async Task<IActionResult> Get()
-        // {
-        //     lopMonHocDbContext.LopMonHocs.Add(
-        //         new LopMonHoc() {
-        //             MaGiangVien = 1,
-        //             MaMonHoc = 1
-        //         });
-        //     lopMonHocDbContext.SaveChanges();
-        //     return Ok();
-        // }
     }
 }
