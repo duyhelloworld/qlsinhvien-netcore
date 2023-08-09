@@ -5,13 +5,13 @@ using qlsinhvien.Entities;
 namespace qlsinhvien.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("/[controller]")]
     public class LopMonHocController : ControllerBase
     {
-        private readonly ApplicationContext lopMonHocDbContext;
-        public LopMonHocController(ApplicationContext lopMonHocDbContext)
+        private readonly ApplicationContext appContext;
+        public LopMonHocController(ApplicationContext appContext)
         {
-            this.lopMonHocDbContext = lopMonHocDbContext;
+            this.appContext = appContext;
         }
     }
 }
