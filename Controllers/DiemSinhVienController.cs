@@ -25,22 +25,22 @@ namespace qlsinhvien.Controllers
             else
             {
                 var kq = from diemSv in appContext.DiemSinhViens
-                            join lopMh in appContext.LopMonHocs on diemSv.MaLopMonHoc equals lopMh.MaLopMonHoc
-                            join mh in appContext.MonHocs on lopMh.MaMonHoc equals mh.MaMonHoc
-                            where masinhvien == diemSv.MaSinhVien
-                            orderby mh.MaMonHoc
-                            select new
-                            {
-                                mh.MaMonHoc,
-                                mh.TenMonHoc,
-                                lopMh.TenLopMonHoc,
-                                diemSv.DiemChuyenCan,
-                                diemSv.DiemGiuaKi,
-                                diemSv.DiemQuaTrinh,
-                                diemSv.DiemCuoiKi,
-                                diemSv.DiemTongKet,
-                                diemSv.GhiChu
-                            };
+                         join lopMh in appContext.LopMonHocs on diemSv.MaLopMonHoc equals lopMh.MaLopMonHoc
+                         join mh in appContext.MonHocs on lopMh.MaMonHoc equals mh.MaMonHoc
+                         where masinhvien == diemSv.MaSinhVien
+                         orderby mh.MaMonHoc
+                         select new
+                         {
+                             mh.MaMonHoc,
+                             mh.TenMonHoc,
+                             lopMh.TenLopMonHoc,
+                             diemSv.DiemChuyenCan,
+                             diemSv.DiemGiuaKi,
+                             diemSv.DiemQuaTrinh,
+                             diemSv.DiemCuoiKi,
+                             diemSv.DiemTongKet,
+                             diemSv.GhiChu
+                         };
                 return Ok(kq);
             }
         }
@@ -48,30 +48,30 @@ namespace qlsinhvien.Controllers
         public ActionResult GetByLopMonHoc(int malopmonhoc)
         {
             var lop = appContext.DiemSinhViens.Find(malopmonhoc);
-            if(lop == null)
+            if (lop == null)
             {
                 return NotFound();
             }
             else
             {
                 var kq = from diemSv in appContext.DiemSinhViens
-                            join lopMh in appContext.LopMonHocs on diemSv.MaLopMonHoc equals lopMh.MaLopMonHoc
-                            join mh in appContext.MonHocs on lopMh.MaMonHoc equals mh.MaMonHoc
-                            join sv in appContext.SinhViens on diemSv.MaSinhVien equals sv.MaSinhVien
-                            where malopmonhoc == diemSv.MaLopMonHoc
-                            select new
-                            {
-                                sv.MaSinhVien,
-                                sv.HoTen,
-                                sv.LopQuanLi,
-                                diemSv.DiemChuyenCan,
-                                diemSv.DiemGiuaKi,
-                                diemSv.DiemQuaTrinh,
-                                diemSv.DiemCuoiKi,
-                                diemSv.DiemTongKet,
-                                diemSv.DiemHe4,
-                                diemSv.GhiChu
-                            };
+                         join lopMh in appContext.LopMonHocs on diemSv.MaLopMonHoc equals lopMh.MaLopMonHoc
+                         join mh in appContext.MonHocs on lopMh.MaMonHoc equals mh.MaMonHoc
+                         join sv in appContext.SinhViens on diemSv.MaSinhVien equals sv.MaSinhVien
+                         where malopmonhoc == diemSv.MaLopMonHoc
+                         select new
+                         {
+                             sv.MaSinhVien,
+                             sv.HoTen,
+                             sv.LopQuanLi,
+                             diemSv.DiemChuyenCan,
+                             diemSv.DiemGiuaKi,
+                             diemSv.DiemQuaTrinh,
+                             diemSv.DiemCuoiKi,
+                             diemSv.DiemTongKet,
+                             diemSv.DiemHe4,
+                             diemSv.GhiChu
+                         };
                 return Ok(kq);
             }
         }
@@ -97,11 +97,41 @@ namespace qlsinhvien.Controllers
                     diemGiuaKi = diemSinhVien.DiemGiuaKi,
                     diemQuaTrinh = diemSinhVien.DiemQuaTrinh,
                     diemCuoiKi = diemSinhVien.DiemCuoiKi,
-                    diemTongKet = diemSinhVien.DiemTongKet
+                    diemTongKet = diemSinhVien.DiemTongKet,
+                    diemHe4 = diemSinhVien.DiemHe4,
+                    diemChu = diemSinhVien.DiemChu
                 });
             }
         }
-        [HttpPut("{masinhvien}")]
+        [HttpPut("{malopmonhoc}")]
+        public ActionResult UpdateDiemSinhVienTheoLopMonHoc(int malopmonhoc, [FromBody] DiemSinhVien diemSinhVien)
+        {
+            var lop = appContext.DiemSinhViens.Find(malopmonhoc);
+            if (lop == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                lop.DiemChuyenCan = diemSinhVien.DiemChuyenCan;
+                lop.DiemGiuaKi = diemSinhVien.DiemGiuaKi;
+                lop.DiemCuoiKi = diemSinhVien.DiemCuoiKi;
+
+                // appContext.DiemSinhViens.Update(diem);
+                appContext.SaveChanges();
+                return Ok(new
+                {
+                    diemChuyenCan = diemSinhVien.DiemChuyenCan,
+                    diemGiuaKi = diemSinhVien.DiemGiuaKi,
+                    diemQuaTrinh = diemSinhVien.DiemQuaTrinh,
+                    diemCuoiKi = diemSinhVien.DiemCuoiKi,
+                    diemTongKet = diemSinhVien.DiemTongKet,
+                    diemHe4 = diemSinhVien.DiemHe4,
+                    diemChu = diemSinhVien.DiemChu
+                });
+            }
+        }
+        [HttpDelete("{masinhvien}")]
         public ActionResult DeleteDiemSinhVien(int masinhvien)
         {
             var diem = appContext.DiemSinhViens.Find(masinhvien);
@@ -118,6 +148,25 @@ namespace qlsinhvien.Controllers
                 // appContext.DiemSinhViens.Update(diem);
                 appContext.SaveChanges();
                 return Ok(diem);
+            }
+        }
+        [HttpDelete("{malopmonhoc}")]
+        public ActionResult DeleteDiemSinhVienTheoLopMonHoc(int malopmonhoc)
+        {
+            var lop = appContext.DiemSinhViens.Find(malopmonhoc);
+            if (lop == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                lop.DiemChuyenCan = 0;
+                lop.DiemGiuaKi = 0;
+                lop.DiemCuoiKi = 0;
+
+                // appContext.DiemSinhViens.Update(diem);
+                appContext.SaveChanges();
+                return Ok(lop);
             }
         }
     }
