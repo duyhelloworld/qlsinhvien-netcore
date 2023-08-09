@@ -24,22 +24,55 @@ namespace qlsinhvien.Controllers
             }
             else
             {
-            var query = from diemSv in appContext.DiemSinhViens
-                    join lopMh in appContext.LopMonHocs on diemSv.MaLopMonHoc equals lopMh.MaLopMonHoc
-                    join mh in appContext.MonHocs on lopMh.MaMonHoc equals mh.MaMonHoc
-                    where masinhvien == diemSv.MaSinhVien
-                    orderby mh.MaMonHoc
-                    select new
-                    {
-                        mh.MaMonHoc,
-                        mh.TenMonHoc,
-                        lopMh.TenLopMonHoc,
-                        diemSv.DiemChuyenCan,
-                        diemSv.DiemGiuaKi,
-                        diemSv.DiemCuoiKi,
-                        diemSv.GhiChu
-                    };
-            return Ok(query);
+                var kq = from diemSv in appContext.DiemSinhViens
+                            join lopMh in appContext.LopMonHocs on diemSv.MaLopMonHoc equals lopMh.MaLopMonHoc
+                            join mh in appContext.MonHocs on lopMh.MaMonHoc equals mh.MaMonHoc
+                            where masinhvien == diemSv.MaSinhVien
+                            orderby mh.MaMonHoc
+                            select new
+                            {
+                                mh.MaMonHoc,
+                                mh.TenMonHoc,
+                                lopMh.TenLopMonHoc,
+                                diemSv.DiemChuyenCan,
+                                diemSv.DiemGiuaKi,
+                                diemSv.DiemQuaTrinh,
+                                diemSv.DiemCuoiKi,
+                                diemSv.DiemTongKet,
+                                diemSv.GhiChu
+                            };
+                return Ok(kq);
+            }
+        }
+        [HttpGet("malopmonhoc")]
+        public ActionResult GetByLopMonHoc(int malopmonhoc)
+        {
+            var lop = appContext.DiemSinhViens.Find(malopmonhoc);
+            if(lop == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                var kq = from diemSv in appContext.DiemSinhViens
+                            join lopMh in appContext.LopMonHocs on diemSv.MaLopMonHoc equals lopMh.MaLopMonHoc
+                            join mh in appContext.MonHocs on lopMh.MaMonHoc equals mh.MaMonHoc
+                            join sv in appContext.SinhViens on diemSv.MaSinhVien equals sv.MaSinhVien
+                            where malopmonhoc == diemSv.MaLopMonHoc
+                            select new
+                            {
+                                sv.MaSinhVien,
+                                sv.HoTen,
+                                sv.LopQuanLi,
+                                diemSv.DiemChuyenCan,
+                                diemSv.DiemGiuaKi,
+                                diemSv.DiemQuaTrinh,
+                                diemSv.DiemCuoiKi,
+                                diemSv.DiemTongKet,
+                                diemSv.DiemHe4,
+                                diemSv.GhiChu
+                            };
+                return Ok(kq);
             }
         }
         [HttpPut("{masinhvien}")]
@@ -58,7 +91,14 @@ namespace qlsinhvien.Controllers
 
                 // appContext.DiemSinhViens.Update(diem);
                 appContext.SaveChanges();
-                return Ok(diem);
+                return Ok(new
+                {
+                    diemChuyenCan = diemSinhVien.DiemChuyenCan,
+                    diemGiuaKi = diemSinhVien.DiemGiuaKi,
+                    diemQuaTrinh = diemSinhVien.DiemQuaTrinh,
+                    diemCuoiKi = diemSinhVien.DiemCuoiKi,
+                    diemTongKet = diemSinhVien.DiemTongKet
+                });
             }
         }
         [HttpPut("{masinhvien}")]
