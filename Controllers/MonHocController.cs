@@ -33,8 +33,8 @@ namespace qlsinhvien.Controllers
             var monHoc = appContext.MonHocs.Find(id);
             return monHoc == null ? NotFound() : Ok(monHoc);
         }
-        // [HttpGet("{name}")]
-        public ActionResult<MonHoc> GetByName(string name)
+        [HttpGet]
+        public ActionResult<MonHoc> GetByName([FromQuery] string name)
         {
             var monHoc = appContext.MonHocs.Find(name);
             return monHoc == null ? NotFound() : Ok(monHoc);
