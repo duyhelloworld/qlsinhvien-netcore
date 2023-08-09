@@ -14,11 +14,10 @@ namespace qlsinhvien.Controllers
         {
             this.appContext = appContext;
         }
-        [HttpGet("{id}")]
-        public ActionResult GetById(int id)
+        [HttpGet("{masinhvien}")]
+        public ActionResult GetById(int masinhvien)
         {
-            int mssv = 1;
-            var diem = appContext.DiemSinhViens.Find(id);
+            var diem = appContext.DiemSinhViens.Find(masinhvien);
             if (diem == null)
             {
                 return NotFound();
@@ -28,7 +27,7 @@ namespace qlsinhvien.Controllers
             var query = from diemSv in appContext.DiemSinhViens
                     join lopMh in appContext.LopMonHocs on diemSv.MaLopMonHoc equals lopMh.MaLopMonHoc
                     join mh in appContext.MonHocs on lopMh.MaMonHoc equals mh.MaMonHoc
-                    where mssv == id
+                    where masinhvien == diemSv.MaSinhVien
                     orderby mh.MaMonHoc
                     select new
                     {
@@ -43,10 +42,10 @@ namespace qlsinhvien.Controllers
             return Ok(query);
             }
         }
-        [HttpPut("{id}")]
-        public ActionResult UpdateDiemSinhVien(int id, [FromBody] DiemSinhVien diemSinhVien)
+        [HttpPut("{masinhvien}")]
+        public ActionResult UpdateDiemSinhVien(int masinhvien, [FromBody] DiemSinhVien diemSinhVien)
         {
-            var diem = appContext.DiemSinhViens.Find(id);
+            var diem = appContext.DiemSinhViens.Find(masinhvien);
             if (diem == null)
             {
                 return NotFound();
@@ -57,15 +56,15 @@ namespace qlsinhvien.Controllers
                 diem.DiemGiuaKi = diemSinhVien.DiemGiuaKi;
                 diem.DiemCuoiKi = diemSinhVien.DiemCuoiKi;
 
-                appContext.DiemSinhViens.Update(diem);
+                // appContext.DiemSinhViens.Update(diem);
                 appContext.SaveChanges();
                 return Ok(diem);
             }
         }
-        [HttpPut("{id}")]
-        public ActionResult DeleteDiemSinhVien(int id)
+        [HttpPut("{masinhvien}")]
+        public ActionResult DeleteDiemSinhVien(int masinhvien)
         {
-            var diem = appContext.DiemSinhViens.Find(id);
+            var diem = appContext.DiemSinhViens.Find(masinhvien);
             if (diem == null)
             {
                 return NotFound();
@@ -76,7 +75,7 @@ namespace qlsinhvien.Controllers
                 diem.DiemGiuaKi = 0;
                 diem.DiemCuoiKi = 0;
 
-                appContext.DiemSinhViens.Update(diem);
+                // appContext.DiemSinhViens.Update(diem);
                 appContext.SaveChanges();
                 return Ok(diem);
             }
