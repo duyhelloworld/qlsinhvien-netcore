@@ -135,3 +135,7 @@ GO
 COMMIT;
 GO
 
+ALTER TABLE
+    [giangvien] ADD [MaKhoa] INT,
+    CONSTRAINT [FK_GiangVien_Khoa_MaKhoa] FOREIGN KEY ([MaKhoa]) REFERENCES [Khoa] ([MaKhoa]);
+go
