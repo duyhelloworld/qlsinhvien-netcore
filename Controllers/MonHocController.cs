@@ -11,14 +11,10 @@ namespace qlsinhvien.Controllers
     public class MonHocController : ControllerBase
     {
         private readonly ApplicationContext appContext;
-        // private readonly HttpClient httpClient;
 
         public MonHocController(ApplicationContext appContext)
-        // , IHttpClientFactory httpClientFactory)
         {
             this.appContext = appContext;
-            // httpClient = httpClientFactory.CreateClient();
-            // httpClient.BaseAddress = new Uri("http://localhost:5277");
         }
 
         [HttpGet]

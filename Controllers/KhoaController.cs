@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using qlsinhvien.Context;
-using qlsinhvien.Dto;
 using qlsinhvien.Entities;
 
 namespace qlsinhvien.Controllers
@@ -32,7 +31,7 @@ namespace qlsinhvien.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddKhoa([FromBody] KhoaDto khoa)
+        public ActionResult AddKhoa([FromBody] Khoa khoa)
         {
             return NoContent();
         }

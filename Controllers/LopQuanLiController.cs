@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using qlsinhvien.Context;
-using qlsinhvien.Dto;
 using qlsinhvien.Entities;
-using qlsinhvien.Mapper;
 
 namespace qlsinhvien.Controllers
 {
@@ -19,52 +17,42 @@ namespace qlsinhvien.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<LopQuanLiDto>> GetAll()
+        public ActionResult<IEnumerable<LopQuanLi>> GetAll()
         {
-            var ketQua = from lql in lopQuanLiDbContext.LopQuanLis
-                        join gv in lopQuanLiDbContext.GiangViens
-                            on lql.MaGiangVien equals gv.MaGiangVien
-                         join k in lopQuanLiDbContext.Khoas
-                             on lql.MaKhoa equals k.MaKhoa
-                         select LopQuanLiMapper.ToDto(new LopQuanLi() {
-                            MaLopQuanLi = lql.MaLopQuanLi,
-                            TenLopQuanLi = lql.TenLopQuanLi,
-                            GiangVien = gv,
-                            Khoa = k,
-                        });
+            var ketQua = lopQuanLiDbContext.LopQuanLis
+                        .ToHashSet();
             return ketQua == null ? NotFound() : Ok(ketQua);
         }
 
         [HttpGet("{MaLopQuanLi}")]
-        public ActionResult<LopQuanLiDto> GetById(int MaLopQuanLi)
+        public ActionResult<LopQuanLi> GetById(int MaLopQuanLi)
         {
             var ketQua = lopQuanLiDbContext.LopQuanLis
                 .FirstOrDefault(l => l.MaLopQuanLi == MaLopQuanLi);
-            return ketQua == null ? NotFound() : Ok(LopQuanLiMapper.ToDto(ketQua));
+            return ketQua == null ? NotFound() : Ok(ketQua);
         }
 
         [HttpGet("s")]
-        public ActionResult<IEnumerable<LopQuanLiDto>> GetByName([FromQuery] string tenlop)
+        public ActionResult<IEnumerable<LopQuanLi>> GetByName([FromQuery] string tenlop)
         {
             var ketQua = from lql in lopQuanLiDbContext.LopQuanLis
                 where lql.TenLopQuanLi.Contains(tenlop)
-                select LopQuanLiMapper.ToDto(lql);
+                select lql;
             return ketQua == null ? NotFound() : Ok(ketQua);
         }
 
         [HttpPost]
-        public ActionResult AddLopQL([FromBody] LopQuanLiDto lopQuanLiDto)
+        public ActionResult AddLopQL([FromBody] LopQuanLi LopQuanLi)
         {
-            if (lopQuanLiDto.MaLopQuanLi != 0)
+            if (LopQuanLi.MaLopQuanLi != 0)
             {
                 return BadRequest();
             }
             try
             {
-                var lql = LopQuanLiMapper.ToEntity(lopQuanLiDto);
-                lopQuanLiDbContext.LopQuanLis.Add(lql);
+                lopQuanLiDbContext.LopQuanLis.Add(LopQuanLi);
                 lopQuanLiDbContext.SaveChanges();
-                return Created(nameof(GetById), lql);
+                return Created(nameof(GetById), LopQuanLi);
             }
             catch (DbUpdateException e)
             {
@@ -93,14 +81,14 @@ namespace qlsinhvien.Controllers
                                 join s in lopQuanLiDbContext.SinhViens
                                     on l.MaLopQuanLi equals s.MaLopQuanLi
                                 group l by l.MaLopQuanLi into grouped
-                                select LopQuanLiMapper.ToDto(new LopQuanLi()
+                                select new LopQuanLi()
                                 {
                                     MaLopQuanLi = grouped.First().MaLopQuanLi,
                                     TenLopQuanLi = grouped.First().TenLopQuanLi,
                                     GiangVien = grouped.First().giangVien,
                                     Khoa = grouped.First().khoa,
                                     SiSo = grouped.Count()
-                                });
+                                };
             return groupByResult == null ? NotFound() : Ok(groupByResult);
         }
 

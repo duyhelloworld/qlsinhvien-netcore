@@ -2,45 +2,40 @@ using System.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using qlsinhvien.Context;
-using qlsinhvien.Dto;
 using qlsinhvien.Entities;
-using qlsinhvien.Mapper;
 
 namespace qlsinhvien.Controllers
 {
     [ApiController]
-    [Route("/[controller]")]
+    [Route("[controller]")]
     public class SinhVienController : ControllerBase
     {
         private readonly ApplicationContext sinhVienDbContext;
-        private readonly HttpClient httpClient;
 
-        public SinhVienController(ApplicationContext sinhVienDbContext, IHttpClientFactory httpClientFactory) {
+        public SinhVienController(ApplicationContext sinhVienDbContext) {
             this.sinhVienDbContext = sinhVienDbContext;
-            httpClient = httpClientFactory.CreateClient();
-            httpClient.BaseAddress = new Uri("http://localhost:5277");
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<SinhVienDto>> GetAll(){
-            var sinhVienDtos =  from sinhVien in sinhVienDbContext.SinhViens
-                    select SinhVienMapper.ToDto(sinhVien);
-            return Ok(sinhVienDtos);
+        public ActionResult<IEnumerable<SinhVien>> GetAll(){
+            var SinhViens =  sinhVienDbContext.SinhViens
+                        .ToHashSet();
+            return Ok(SinhViens);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<SinhVienDto> GetById(int id)
+        public ActionResult<SinhVien> GetById(int id)
         {
             var sinhVien = sinhVienDbContext.SinhViens.Find(id);
-            return sinhVien == null ? NotFound() : Ok(SinhVienMapper.ToDto(sinhVien));
+            return sinhVien == null ? NotFound() : Ok(sinhVien);
         }
 
         [HttpGet("search")]
-        public ActionResult<IEnumerable<SinhVienDto>> GetByName([FromQuery] string hoTen)
+        public ActionResult<IEnumerable<SinhVien>> GetByName([FromQuery] string hoTen)
         {
             var ketQua = from sinhVien in sinhVienDbContext.SinhViens
                             where sinhVien.HoTen.Contains(hoTen)
-                            select SinhVienMapper.ToDto(sinhVien);
+                            select sinhVien;
             return ketQua == null ? NotFound() : Ok(ketQua);
         }
 
@@ -49,48 +44,39 @@ namespace qlsinhvien.Controllers
         {
             var ketQua = from sinhVien in sinhVienDbContext.SinhViens
                           where sinhVien.Email.StartsWith(email)
-                          select SinhVienMapper.ToDto(sinhVien);
+                          select sinhVien;
             return ketQua == null ? NotFound() : Ok(ketQua);
         }
 
         [HttpGet("search")]
-        public ActionResult<IEnumerable<SinhVienDto>> GetByNumberPhone([FromQuery] string soDienThoai)
+        public ActionResult<IEnumerable<SinhVien>> GetByNumberPhone([FromQuery] string soDienThoai)
         {
             var ketQua = from sinhVien in sinhVienDbContext.SinhViens
                           where sinhVien.SoDienThoai.StartsWith(soDienThoai)
-                          select SinhVienMapper.ToDto(sinhVien);
+                          select sinhVien;
             return ketQua == null ? NotFound() : Ok(ketQua);
         }
 
         [HttpPost]
-        public ActionResult AddSinhVien([FromBody] SinhVienDto sinhVienDto)
+        public ActionResult AddSinhVien([FromBody] SinhVien sinhVien)
         {
-            var sinhVien = SinhVienMapper.ToEntity(sinhVienDto);
             if (sinhVien.MaSinhVien != 0 
                     || sinhVien.MaLopQuanLi == 0)
                 return BadRequest("Chứa tham số không hợp lệ");
             
-            var responseJson = httpClient
-                .GetAsync(new Uri(httpClient.BaseAddress, $"lopquanli/{sinhVien.MaLopQuanLi}")).Result;
             try
             {
-                responseJson.EnsureSuccessStatusCode();
-                var LopQuanLi = responseJson.Content.ReadFromJsonAsync<LopQuanLi>().Result;
-                if (LopQuanLi == null)
-                {
-                    return BadRequest("Giá trị mã lớp quản lí không hợp lệ");
-                }
+                var lopQuanLi = sinhVienDbContext.LopQuanLis.Find(sinhVien.MaLopQuanLi);
+                if (lopQuanLi == null)
+                    return BadRequest("Lớp quản lí không hợp lệ");
 
                 sinhVienDbContext.SinhViens.Add(sinhVien);
                 sinhVienDbContext.SaveChanges();
-                return Created(nameof(GetById), new {
-                    maSoSinhVien = sinhVien.MaSinhVien,
-                    hoTen = sinhVien.HoTen,
-                    maLopQuanLi = sinhVien.MaLopQuanLi,
-                    tenLopQuanLi = LopQuanLi.TenLopQuanLi,
-                    giaoVienChuNhiem = LopQuanLi.GiangVien?.HoTen,
-                    khoa = LopQuanLi.Khoa
-                });
+
+                return CreatedAtAction(
+                        nameof(GetById),
+                        new { maSoSinhVien = sinhVien.MaSinhVien},
+                        sinhVien);
             }
             catch (HttpRequestException)
             {
@@ -99,47 +85,55 @@ namespace qlsinhvien.Controllers
         }
 
         [HttpPut("{maSinhVien}")]
-        public ActionResult<SinhVienDto> UpdateSinhVien(int maSinhVien,  [FromBody] SinhVien sinhVien)
+        public ActionResult<SinhVien> UpdateSinhVien(int maSinhVien,  [FromBody] SinhVien sinhVien)
         {
-            if (maSinhVien != sinhVien.MaSinhVien)
+            if (maSinhVien == 0)
             {
                 return BadRequest("Tham số không hợp lệ");
             }
-            var inDb = sinhVienDbContext.SinhViens.Find(maSinhVien);
+            // Bỏ qua giá trị sinhVien.MaSinhVien
+            sinhVien.MaSinhVien = maSinhVien;
+            
+            var inDb = sinhVienDbContext.SinhViens
+                .Include(s => s.LopQuanLi)
+                .FirstOrDefault(s => s.MaSinhVien == maSinhVien);
             if (inDb == null)
             {
                 return NotFound("Không tồn tại sinh viên mã số " + maSinhVien);
             }
             try
             {
+                // Cách update 1 : bỏ kết nối của inDb
                 sinhVienDbContext.Entry(inDb).State = EntityState.Detached;
                 sinhVienDbContext.Entry(sinhVien).State = EntityState.Modified;
                 sinhVienDbContext.SaveChanges();
             }
             catch (DbUpdateException)
             {
-                return BadRequest("Vi phạm nguyên tắc tham số. Chi tiết tại blabla.com"); 
+                // Vi phạm khoá chính khoá phụ
+                return BadRequest("Vi phạm điều kiện tham số. Chi tiết tại blabla.com"); 
             }
-            catch (DBConcurrencyException) {
-                return BadRequest("Vui lòng chậm lại");
-            }
-            return SinhVienMapper.ToDto(sinhVien);
+            return sinhVien;
         }
 
         [HttpDelete("{maSinhVien}")]
-        public ActionResult RemoveSinhVien(int maSinhVien, [FromQuery] bool confirm)
+        public ActionResult RemoveSinhVien(int maSinhVien)
         {
-            var inDb = sinhVienDbContext.SinhViens.Find(maSinhVien);
+            var inDb = sinhVienDbContext.SinhViens
+                .Include(s => s.LopQuanLi)
+                .FirstOrDefault(s => s.MaSinhVien == maSinhVien);
             if (inDb == null)
             {
                 return NotFound("Không tồn tại sinh viên mã số " + maSinhVien);
             }
-            throw new NotImplementedException("Chưa cài đặt được");
-            // sinhVienDbContext.SinhViens.Remove(inDb);
-            // sinhVienDbContext.SaveChanges();
-            // // Thay đổi cả số sinh viên trong lớp quản lí mà sinh viên bị xoá thuộc về
-            // return NoContent();
-        }
 
+            sinhVienDbContext.SinhViens.Remove(inDb);
+            var diems = from dsv in sinhVienDbContext.DiemSinhViens
+                        where dsv.MaSinhVien == maSinhVien
+                        select dsv;
+            sinhVienDbContext.DiemSinhViens.RemoveRange(diems);
+            sinhVienDbContext.SaveChanges();
+            return NoContent();
+        }
     }
 }
