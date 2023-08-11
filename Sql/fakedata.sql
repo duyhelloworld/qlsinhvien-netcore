@@ -1,4 +1,4 @@
--- Active: 1690861638105@@127.0.0.1@1433@qlsinhvien
+-- Active: 1691638841997@@127.0.0.1@1433@qlsinhvien
 INSERT INTO [GiangVien] ([HoTen], [GioiTinh], [NgaySinh], [DiaChiThuongTru], [QueQuan], [Email], [SoDienThoai])
 VALUES
   ('Nguyễn Trung Hoà', 1, '1980-05-21', 'Đà Nẵng', 'Huế', 'hoanguyen@example.com', '0123456789'),
@@ -144,6 +144,6 @@ VALUES
   (9, 28, 6.0, 6.5, 7.0, 2, N'Tốt'),
   (10, 29, 7.0, 7.5, 8.0, 1, N'Khá');
 
-EXEC sp_rename 'SinhVien.PhoneNumber',
-'SoDienThoai',
-'COLUMN';
+-- EXEC sp_rename 'SinhVien.PhoneNumber',
+-- 'SoDienThoai',
+-- 'COLUMN';
