@@ -10,7 +10,9 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<ApplicationContext>(options =>
 {
     // options.EnableSensitiveDataLogging(true);
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionStrings"));
+    options
+        .EnableDetailedErrors()
+        .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionStrings"));
 });
 
 var app = builder.Build();
