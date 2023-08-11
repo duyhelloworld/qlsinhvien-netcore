@@ -11,5 +11,5 @@ public class GiangVien : ConNguoi
     [Required]
     public int MaKhoa { get; set; }
     [ForeignKey("MaKhoa")]
-    public Khoa? Khoa { get; set; }
+    public Khoa Khoa { get; set; }
 }

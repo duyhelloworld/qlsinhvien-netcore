@@ -23,6 +23,7 @@ namespace qlsinhvien.Entities
         [Required]
         public int MaKhoa { get; set; }
         [ForeignKey("MaKhoa")]
+        [DeleteBehavior(DeleteBehavior.NoAction)]
         public Khoa? Khoa { get; set; }
 
         [NotMapped]

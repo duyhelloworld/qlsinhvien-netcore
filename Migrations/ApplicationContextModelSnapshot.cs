@@ -56,7 +56,6 @@ namespace qlsinhvien.Migrations
             modelBuilder.Entity("qlsinhvien.Entities.GiangVien", b =>
                 {
                     b.Property<int>("MaGiangVien")
-                        .HasDefaultValue(0)
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -80,8 +79,11 @@ namespace qlsinhvien.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
 
+                    b.Property<int>("MaKhoa")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("NgaySinh")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
 
                     b.Property<string>("QueQuan")
                         .IsRequired()
@@ -95,13 +97,17 @@ namespace qlsinhvien.Migrations
 
                     b.HasKey("MaGiangVien");
 
+                    b.HasIndex("MaKhoa");
+
+                    b.HasIndex("Email", "SoDienThoai")
+                        .IsUnique();
+
                     b.ToTable("GiangVien");
                 });
 
             modelBuilder.Entity("qlsinhvien.Entities.Khoa", b =>
                 {
                     b.Property<int>("MaKhoa")
-                        .HasDefaultValue(0)
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -135,7 +141,6 @@ namespace qlsinhvien.Migrations
             modelBuilder.Entity("qlsinhvien.Entities.LopMonHoc", b =>
                 {
                     b.Property<int>("MaLopMonHoc")
-                        .HasDefaultValue(0)
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -164,7 +169,6 @@ namespace qlsinhvien.Migrations
             modelBuilder.Entity("qlsinhvien.Entities.LopQuanLi", b =>
                 {
                     b.Property<int>("MaLopQuanLi")
-                        .HasDefaultValue(0)
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -194,7 +198,6 @@ namespace qlsinhvien.Migrations
             modelBuilder.Entity("qlsinhvien.Entities.MonHoc", b =>
                 {
                     b.Property<int>("MaMonHoc")
-                        .HasDefaultValue(0)
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -227,7 +230,6 @@ namespace qlsinhvien.Migrations
             modelBuilder.Entity("qlsinhvien.Entities.SinhVien", b =>
                 {
                     b.Property<int>("MaSinhVien")
-                        .HasDefaultValue(0)
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnOrder(1);
@@ -256,7 +258,7 @@ namespace qlsinhvien.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("NgaySinh")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
 
                     b.Property<DateTime>("NgayVaoTruong")
                         .HasColumnType("datetime2");
@@ -274,6 +276,9 @@ namespace qlsinhvien.Migrations
                     b.HasKey("MaSinhVien");
 
                     b.HasIndex("MaLopQuanLi");
+
+                    b.HasIndex("Email", "SoDienThoai")
+                        .IsUnique();
 
                     b.ToTable("SinhVien");
                 });
@@ -295,6 +300,17 @@ namespace qlsinhvien.Migrations
                     b.Navigation("LopMonHoc");
 
                     b.Navigation("SinhVien");
+                });
+
+            modelBuilder.Entity("qlsinhvien.Entities.GiangVien", b =>
+                {
+                    b.HasOne("qlsinhvien.Entities.Khoa", "Khoa")
+                        .WithMany()
+                        .HasForeignKey("MaKhoa")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Khoa");
                 });
 
             modelBuilder.Entity("qlsinhvien.Entities.KhoaMonHoc", b =>
@@ -346,7 +362,7 @@ namespace qlsinhvien.Migrations
                     b.HasOne("qlsinhvien.Entities.Khoa", "Khoa")
                         .WithMany()
                         .HasForeignKey("MaKhoa")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("GiangVien");
