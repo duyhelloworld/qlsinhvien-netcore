@@ -2,9 +2,7 @@ using System.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using qlsinhvien.Context;
-using qlsinhvien.Dto;
 using qlsinhvien.Entities;
-using qlsinhvien.Mapper;
 
 namespace qlsinhvien.Controllers
 {
@@ -20,22 +18,27 @@ namespace qlsinhvien.Controllers
         [HttpGet]
         public ActionResult<ICollection<GiangVien>> GetAll()
         {
-            return appContext.GiangViens.ToList();
+            Console.WriteLine("here");
+            return appContext.GiangViens.Include(gv => gv.Khoa).ToList();
         }
         [HttpGet("{magiangvien}")]
         public ActionResult GetById(int magiangvien)
         {
+            Console.WriteLine(magiangvien);
             var gv = appContext.GiangViens.Find(magiangvien);
-            return gv == null ? NotFound() : Ok(gv);
+            return gv == null ? NotFound("vcl") : Ok(gv);
         }
-        [HttpGet("search")]
+        [HttpGet("ten={ten}")]
         public ActionResult GetByName(string ten)
         {
-            var gv = appContext.GiangViens.Where(GiangVien => GiangVien.HoTen.Contains(ten));
-            return gv == null ? NotFound() : Ok(gv);
+            Console.WriteLine(ten);
+            var gv = appContext.GiangViens.Where(GiangVien => GiangVien.HoTen.Contains(ten)).ToList();
+            return gv.Count == 0 ? NotFound() : Ok(gv);
         }
-        [HttpGet("search")]
-        public ActionResult GetByKhoa(string khoa)
+
+
+        [HttpGet("khoa={khoa}")]
+        public ActionResult GetByKhoa([FromQuery] string khoa)
         {
             var kq = from gv in appContext.GiangViens
                      join k in appContext.Khoas on gv.MaKhoa equals k.MaKhoa
@@ -50,8 +53,8 @@ namespace qlsinhvien.Controllers
                      };
             return kq == null ? NotFound() : Ok(kq);
         }
-        [HttpGet("search")]
-        public ActionResult GetByLopQuanLi(string lop)
+        [HttpGet("lopql")]
+        public ActionResult GetByLopQuanLi([FromQuery] string lop)
         {
             var kq = from gv in appContext.GiangViens
                      join lql in appContext.LopQuanLis on gv.MaGiangVien equals lql.MaGiangVien
@@ -66,7 +69,7 @@ namespace qlsinhvien.Controllers
                      };
             return kq == null ? NotFound() : Ok(kq);
         }
-        [HttpGet("search")]
+        [HttpGet("lopmh")]
         public ActionResult GetByLopMonHoc(string lop)
         {
             var kq = from gv in appContext.GiangViens
@@ -82,10 +85,10 @@ namespace qlsinhvien.Controllers
                      };
             return kq == null ? NotFound() : Ok(kq);
         }
-        [HttpPost]
-        public ActionResult AddGiangVien([FromBody] GiangVienDto giangVienDto)
-        {
+        // [HttpPost]
+        // public ActionResult AddGiangVien([FromBody] GiangVienDto giangVienDto)
+        // {
             
-        }
+        // }
     }
 }

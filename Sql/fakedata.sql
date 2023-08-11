@@ -1,16 +1,16 @@
 -- Active: 1691638841997@@127.0.0.1@1433@qlsinhvien
-INSERT INTO [GiangVien] ([HoTen], [GioiTinh], [NgaySinh], [DiaChiThuongTru], [QueQuan], [Email], [SoDienThoai])
+INSERT INTO [GiangVien] ([HoTen], [GioiTinh], [NgaySinh], [DiaChiThuongTru], [QueQuan], [Email], [SoDienThoai], [MaKhoa])
 VALUES
-  ('Nguyễn Trung Hoà', 1, '1980-05-21', 'Đà Nẵng', 'Huế', 'hoanguyen@example.com', '0123456789'),
-  ('Đặng Trường Nam', 1, '1975-12-03', 'Hồ Chí Minh', 'Quảng Nam', 'namdang@example.com', '0987654321'),
-  ('Phạm Thị Thu Trang', 0, '1995-08-12', 'Hà Nội', 'Hải Phòng', 'trangpham@example.com', '0369874521'),
-  ('Trần Văn Anh', 1, '1965-02-28', 'Cần Thơ', 'Sóc Trăng', 'anhtran@example.com', '0562314789'),
-  ('Vũ Thị Hồng', 0, '1988-09-17', 'Hải Dương', 'Bắc Ninh', 'hongvu@example.com', '0963142578'),
-  ('Lê Quang Minh', 1, '1973-06-11', 'Ninh Bình', 'Thái Bình', 'minhle@example.com', '0987123456'),
-  ('Mai Thế Dũng', 1, '1968-11-30', 'Hà Giang', 'Cao Bằng', 'dungmai@example.com', '0912345678'),
-  ('Nguyễn Thị Tâm', 0, '1990-03-25', 'Đồng Nai', 'Bình Dương', 'tamnguyen@example.com', '0332581476'),
-  ('Trương Hữu Thành', 1, '1970-10-09', 'Bà Rịa - Vũng Tàu', 'Cần Giờ', 'thanht[email protected]', '0965324871'),
-  ('Lý Văn Tú', 1, '1985-07-14', 'Đắk Lắk', 'Khánh Hòa', 'tuly@example.com', '0987412365');
+  ('Nguyễn Trung Hoà', 1, '1980-05-21', 'Đà Nẵng', 'Huế', 'hoanguyen@example.com', '0123456789',1),
+  ('Đặng Trường Nam', 1, '1975-12-03', 'Hồ Chí Minh', 'Quảng Nam', 'namdang@example.com', '0987654321',2),
+  ('Phạm Thị Thu Trang', 0, '1995-08-12', 'Hà Nội', 'Hải Phòng', 'trangpham@example.com', '0369874521',3),
+  ('Trần Văn Anh', 1, '1965-02-28', 'Cần Thơ', 'Sóc Trăng', 'anhtran@example.com', '0562314789',4),
+  ('Vũ Thị Hồng', 0, '1988-09-17', 'Hải Dương', 'Bắc Ninh', 'hongvu@example.com', '0963142578',5),
+  ('Lê Quang Minh', 1, '1973-06-11', 'Ninh Bình', 'Thái Bình', 'minhle@example.com', '0987123456',1),
+  ('Mai Thế Dũng', 1, '1968-11-30', 'Hà Giang', 'Cao Bằng', 'dungmai@example.com', '0912345678',2),
+  ('Nguyễn Thị Tâm', 0, '1990-03-25', 'Đồng Nai', 'Bình Dương', 'tamnguyen@example.com', '0332581476',3),
+  ('Trương Hữu Thành', 1, '1970-10-09', 'Bà Rịa - Vũng Tàu', 'Cần Giờ', 'thanht[email protected]', '0965324871',4),
+  ('Lý Văn Tú', 1, '1985-07-14', 'Đắk Lắk', 'Khánh Hòa', 'tuly@example.com', '0987412365',5);
 
 INSERT INTO [Khoa] ([TenKhoa])
 VALUES
