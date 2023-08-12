@@ -12,18 +12,18 @@ namespace qlsinhvien.Entities
 
         [Required]
         [StringLength(10)]
-        public string TenLopMonHoc { get; set; }
+        public string? TenLopMonHoc { get; set; }
 
         [Required]
         // Khóa ngoại MaMonHoc
         public int MaMonHoc { get; set; }
         [ForeignKey("MaMonHoc")]
-        public MonHoc MonHoc { get; set; }
+        public MonHoc? MonHoc { get; set; }
 
         [Required]
         // Khóa ngoại MaGiangVien
         public int MaGiangVien { get; set; }
         [ForeignKey("MaGiangVien")]
-        public GiangVien GiangVien { get; set; }
+        public GiangVien? GiangVien { get; set; }
     }
 }

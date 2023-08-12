@@ -12,15 +12,17 @@ namespace qlsinhvien.Entities
         public int MaLopMonHoc { get; set; }
         [ForeignKey("MaLopMonHoc")]
         [DeleteBehavior(DeleteBehavior.NoAction)]
-        public LopMonHoc LopMonHoc { get; set; }
+        public LopMonHoc? LopMonHoc { get; set; }
 
         public int MaSinhVien { get; set; }
         [ForeignKey("MaSinhVien")]
         [DeleteBehavior(DeleteBehavior.NoAction)]
-        public SinhVien SinhVien { get; set; }
+        public SinhVien? SinhVien { get; set; }
 
         public float DiemChuyenCan { get; set; }
+
         public float DiemGiuaKi { get; set; }
+
         [NotMapped]
         public float DiemQuaTrinh
         {
@@ -28,11 +30,13 @@ namespace qlsinhvien.Entities
         }
 
         public float DiemCuoiKi { get; set; }
+
         [NotMapped]
         public float DiemTongKet
         {
             get { return 0.7f * DiemCuoiKi + 0.3f * DiemQuaTrinh; }
         }
+
         [NotMapped]
         public float DiemHe4
         {
@@ -56,6 +60,7 @@ namespace qlsinhvien.Entities
                     return 0.0f;
             }
         }
+
         public string DiemChu
         {
            get
@@ -79,9 +84,10 @@ namespace qlsinhvien.Entities
             } 
         }
 
+        [Column(TypeName = "tinyint")]
         public int HocKi { get; set; }
 
         [MaxLength]
-        public string GhiChu { get; set; }
+        public string? GhiChu { get; set; }
     }
 }

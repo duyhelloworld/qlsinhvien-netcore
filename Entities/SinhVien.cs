@@ -1,7 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
-using Microsoft.EntityFrameworkCore;
 
 namespace qlsinhvien.Entities
 {
@@ -13,12 +11,11 @@ namespace qlsinhvien.Entities
         [Column(Order = 1)]
         public int MaSinhVien { get; set; }
 
-        [DataType(DataType.Date)]
+        [Column(TypeName = "date")]
         public DateTime NgayVaoTruong { get; set; }
 
         [Required]
         public int MaLopQuanLi {get; set;}
-
         [ForeignKey("MaLopQuanLi")]
         public LopQuanLi? LopQuanLi { get; set; }
     }
