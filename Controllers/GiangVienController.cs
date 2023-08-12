@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using qlsinhvien.Context;
 using qlsinhvien.Entities;
-
 namespace qlsinhvien.Controllers
 {
     [ApiController]
@@ -88,9 +87,38 @@ namespace qlsinhvien.Controllers
                      };
             return kq == null ? NotFound() : Ok(kq);
         }
-        // [HttpPost]
-        // public ActionResult AddGiangVien([FromBody] GiangVienDto giangVienDto)
+        [HttpPost]
+        public ActionResult AddGiangVien([FromBody] GiangVien giangVien)
+        {
+            if (giangVien.MaGiangVien != 0 || giangVien.MaKhoa == 0)
+            {
+                return BadRequest("Chứa tham số không hợp lệ");
+            }
+            try
+            {
+                var khoa = appContext.Khoas.Find(giangVien.MaKhoa);
+                if (khoa == null)
+                {
+                    return NotFound();
+                }
+                appContext.GiangViens.Add(giangVien);
+                appContext.SaveChanges();
+
+                return CreatedAtAction(nameof(GetById), new { maGiangVien = giangVien.MaGiangVien }, giangVien);
+            }
+            catch (HttpRequestException)
+            {
+                return BadRequest();
+            }
+        }
+        // [HttpPut("{magiangvien}")]
+        // public ActionResult UpdateGiangVien(int magiangvien)
         // {
+        //     var gv = appContext.GiangViens.Find(magiangvien);
+        //     if(gv == null)
+        //     {
+        //         return NotFound();
+        //     }
             
         // }
     }
