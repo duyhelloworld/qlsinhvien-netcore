@@ -13,7 +13,7 @@ namespace qlsinhvien.Entities
 
         [Required]
         [StringLength(20)]
-        public string TenLopQuanLi { get; set; }
+        public string? TenLopQuanLi { get; set; }
 
         [Required]
         public int MaGiangVien {set; get; }
@@ -25,8 +25,5 @@ namespace qlsinhvien.Entities
         [ForeignKey("MaKhoa")]
         [DeleteBehavior(DeleteBehavior.NoAction)]
         public Khoa? Khoa { get; set; }
-
-        [NotMapped]
-        public int? SiSo {get; set;}
     }
 }
