@@ -33,11 +33,8 @@ namespace qlsinhvien.Controllers
         [HttpPost]
         public ActionResult AddKhoa([FromBody] Khoa khoa)
         {
+            
             return NoContent();
         }
-
-
-
-
     }
 }
