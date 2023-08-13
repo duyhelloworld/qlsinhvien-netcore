@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace qlsinhvien.Entities;
 
@@ -12,5 +13,6 @@ public class GiangVien : ConNguoi
     [Required]
     public int MaKhoa { get; set; }
     [ForeignKey("MaKhoa")]
-    public Khoa Khoa { get; set; }
+    [JsonIgnore]
+    public Khoa? Khoa { get; set; }
 }
