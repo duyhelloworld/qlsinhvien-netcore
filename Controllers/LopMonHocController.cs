@@ -13,6 +13,8 @@ namespace qlsinhvien.Controllers
         {
             this.appContext = appContext;
         }
+
+        
         
     }
 }
