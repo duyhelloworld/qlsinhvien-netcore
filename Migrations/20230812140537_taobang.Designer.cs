@@ -12,11 +12,7 @@ using qlsinhvien.Context;
 namespace qlsinhvien.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-<<<<<<<< HEAD:Migrations/20230812140537_taobang.Designer.cs
     [Migration("20230812140537_taobang")]
-========
-    [Migration("20230811041327_taobang")]
->>>>>>>> d8e5e8f2777fdc58fdd55acf15f2fb909a2036fa:Migrations/20230811041327_taobang.Designer.cs
     partial class taobang
     {
         /// <inheritdoc />

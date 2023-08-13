@@ -56,13 +56,8 @@ namespace qlsinhvien.Migrations
                     HoTen = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     GioiTinh = table.Column<bool>(type: "bit", nullable: false),
                     NgaySinh = table.Column<DateTime>(type: "date", nullable: false),
-<<<<<<<< HEAD:Migrations/20230812140537_taobang.cs
-                    DiaChiThuongTru = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: true),
-                    QueQuan = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: true),
-========
                     DiaChiThuongTru = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
                     QueQuan = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
->>>>>>>> d8e5e8f2777fdc58fdd55acf15f2fb909a2036fa:Migrations/20230811041327_taobang.cs
                     Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     SoDienThoai = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false)
                 },
@@ -165,13 +160,8 @@ namespace qlsinhvien.Migrations
                     HoTen = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     GioiTinh = table.Column<bool>(type: "bit", nullable: false),
                     NgaySinh = table.Column<DateTime>(type: "date", nullable: false),
-<<<<<<<< HEAD:Migrations/20230812140537_taobang.cs
                     DiaChiThuongTru = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: true),
                     QueQuan = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: true),
-========
-                    DiaChiThuongTru = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
-                    QueQuan = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
->>>>>>>> d8e5e8f2777fdc58fdd55acf15f2fb909a2036fa:Migrations/20230811041327_taobang.cs
                     Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     SoDienThoai = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false)
                 },
