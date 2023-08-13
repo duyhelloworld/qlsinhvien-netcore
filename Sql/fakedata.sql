@@ -1,5 +1,17 @@
+<<<<<<< HEAD
+-- Active: 1691847111832@@127.0.0.1@1433@qlsinhvien
+INSERT INTO [Khoa] ([TenKhoa])
+VALUES
+  (N'Khoa Kỹ Thuật Công Nghệ Thông Tin'),
+  (N'Khoa Kinh Tế'),
+  (N'Khoa Khoa Học Xã Hội'),
+  (N'Khoa Khoa Học Tự Nhiên'),
+  (N'Khoa Ngoại Ngữ');
+INSERT INTO [GiangVien] ([HoTen], [GioiTinh], [NgaySinh], [DiaChiThuongTru], [QueQuan], [Email], [SoDienThoai], [MaKhoa])
+=======
 -- Active: 1691726147014@@127.0.0.1@1433@qlsinhvien
 INSERT INTO [GiangVien] ([HoTen], [GioiTinh], [NgaySinh], [DiaChiThuongTru], [QueQuan], [Email], [SoDienThoai],[makhoa])
+>>>>>>> d8e5e8f2777fdc58fdd55acf15f2fb909a2036fa
 VALUES
   ('Nguyễn Trung Hoà', 1, '1980-05-21', 'Đà Nẵng', 'Huế', 'hoanguyen@example.com', '0123456789',1),
   ('Đặng Trường Nam', 1, '1975-12-03', 'Hồ Chí Minh', 'Quảng Nam', 'namdang@example.com', '0987654321',2),
@@ -12,18 +24,11 @@ VALUES
   ('Trương Hữu Thành', 1, '1970-10-09', 'Bà Rịa - Vũng Tàu', 'Cần Giờ', 'thanht[email protected]', '0965324871',4),
   ('Lý Văn Tú', 1, '1985-07-14', 'Đắk Lắk', 'Khánh Hòa', 'tuly@example.com', '0987412365',5);
 
-INSERT INTO [Khoa] ([TenKhoa])
-VALUES
-  (N'Khoa Kỹ Thuật Công Nghệ Thông Tin'),
-  (N'Khoa Kinh Tế'),
-  (N'Khoa Khoa Học Xã Hội'),
-  (N'Khoa Khoa Học Tự Nhiên'),
-  (N'Khoa Ngoại Ngữ');
 
 INSERT INTO [MonHoc] ([TenMonHoc], [SoTinChi], [BatBuoc], [MoTa], [MaMonTienQuyet])
 VALUES
   (N'Tiếng Anh 1', 3, 1, N'Học tiếng Anh cơ bản cấp độ 1', NULL),
-  (N'Tiếng Anh 2', 3, 1, N'Tiếp tục học tiếng Anh cấp độ 2', NULL),
+  (N'Tiếng Anh 2', 3, 1, N'Tiếp tục học tiếng Anh cấp độ 2', 1),
   (N'Tin học đại cương', 2, 1, N'Học tin học căn bản', NULL),
   (N'Lập trình căn bản', 3, 1, N'Học lập trình cơ bản', NULL),
   (N'Cơ sở dữ liệu', 3, 1, N'Học về cơ sở dữ liệu', NULL),
@@ -31,7 +36,7 @@ VALUES
   (N'Xây dựng website', 2, 1, N'Học xây dựng website cơ bản', 4),
   (N'Hệ điều hành', 3, 1, N'Học về hệ điều hành', NULL),
   (N'Thực tập công nghệ phần mềm', 3, 0, N'Thực tập công nghệ phần mềm tại công ty ABC', NULL),
-  (N'Thực tập tốt nghiệp', 2, 0, N'Thực tập tốt nghiệp tại công ty XYZ', NULL);
+  (N'Thực tập tốt nghiệp', 2, 0, N'Thực tập tốt nghiệp tại công ty XYZ', 9);
 
 INSERT INTO [LopQuanLi] ([TenLopQuanLi], [MaGiangVien], [MaKhoa])
 VALUES
@@ -67,16 +72,16 @@ VALUES
 
 INSERT INTO [LopMonHoc] ([TenLopMonHoc], [MaMonHoc], [MaGiangVien])
 VALUES
-  (N'Lop 1A', 3, 1),
-  (N'Lop 1B', 7, 2),
-  (N'Lop 2A', 3, 3),
-  (N'Lop 2B', 4, 1),
-  (N'Lop 3A', 5, 2),
-  (N'Lop 3B', 6, 3),
-  (N'Lop 4A', 7, 4),
-  (N'Lop 4B', 8, 5),
-  (N'Lop 5A', 9, 1),
-  (N'Lop 5B', 10, 2);
+  (N'68IT3', 3, 1),
+  (N'64IT1', 7, 2),
+  (N'66NV1', 3, 3),
+  (N'68TH5', 4, 1),
+  (N'67IT1', 5, 2),
+  (N'65CS2', 6, 3),
+  (N'64IT2', 7, 4),
+  (N'68IT5', 8, 5),
+  (N'64IT1', 9, 1),
+  (N'63IT2', 10, 2);
 
 INSERT INTO [SinhVien] ([NgayVaoTruong], [MaLopQuanLi], [HoTen], [GioiTinh], [NgaySinh], [DiaChiThuongTru], [QueQuan], [Email], [SoDienThoai])
 VALUES
@@ -113,9 +118,9 @@ VALUES
 
 INSERT INTO [DiemSinhVien] ([MaLopMonHoc], [MaSinhVien], [DiemChuyenCan], [DiemGiuaKi], [DiemCuoiKi], [HocKi], [GhiChu])
 VALUES
-  (1, 10, 9.5, 9.0, 9.5, 2, N'Giỏi'),
-  (2, 31, 8.5, 7.0, 9.0, 1, N'Tốt'),
-  (3, 32, 6.0, 7.5, 8.0, 2, N'Khá'),
+  (11, 10, 9.5, 9.0, 9.5, 2, N'Giỏi'),
+  (2, 2, 8.5, 7.0, 9.0, 1, N'Tốt'),
+  (3, 2, 6.0, 7.5, 8.0, 2, N'Khá'),
   (4, 3, 7.5, 8.0, 9.5, 1, N'Giỏi'),
   (5, 4, 9.0, 8.5, 9.0, 2, N'Tốt'),
   (6, 5, 6.5, 6.0, 7.0, 1, N'Khá'),
@@ -123,7 +128,7 @@ VALUES
   (8, 7, 7.0, 7.5, 8.0, 1, N'Tốt'),
   (9, 8, 8.5, 9.0, 9.0, 2, N'Khá'),
   (10, 9, 5.5, 6.0, 6.5, 1, N'Yếu'),
-  (1, 20, 8.0, 8.5, 9.0, 2, N'Giỏi'),
+  (11, 20, 8.0, 8.5, 9.0, 2, N'Giỏi'),
   (2, 11, 6.0, 7.0, 7.5, 1, N'Khá'),
   (3, 12, 8.0, 8.5, 8.0, 2, N'Tốt'),
   (4, 13, 7.5, 8.0, 8.5, 1, N'Giỏi'),
@@ -133,8 +138,8 @@ VALUES
   (8, 17, 8.5, 9.0, 9.0, 1, N'Giỏi'),
   (9, 18, 6.5, 7.0, 7.5, 2, N'Tốt'),
   (10, 19, 7.0, 7.5, 8.0, 1, N'Khá'),
-  (2, 21, 8.5, 9.0, 9.5, 1, N'Tốt'),
-  (1, 30, 9.5, 9.0, 9.5, 2, N'Giỏi'),
+  (11, 21, 8.5, 9.0, 9.5, 1, N'Tốt'),
+  (2, 30, 9.5, 9.0, 9.5, 2, N'Giỏi'),
   (3, 22, 7.0, 7.5, 8.0, 2, N'Khá'),
   (4, 23, 8.0, 8.0, 8.5, 1, N'Giỏi'),
   (5, 24, 6.5, 7.0, 7.0, 2, N'Khá'),

@@ -14,19 +14,22 @@ namespace qlsinhvien.Controllers
         {
             this.appContext = appContext;
         }
+
         [HttpGet]
         public ActionResult<ICollection<GiangVien>> GetAll()
         {
-            Console.WriteLine("here");
-            return appContext.GiangViens.Include(gv => gv.Khoa).ToList();
+            return appContext.GiangViens
+                .Include(gv => gv.Khoa)
+                .ToList();
         }
+        
         [HttpGet("{magiangvien}")]
         public ActionResult GetById(int magiangvien)
         {
-            Console.WriteLine(magiangvien);
             var gv = appContext.GiangViens.Find(magiangvien);
-            return gv == null ? NotFound("vcl") : Ok(gv);
+            return gv == null ? NotFound() : Ok(gv);
         }
+
         [HttpGet("ten={ten}")]
         public ActionResult GetByName(string ten)
         {

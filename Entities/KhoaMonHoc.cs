@@ -11,13 +11,11 @@ namespace qlsinhvien.Entities
     {
         public int MaKhoa { get; set; }
         [ForeignKey("MaKhoa")]
-        [JsonIgnore]
-        public Khoa Khoa { get; set; }
+        public Khoa? Khoa { get; set; }
 
         public int MaMonHoc { get; set; }
         [ForeignKey("MaMonHoc")]
-        [JsonIgnore]
-        public MonHoc MonHoc { get; set; }
+        public MonHoc? MonHoc { get; set; }
     }
 }
 

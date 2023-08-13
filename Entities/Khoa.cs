@@ -10,9 +10,6 @@ namespace qlsinhvien.Entities
 
         [Required]
         [StringLength(80)]
-        public string TenKhoa { get; set; }
-
-        // public ICollection<LopQuanLi> LopQuanLis {get;} 
-        //     = new HashSet<LopQuanLi>();
+        public string? TenKhoa { get; set; }
     }
 }

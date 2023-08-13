@@ -9,6 +9,7 @@ public class GiangVien : ConNguoi
 {
     [Key]
     public int MaGiangVien { get; set; }
+    
     [Required]
     public int MaKhoa { get; set; }
     [ForeignKey("MaKhoa")]

@@ -17,7 +17,7 @@ namespace qlsinhvien.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.9")
+                .HasAnnotation("ProductVersion", "7.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -40,11 +40,10 @@ namespace qlsinhvien.Migrations
                         .HasColumnType("real");
 
                     b.Property<string>("GhiChu")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("HocKi")
-                        .HasColumnType("int");
+                    b.Property<byte>("HocKi")
+                        .HasColumnType("tinyint");
 
                     b.HasKey("MaLopMonHoc", "MaSinhVien");
 
@@ -62,7 +61,6 @@ namespace qlsinhvien.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaGiangVien"));
 
                     b.Property<string>("DiaChiThuongTru")
-                        .IsRequired()
                         .HasMaxLength(80)
                         .HasColumnType("nvarchar(80)");
 
@@ -86,7 +84,6 @@ namespace qlsinhvien.Migrations
                         .HasColumnType("date");
 
                     b.Property<string>("QueQuan")
-                        .IsRequired()
                         .HasMaxLength(80)
                         .HasColumnType("nvarchar(80)");
 
@@ -237,7 +234,6 @@ namespace qlsinhvien.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaSinhVien"));
 
                     b.Property<string>("DiaChiThuongTru")
-                        .IsRequired()
                         .HasMaxLength(80)
                         .HasColumnType("nvarchar(80)");
 
@@ -261,10 +257,9 @@ namespace qlsinhvien.Migrations
                         .HasColumnType("date");
 
                     b.Property<DateTime>("NgayVaoTruong")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
 
                     b.Property<string>("QueQuan")
-                        .IsRequired()
                         .HasMaxLength(80)
                         .HasColumnType("nvarchar(80)");
 

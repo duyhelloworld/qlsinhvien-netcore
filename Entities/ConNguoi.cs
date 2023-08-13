@@ -9,7 +9,7 @@ public class ConNguoi
 {
     [Required]
     [StringLength(40)]
-    public string HoTen { get; set; }
+    public string? HoTen { get; set; }
 
     public bool GioiTinh { get; set; }
 
@@ -17,14 +17,16 @@ public class ConNguoi
     public DateTime NgaySinh { get; set; }
 
     [StringLength(80)]
-    public string DiaChiThuongTru { get; set; }
+    public string? DiaChiThuongTru { get; set; }
 
     [StringLength(80)]
-    public string QueQuan { get; set; }
+    public string? QueQuan { get; set; }
 
+    [Required]
     [MaxLength(150)]
-    public string Email { get; set; }
+    public string? Email { get; set; }
 
+    [Required]
     [StringLength(10)]
-    public string SoDienThoai { get; set; }
+    public string? SoDienThoai { get; set; }
 }

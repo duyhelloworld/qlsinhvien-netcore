@@ -12,7 +12,7 @@ namespace qlsinhvien.Entities
 
         [Required]
         [StringLength(60)]
-        public string TenMonHoc { get; set; }
+        public string? TenMonHoc { get; set; }
 
         [Column(TypeName = "tinyint")]
         public SoTinChi SoTinChi { get; set; }
@@ -23,6 +23,7 @@ namespace qlsinhvien.Entities
         public string? MoTa { get; set; }
 
         public int? MaMonTienQuyet {get; set;} 
+
         [ForeignKey("MaMonTienQuyet")]
         [DeleteBehavior(DeleteBehavior.NoAction)]
         public MonHoc? MonTienQuyet { get; set; }
