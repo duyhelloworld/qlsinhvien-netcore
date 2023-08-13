@@ -37,7 +37,7 @@ namespace qlsinhvien.Controllers
 
 
         [HttpGet("khoa={khoa}")]
-        public ActionResult GetByKhoa([FromQuery] string khoa)
+        public ActionResult GetByKhoa(string khoa)
         {
             var kq = from gv in appContext.GiangViens
                      join k in appContext.Khoas on gv.MaKhoa equals k.MaKhoa
@@ -52,12 +52,12 @@ namespace qlsinhvien.Controllers
                      };
             return kq == null ? NotFound() : Ok(kq);
         }
-        [HttpGet("lopql")]
-        public ActionResult GetByLopQuanLi([FromQuery] string lop)
+        [HttpGet("lopql={lopql}")]
+        public ActionResult GetByLopQuanLi(string lopql)
         {
             var kq = from gv in appContext.GiangViens
                      join lql in appContext.LopQuanLis on gv.MaGiangVien equals lql.MaGiangVien
-                     where lql.TenLopQuanLi.Contains(lop)
+                     where lql.TenLopQuanLi.Contains(lopql)
                      select new
                      {
                          gv.MaGiangVien,
@@ -68,12 +68,12 @@ namespace qlsinhvien.Controllers
                      };
             return kq == null ? NotFound() : Ok(kq);
         }
-        [HttpGet("lopmh")]
-        public ActionResult GetByLopMonHoc(string lop)
+        [HttpGet("lopmh={lopmh}")]
+        public ActionResult GetByLopMonHoc(string lopmh)
         {
             var kq = from gv in appContext.GiangViens
                      join lmh in appContext.LopMonHocs on gv.MaGiangVien equals lmh.MaGiangVien
-                     where lmh.TenLopMonHoc.Contains(lop)
+                     where lmh.TenLopMonHoc.Contains(lopmh)
                      select new
                      {
                          gv.MaGiangVien,
@@ -94,6 +94,7 @@ namespace qlsinhvien.Controllers
             try
             {
                 var khoa = appContext.Khoas.Find(giangVien.MaKhoa);
+                
                 if (khoa == null)
                 {
                     return NotFound();
