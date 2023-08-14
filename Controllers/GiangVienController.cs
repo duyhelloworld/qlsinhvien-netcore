@@ -1,4 +1,5 @@
 using System.Data;
+using System.Runtime.Intrinsics.X86;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using qlsinhvien.Context;
@@ -22,7 +23,7 @@ namespace qlsinhvien.Controllers
                 .Include(gv => gv.Khoa)
                 .ToList();
         }
-        
+
         [HttpGet("{magiangvien}")]
         public ActionResult GetById(int magiangvien)
         {
@@ -75,7 +76,9 @@ namespace qlsinhvien.Controllers
         public ActionResult GetByLopMonHoc(string lopmh)
         {
             var kq = from gv in appContext.GiangViens
-                     join lmh in appContext.LopMonHocs on gv.MaGiangVien equals lmh.MaGiangVien
+                     join bm in appContext.BoMons on gv.MaBoMon equals bm.MaBoMon
+                     join mh in appContext.MonHocs on bm.MaBoMon equals mh.MaBoMon
+                     join lmh in appContext.LopMonHocs on mh.MaMonHoc equals lmh.MaMonHoc
                      where lmh.TenLopMonHoc.Contains(lopmh)
                      select new
                      {
@@ -97,7 +100,7 @@ namespace qlsinhvien.Controllers
             try
             {
                 var khoa = appContext.Khoas.Find(giangVien.MaKhoa);
-                
+
                 if (khoa == null)
                 {
                     return NotFound();
@@ -120,7 +123,7 @@ namespace qlsinhvien.Controllers
         //     {
         //         return NotFound();
         //     }
-            
+
         // }
     }
 }

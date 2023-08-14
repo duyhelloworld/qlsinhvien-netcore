@@ -22,10 +22,15 @@ namespace qlsinhvien.Entities
         [MaxLength]
         public string? MoTa { get; set; }
 
-        public int? MaMonTienQuyet {get; set;} 
+        public int? MaMonTienQuyet { get; set; }
 
         [ForeignKey("MaMonTienQuyet")]
         [DeleteBehavior(DeleteBehavior.NoAction)]
         public MonHoc? MonTienQuyet { get; set; }
+
+        [Required]
+        public int MaBoMon { get; set; }
+        [ForeignKey("MaBoMon")]
+        public BoMon? BoMon { get; set; }
     }
 }
