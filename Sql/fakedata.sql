@@ -1,17 +1,13 @@
-<<<<<<< HEAD
--- Active: 1691847111832@@127.0.0.1@1433@qlsinhvien
+-- Active: 1691984762797@@127.0.0.1@1433@qlsinhvien
 INSERT INTO [Khoa] ([TenKhoa])
 VALUES
-  (N'Khoa Kỹ Thuật Công Nghệ Thông Tin'),
+  (N'Khoa Công Nghệ Thông Tin'),
   (N'Khoa Kinh Tế'),
   (N'Khoa Khoa Học Xã Hội'),
   (N'Khoa Khoa Học Tự Nhiên'),
   (N'Khoa Ngoại Ngữ');
+  
 INSERT INTO [GiangVien] ([HoTen], [GioiTinh], [NgaySinh], [DiaChiThuongTru], [QueQuan], [Email], [SoDienThoai], [MaKhoa])
-=======
--- Active: 1691726147014@@127.0.0.1@1433@qlsinhvien
-INSERT INTO [GiangVien] ([HoTen], [GioiTinh], [NgaySinh], [DiaChiThuongTru], [QueQuan], [Email], [SoDienThoai],[makhoa])
->>>>>>> d8e5e8f2777fdc58fdd55acf15f2fb909a2036fa
 VALUES
   ('Nguyễn Trung Hoà', 1, '1980-05-21', 'Đà Nẵng', 'Huế', 'hoanguyen@example.com', '0123456789',1),
   ('Đặng Trường Nam', 1, '1975-12-03', 'Hồ Chí Minh', 'Quảng Nam', 'namdang@example.com', '0987654321',2),
@@ -23,7 +19,6 @@ VALUES
   ('Nguyễn Thị Tâm', 0, '1990-03-25', 'Đồng Nai', 'Bình Dương', 'tamnguyen@example.com', '0332581476',3),
   ('Trương Hữu Thành', 1, '1970-10-09', 'Bà Rịa - Vũng Tàu', 'Cần Giờ', 'thanht[email protected]', '0965324871',4),
   ('Lý Văn Tú', 1, '1985-07-14', 'Đắk Lắk', 'Khánh Hòa', 'tuly@example.com', '0987412365',5);
-
 
 INSERT INTO [MonHoc] ([TenMonHoc], [SoTinChi], [BatBuoc], [MoTa], [MaMonTienQuyet])
 VALUES
@@ -40,16 +35,16 @@ VALUES
 
 INSERT INTO [LopQuanLi] ([TenLopQuanLi], [MaGiangVien], [MaKhoa])
 VALUES
-  (N'66IT5', 1, 2),
-  (N'68KT1', 2, 3),
-  (N'66IT3', 3, 1),
-  (N'68KT2', 4, 3),
-  (N'67KT1', 5, 3),
-  (N'67IT1', 6, 1),
-  (N'69IT1', 7, 1),
-  (N'69KT1', 8, 3),
-  (N'66KT1', 9, 3),
-  (N'69KT2', 10, 3);
+  (N'66IT5', 1, 1),
+  (N'68KT1', 3, 2),
+  (N'66IT3', 2, 1),
+  (N'68XH2', 4, 3),
+  (N'67TN1', 5, 4),
+  (N'67XH1', 7, 3),
+  (N'69TN1', 6, 4),
+  (N'69NN1', 8, 5),
+  (N'66KT1', 9, 2),
+  (N'69IT2', 10, 1);
 
 -- Khi lỗi mất 1 số dòng
 -- SET IDENTITY_INSERT [LopQuanLi] ON;
