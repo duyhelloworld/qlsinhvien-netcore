@@ -19,19 +19,57 @@ namespace qlsinhvien.Controllers
 
         [HttpGet("all")]
         public ActionResult GetAll() {
-            return Ok(lopQuanLiDbContext.LopQuanLis
-                        .Include(l => l.Khoa)
-                        .Include(l => l.GiangVien)
-                        .ToList());
+            var ketQua = lopQuanLiDbContext.LopQuanLis
+                            .Include(l => l.Khoa)
+                            .Include(l => l.GiangVien)
+                            .Select(lql => new
+                            {
+                                lql.MaLopQuanLi,
+                                lql.TenLopQuanLi,
+                                GiangVien = new
+                                {
+                                    lql.MaGiangVien,
+                                    lql.GiangVien.HoTen,
+                                    lql.GiangVien.SoDienThoai,
+                                    lql.GiangVien.Email,
+                                    Khoa = lql.GiangVien.Khoa.TenKhoa,
+                                },
+                                Khoa = new
+                                {
+                                    lql.MaKhoa,
+                                    lql.Khoa.TenKhoa
+                                }
+                            });
+            return Ok(ketQua);
         }
 
         [HttpGet]
-        public ActionResult GetByName([FromQuery] string TenLopQuanLi)
+        public ActionResult GetByName([FromQuery] string tenLopQuanLi)
         {
             var ketQua = from lql in lopQuanLiDbContext.LopQuanLis
-                where lql.TenLopQuanLi.Contains(TenLopQuanLi)
-                select lql;
-            return ketQua == null ? NotFound() : Ok(ketQua);
+                // join khoa in lopQuanLiDbContext.Khoas
+                    // on lql.MaKhoa equals khoa.MaKhoa
+                join giangvien in lopQuanLiDbContext.GiangViens
+                    on lql.MaGiangVien equals giangvien.MaGiangVien
+                where lql.TenLopQuanLi.Contains(tenLopQuanLi)
+                select new {
+                    lql.MaLopQuanLi,
+                    lql.TenLopQuanLi,
+                    GiangVien = new
+                    {
+                        lql.MaGiangVien,
+                        lql.GiangVien.HoTen,
+                        lql.GiangVien.SoDienThoai,
+                        lql.GiangVien.Email,
+                        lql.GiangVien.Khoa.TenKhoa,
+                    },
+                    Khoa = new
+                    {
+                        lql.MaKhoa,
+                        lql.Khoa.TenKhoa
+                    }
+                };
+            return ketQua.Count() == 0 ? NotFound() : Ok(ketQua);
         }
 
         [HttpGet("{malop}")]
@@ -39,7 +77,20 @@ namespace qlsinhvien.Controllers
         {
             var ketQua = lopQuanLiDbContext.LopQuanLis
                 .Find(malop);
-            return ketQua == null ? NotFound() : Ok(ketQua);
+            return ketQua == null ? NotFound() : Ok(
+                                new {
+                                    ketQua.MaLopQuanLi,
+                                    ketQua.TenLopQuanLi,
+                                    GiangVien = new
+                                    {
+                                        ketQua.MaGiangVien,
+                                        ketQua.GiangVien
+                                    },
+                                    Khoa = new
+                                    {
+                                        ketQua.MaKhoa,
+                                        ketQua.Khoa
+                                    }});
         }
 
         [HttpGet("siso")]
