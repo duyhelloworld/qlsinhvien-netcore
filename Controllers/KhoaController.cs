@@ -4,6 +4,8 @@ using qlsinhvien.Entities;
 
 namespace qlsinhvien.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class KhoaController : ControllerBase
     {
         private readonly ApplicationContext applicationContext;
@@ -16,17 +18,19 @@ namespace qlsinhvien.Controllers
             return applicationContext.Khoas.ToList();
         }
 
-        [HttpGet("makhoa")]
+        [HttpGet("{makhoa:int}")]
         public ActionResult<Khoa> GetById(int makhoa)
         {
             var ketQua = applicationContext.Khoas.Find(makhoa);
             return ketQua == null ? NotFound() : Ok(ketQua);
         }
 
-        [HttpGet]
+        [HttpGet("/")]
         public ActionResult<IEnumerable<Khoa>> GetByName([FromQuery] string tenkhoa)
         {
-            var ketQua = applicationContext.Khoas.Find(tenkhoa);
+            var ketQua = applicationContext.Khoas
+                        .Where(k => k.TenKhoa.Contains(tenkhoa))
+                        .OrderBy(k => k.MaKhoa);
             return ketQua == null ? NotFound() : Ok(ketQua);
         }
 
