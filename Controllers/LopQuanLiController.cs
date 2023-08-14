@@ -20,6 +20,8 @@ namespace qlsinhvien.Controllers
         [HttpGet("all")]
         public ActionResult GetAll() {
             return Ok(lopQuanLiDbContext.LopQuanLis
+                        .Include(l => l.Khoa)
+                        .Include(l => l.GiangVien)
                         .ToList());
         }
 
@@ -71,7 +73,7 @@ namespace qlsinhvien.Controllers
             // Bắt buộc khi thêm phải có : tên lớp, mã khoa
             if (lopQuanLi.MaLopQuanLi != 0 || lopQuanLi.MaKhoa == 0)
             {
-                return BadRequest();
+                return BadRequest("Thiếu mã khoa; mã lql phải = 0");
             }
             var khoa = lopQuanLiDbContext.Khoas.Find(lopQuanLi.MaKhoa);
             if (khoa == null)

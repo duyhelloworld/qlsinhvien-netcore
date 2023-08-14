@@ -13,6 +13,5 @@ public class GiangVien : ConNguoi
     [Required]
     public int MaKhoa { get; set; }
     [ForeignKey("MaKhoa")]
-    [JsonIgnore]
     public Khoa? Khoa { get; set; }
 }
