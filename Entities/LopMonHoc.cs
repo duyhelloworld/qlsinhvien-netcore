@@ -20,10 +20,10 @@ namespace qlsinhvien.Entities
         [ForeignKey("MaMonHoc")]
         public MonHoc? MonHoc { get; set; }
 
-        [Required]
-        // Khóa ngoại MaGiangVien
-        public int MaGiangVien { get; set; }
-        [ForeignKey("MaGiangVien")]
-        public GiangVien? GiangVien { get; set; }
+        // [Required]
+        // // Khóa ngoại MaGiangVien
+        // public int MaGiangVien { get; set; }
+        // [ForeignKey("MaGiangVien")]
+        // public GiangVien? GiangVien { get; set; }
     }
 }
