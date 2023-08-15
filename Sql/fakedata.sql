@@ -27,8 +27,26 @@ VALUES
   (N'Marketing'),
   (N'Dịch thuật, Văn hoá và Lí thuyết tiếng');
 
-INSERT INTO (KhoaBoMon) 
-VALUES ()
+INSERT INTO [KhoaBoMon] ([MaKhoa], [MaBoMon])
+VALUES 
+  (1, 1),
+  (1, 3),
+  (1, 4),
+  (1, 6),
+  (2, 11),
+  (2, 12),
+  (2, 13),
+  (2, 14),
+  (2, 15), 
+  (2, 16),
+  (3, 9),
+  (3, 10), 
+  (3, 12),
+  (4, 5),
+  (4, 7), 
+  (4, 8),
+  (5, 2),
+  (5, 17);
 
 INSERT INTO [GiangVien] ([HoTen], [GioiTinh], [NgaySinh], [DiaChiThuongTru], [QueQuan], [Email], [SoDienThoai], [MaBoMon])
 VALUES
