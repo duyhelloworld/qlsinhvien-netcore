@@ -27,8 +27,26 @@ VALUES
   (N'Marketing'),
   (N'Dịch thuật, Văn hoá và Lí thuyết tiếng');
 
-INSERT INTO (KhoaBoMon) 
-VALUES ()
+INSERT INTO [KhoaBoMon] ([MaKhoa], [MaBoMon])
+VALUES   
+  (1, 1),
+  (1, 3),
+  (1, 4),
+  (1, 6),
+  (2, 11),
+  (2, 12),
+  (2, 13),
+  (2, 14),
+  (2, 15), 
+  (2, 16),
+  (3, 9),
+  (3, 10), 
+  (3, 12),
+  (4, 5),
+  (4, 7), 
+  (4, 8),
+  (5, 2),
+  (5, 17);
 
 INSERT INTO [GiangVien] ([HoTen], [GioiTinh], [NgaySinh], [DiaChiThuongTru], [QueQuan], [Email], [SoDienThoai], [MaBoMon])
 VALUES
@@ -102,6 +120,7 @@ VALUES
   (N'Chủ nghĩa xã hội khoa học', 2, 1, NULL, 9),
   (N'Lịch sử Đảng Cộng sản Việt Nam', 2, 1, NULL, 9),
   (N'Tư tưởng Hồ Chí Minh', 2, 1, NULL, 9);
+
 INSERT INTO [LopQuanLi] ([TenLopQuanLi], [MaGiangVien], [MaKhoa])
 VALUES
   (N'66IT5', 1, 1),
