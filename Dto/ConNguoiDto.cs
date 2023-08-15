@@ -10,7 +10,6 @@ public abstract class ConNguoiDto
     [JsonRequired]
     public bool GioiTinh { get; set; }
 
-    [JsonConverter(typeof(DateTime))]
     public DateTime NgaySinh { get; set; }
 
     public string? DiaChiThuongTru { get; set; }
