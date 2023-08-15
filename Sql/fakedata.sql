@@ -5,12 +5,12 @@ VALUES
   (N'Khoa Kinh Tế'),
   (N'Khoa Khoa Học Xã Hội'),
   (N'Khoa Khoa Học Tự Nhiên'),
-  (N'Khoa Ngoại Ngữ');
+  (N'Khoa Ngôn Ngữ Anh');
 
 INSERT INTO [BoMon] ([TenBoMon])
 VALUES
   (N'Công nghệ phần mềm'),
-  (N'Tiếng Anh Khoa Học Kĩ thuật và Công Nghệ'),
+  (N'Ngoại ngữ'),
   (N'Hệ thống thông tin'),
   (N'Kĩ thuật máy tính'),
   (N'Công nghệ sinh học'), 
@@ -27,27 +27,45 @@ VALUES
   (N'Marketing'),
   (N'Dịch thuật, Văn hoá và Lí thuyết tiếng');
 
-INSERT INTO (KhoaBoMon) 
-VALUES ()
+INSERT INTO [KhoaBoMon] ([MaKhoa], [MaBoMon])
+VALUES 
+  (1, 1),
+  (1, 3),
+  (1, 4),
+  (1, 6),
+  (2, 11),
+  (2, 12),
+  (2, 13),
+  (2, 14),
+  (2, 15), 
+  (2, 16),
+  (3, 9),
+  (3, 10), 
+  (3, 12),
+  (4, 5),
+  (4, 7), 
+  (4, 8),
+  (5, 2),
+  (5, 17),
 
 INSERT INTO [GiangVien] ([HoTen], [GioiTinh], [NgaySinh], [DiaChiThuongTru], [QueQuan], [Email], [SoDienThoai], [MaBoMon])
 VALUES
-  ('Nguyễn Trung Hoà', 1, '1980-05-21', 'Đà Nẵng', 'Huế', 'hoanguyen@example.com', '0123456789', 2),
-  ('Đặng Trường Nam', 1, '1975-12-03', 'Hồ Chí Minh', 'Quảng Nam', 'namdang@example.com', '0987654321',3, 3),
-  ('Phạm Thị Thu Trang', 0, '1995-08-12', 'Hà Nội', 'Hải Phòng', 'trangpham@example.com', '0369874521',3, 3),
-  ('Trần Văn Anh', 1, '1965-02-28', 'Cần Thơ', 'Sóc Trăng', 'anhtran@example.com', '0562314789',1, 2),
-  ('Vũ Thị Hồng', 0, '1988-09-17', 'Hải Dương', 'Bắc Ninh', 'hongvu@example.com', '0963142578',5, 1),
-  ('Lê Quang Minh', 1, '1973-06-11', 'Ninh Bình', 'Thái Bình', 'minhle@example.com', '0987123456',5, 1),
-  ('Mai Thế Dũng', 1, '1968-11-30', 'Hà Giang', 'Cao Bằng', 'dungmai@example.com', '0912345678',3, 3),
-  ('Nguyễn Thị Tâm', 0, '1990-03-25', 'Đồng Nai', 'Bình Dương', 'tamnguyen@example.com', '0332581476',3, 3),
-  ('Trương Hữu Thành', 1, '1970-10-09', 'Bà Rịa - Vũng Tàu', 'Cần Giờ', 'thanht[email protected]', '0965324871',1, 2),
-  ('Lý Văn Tú', 1, '1985-07-14', 'Đắk Lắk', 'Khánh Hòa', 'tuly@example.com', '0987412365',5, 1);
+  ('Nguyễn Trung Hoà', 1, '1980-05-21', 'Đà Nẵng', 'Huế', 'hoanguyen@example.com', '0123456789', 1),
+  ('Đặng Trường Nam', 1, '1975-12-03', 'Hồ Chí Minh', 'Quảng Nam', 'namdang@example.com', '0987654321', 2),
+  ('Phạm Thị Thu Trang', 0, '1995-08-12', 'Hà Nội', 'Hải Phòng', 'trangpham@example.com', '0369874521', 3),
+  ('Trần Văn Anh', 1, '1965-02-28', 'Cần Thơ', 'Sóc Trăng', 'anhtran@example.com', '0562314789', 4),
+  ('Vũ Thị Hồng', 0, '1988-09-17', 'Hải Dương', 'Bắc Ninh', 'hongvu@example.com', '0963142578', 4),
+  ('Lê Quang Minh', 1, '1973-06-11', 'Ninh Bình', 'Thái Bình', 'minhle@example.com', '0987123456', 5),
+  ('Mai Thế Dũng', 1, '1968-11-30', 'Hà Giang', 'Cao Bằng', 'dungmai@example.com', '0912345678', 6),
+  ('Nguyễn Thị Tâm', 0, '1990-03-25', 'Đồng Nai', 'Bình Dương', 'tamnguyen@example.com', '0332581476', 8),
+  ('Trương Hữu Thành', 1, '1970-10-09', 'Bà Rịa - Vũng Tàu', 'Cần Giờ', 'thanht[email protected]', '0965324871', 10),
+  ('Lý Văn Tú', 1, '1985-07-14', 'Đắk Lắk', 'Khánh Hòa', 'tuly@example.com', '0987412365', 11);
 
 
 INSERT INTO [MonHoc] ([TenMonHoc], [SoTinChi], [BatBuoc], [MoTa], [MaMonTienQuyet], [MaBoMon])
 VALUES
   (N'Tiếng Anh 1', 3, 1, N'Học tiếng Anh cơ bản cấp độ 1', NULL, 1),
-  (N'Tiếng Anh 2', 3, 1, N'Tiếp tục học tiếng Anh cấp độ 2', 1, 1),
+  (N'Tiếng Anh 2', 3, 1, N'Học tiếng Anh cấp độ 2', 1, 1),
   (N'Tin học đại cương', 2, 1, N'Học tin học căn bản', NULL, 2),
   (N'Lập trình căn bản', 3, 1, N'Học lập trình cơ bản', NULL, 2),
   (N'Cơ sở dữ liệu', 3, 1, N'Học về cơ sở dữ liệu', NULL, 2),
@@ -70,31 +88,12 @@ VALUES
   (N'66KT1', 9, 2),
   (N'69IT2', 10, 1);
 
--- Khi lỗi mất 1 số dòng
--- SET IDENTITY_INSERT [LopQuanLi] ON;
--- INSERT INTO [LopQuanLi] ([MaLopQuanLi], [TenLopQuanLi], [MaGiangVien], [MaKhoa] )
--- VALUES (1, N'66IT4', 2, 2);
--- DBCC CHECKIDENT ('LopQuanLi', RESEED, 1);
-
-INSERT INTO [Khoa-MonHoc] ([MaKhoa], [MaMonHoc])
+INSERT INTO [LopMonHoc] ([TenLopMonHoc], [MaMonHoc], [MaGiangVien])
 VALUES
-  (1, 3),
-  (2, 3),
-  (3, 3),
-  (1, 5),
-  (2, 5),
-  (3, 6),
-  (1, 7),
-  (2, 8),
-  (3, 8),
-  (3, 9);
-
-INSERT INTO [LopMonHoc] ([TenLopMonHoc], [MaMonHoc])
-VALUES
-  (N'68IT3', 3),
-  (N'64IT1', 7),
-  (N'66NV1', 3),
-  (N'68TH5', 4),
+  (N'68IT3', 3, 1),
+  (N'64IT1', 7, 3),
+  (N'66NV1', 3, 1),
+  (N'68XH5', 4, ),
   (N'67IT1', 5),
   (N'65CS2', 6),
   (N'64IT2', 7),
@@ -104,7 +103,7 @@ VALUES
 
 INSERT INTO [SinhVien] ([NgayVaoTruong], [MaLopQuanLi], [HoTen], [GioiTinh], [NgaySinh], [DiaChiThuongTru], [QueQuan], [Email], [SoDienThoai])
 VALUES
-  ('2008-09-01', 11, N'Nguyễn Văn An', 1, '1995-03-15', N'Hà Nội', N'Hưng Yên', N'nguyenvanan@gmail.com', '0987654321'),
+  ('2008-09-01', 1, N'Nguyễn Văn An', 1, '1995-03-15', N'Hà Nội', N'Hưng Yên', N'nguyenvanan@gmail.com', '0987654321'),
   ('2009-08-15', 2, N'Phạm Thị Bình', 0, '1996-07-10', N'Thái Bình', N'Thái Bình', N'phamthibinh@gmail.com', '0976543210'),
   ('2010-09-01', 3, N'Lê Thành Công', 1, '1997-05-20', N'Hồ Chí Minh', N'Hà Nội', N'lethanhcong@gmail.com', '0965432109'),
   ('2007-08-20', 4, N'Trần Thị Diễm', 0, '1998-12-25', N'Hà Nội', N'Hưng Yên', N'tranthidiem@gmail.com', '0954321098'),
@@ -114,7 +113,7 @@ VALUES
   ('2008-08-20', 8, N'Phạm Văn Hiếu', 1, '1997-07-20', N'Hà Nội', N'Hưng Yên', N'phamvanhieu@gmail.com', '0910987654'),
   ('2010-09-01', 9, N'Lê Thị Huệ', 0, '1998-05-15', N'Hồ Chí Minh', N'Hà Nội', N'lethihue@gmail.com', '0909876543'),
   ('2011-08-15', 10, N'Trần Văn Khánh', 1, '1999-04-10', N'Hưng Yên', N'Thái Bình', N'tranvankhanh@gmail.com', '0898765432'),
-  ('2008-09-01', 11, N'Lê Thị Lý', 0, '1995-03-25', N'Hồ Chí Minh', N'Hưng Yên', N'lethily@gmail.com', '0887654321'),
+  ('2008-09-01', 1, N'Lê Thị Lý', 0, '1995-03-25', N'Hồ Chí Minh', N'Hưng Yên', N'lethily@gmail.com', '0887654321'),
   ('2009-08-15', 2, N'Vũ Thành Minh', 1, '1996-06-20', N'Hà Nội', N'Thái Bình', N'vuthanhminh@gmail.com', '0876543210'),
   ('2010-09-01', 3, N'Trương Hoàng Nam', 1, '1997-05-05', N'Hồ Chí Minh', N'Hà Nội', N'truonghoangnam@gmail.com', '0865432109'),
   ('2007-08-20', 4, N'Nguyễn Thị Ngọc', 0, '1998-12-10', N'Hưng Yên', N'Hưng Yên', N'nguyenthingoc@gmail.com', '0854321098'),
@@ -124,7 +123,7 @@ VALUES
   ('2008-08-20', 8, N'Phạm Thị Quỳnh', 0, '1997-08-10', N'Hồ Chí Minh', N'Hà Nội', N'phamthiquynh@gmail.com', '0810987654'),
   ('2010-09-01', 9, N'Lê Thị Quyên', 1, '1998-07-20', N'Hưng Yên', N'Thái Bình', N'lethiquyen@gmail.com', '0809876543'),
   ('2011-08-15', 10, N'Trần Văn Rạng', 1, '1999-06-25', N'Hà Nội', N'Thái Bình', N'tranvanrang@gmail.com', '0798765432'),
-  ('2008-09-01', 11, N'Vũ Thị Sáng', 0, '1995-02-10', N'Hồ Chí Minh', N'Hưng Yên', N'vuthisang@gmail.com', '0787654321'),
+  ('2008-09-01', 1, N'Vũ Thị Sáng', 0, '1995-02-10', N'Hồ Chí Minh', N'Hưng Yên', N'vuthisang@gmail.com', '0787654321'),
   ('2009-08-15', 2, N'Trần Hoàng Sơn', 1, '1996-09-05', N'Hưng Yên', N'Hưng Yên', N'tranhoangson@gmail.com', '0776543210'),
   ('2010-09-01', 3, N'Trương Văn Tùng', 1, '1997-08-15', N'Hồ Chí Minh', N'Hưng Yên', N'truongvantung@gmail.com', '0765432109'),
   ('2007-08-20', 4, N'Nguyễn Thị Út', 0, '1998-1-20', N'Thái Bình', N'Thái Bình', N'nguyenthaut@gmail.com', '0754321098'),
@@ -167,7 +166,3 @@ VALUES
   (8, 27, 8.5, 9.0, 9.5, 1, N'Giỏi'),
   (9, 28, 6.0, 6.5, 7.0, 2, N'Tốt'),
   (10, 29, 7.0, 7.5, 8.0, 1, N'Khá');
-
--- EXEC sp_rename 'SinhVien.PhoneNumber',
--- 'SoDienThoai',
--- 'COLUMN';
