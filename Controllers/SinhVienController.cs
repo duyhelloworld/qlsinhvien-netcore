@@ -2,6 +2,7 @@ using System.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using qlsinhvien.Context;
+using qlsinhvien.Dto;
 using qlsinhvien.Entities;
 
 namespace qlsinhvien.Controllers
@@ -18,8 +19,7 @@ namespace qlsinhvien.Controllers
 
         [HttpGet]
         public ActionResult<IEnumerable<SinhVien>> GetAll(){
-            var SinhViens =  sinhVienDbContext.SinhViens
-                        .ToHashSet();
+            var SinhViens =  sinhVienDbContext.SinhViens.ToList();
             return Ok(SinhViens);
         }
 
@@ -30,7 +30,7 @@ namespace qlsinhvien.Controllers
             return sinhVien == null ? NotFound() : Ok(sinhVien);
         }
 
-        [HttpGet("search")]
+        [HttpGet("tim")]
         public ActionResult<IEnumerable<SinhVien>> GetByName([FromQuery] string hoTen)
         {
             var ketQua = from sinhVien in sinhVienDbContext.SinhViens
@@ -39,16 +39,16 @@ namespace qlsinhvien.Controllers
             return ketQua == null ? NotFound() : Ok(ketQua);
         }
 
-        [HttpGet("search")]
+        [HttpGet("tim")]
         public ActionResult<IEnumerable<SinhVien>> GetByEmail([FromQuery] string email)
         {
             var ketQua = from sinhVien in sinhVienDbContext.SinhViens
-                          where sinhVien.Email.StartsWith(email)
+                          where sinhVien.Email.Contains(email)
                           select sinhVien;
             return ketQua == null ? NotFound() : Ok(ketQua);
         }
 
-        [HttpGet("search")]
+        [HttpGet("tim")]
         public ActionResult<IEnumerable<SinhVien>> GetByNumberPhone([FromQuery] string soDienThoai)
         {
             var ketQua = from sinhVien in sinhVienDbContext.SinhViens
@@ -58,16 +58,26 @@ namespace qlsinhvien.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddSinhVien([FromBody] SinhVien sinhVien)
+        public ActionResult AddSinhVien([FromBody] SinhVienDto sinhVienDto)
         {
-            var maLopQuanLi = sinhVien.LopQuanLi.MaLopQuanLi;
-            if (sinhVien.MaSinhVien != 0 
-                    || maLopQuanLi  == 0)
+            if (sinhVienDto.MaSinhVien != 0 
+                    || sinhVienDto.MaLopQuanLi <= 0)
                 return BadRequest("Chứa tham số không hợp lệ");
-            var lopQuanLi = sinhVienDbContext.LopQuanLis.Find(maLopQuanLi);
+
+            var lopQuanLi = sinhVienDbContext.LopQuanLis.Find(sinhVienDto.MaLopQuanLi);
             if (lopQuanLi == null)
                 return BadRequest("Lớp quản lí không hợp lệ");
-
+            var sinhVien = new SinhVien() {
+                HoTen = sinhVienDto.HoTen,
+                GioiTinh = sinhVienDto.GioiTinh,
+                NgaySinh = sinhVienDto.NgaySinh,
+                QueQuan = sinhVienDto.QueQuan,
+                DiaChiThuongTru = sinhVienDto.DiaChiThuongTru,
+                NgayVaoTruong = sinhVienDto.NgayVaoTruong,
+                SoDienThoai = sinhVienDto.SoDienThoai,
+                Email = sinhVienDto.Email,
+                LopQuanLi = lopQuanLi
+            };
             sinhVienDbContext.SinhViens.Add(sinhVien);
             sinhVienDbContext.SaveChanges();
 
@@ -78,35 +88,37 @@ namespace qlsinhvien.Controllers
         }
 
         [HttpPut("{maSinhVien}")]
-        public ActionResult<SinhVien> UpdateSinhVien(int maSinhVien,  [FromBody] SinhVien sinhVien)
+        public ActionResult<SinhVien> UpdateSinhVien(int maSinhVien,  [FromBody] SinhVienDto sinhVienDto)
         {
-            if (maSinhVien == 0)
+            if (maSinhVien <= 0)
             {
                 return BadRequest("Tham số không hợp lệ");
             }
-            // Bỏ qua giá trị sinhVien.MaSinhVien được gửi lên
-            sinhVien.MaSinhVien = maSinhVien;
-            
-            var inDb = sinhVienDbContext.SinhViens
-                .Include(s => s.LopQuanLi)
-                .FirstOrDefault(s => s.MaSinhVien == maSinhVien);
+            sinhVienDto.MaSinhVien = maSinhVien;
+            var lopQuanLi = sinhVienDbContext.LopQuanLis.Find(sinhVienDto.MaLopQuanLi);
+            if (lopQuanLi == null)
+                return BadRequest("Lớp quản lí không hợp lệ");
+
+            var inDb = sinhVienDbContext.SinhViens.Find(maSinhVien);
             if (inDb == null)
             {
                 return NotFound("Không tồn tại sinh viên mã số " + maSinhVien);
             }
-            try
-            {
-                // Cách update 1 : bỏ kết nối của inDb
-                sinhVienDbContext.Entry(inDb).State = EntityState.Detached;
-                sinhVienDbContext.Entry(sinhVien).State = EntityState.Modified;
-                sinhVienDbContext.SaveChanges();
-            }
-            catch (DbUpdateException)
-            {
-                // Vi phạm khoá chính khoá phụ
-                return BadRequest("Vi phạm điều kiện tham số. Chi tiết tại blabla.com"); 
-            }
-            return sinhVien;
+            // Cách 1 : bỏ kết nối của inDb
+            // sinhVienDbContext.Entry(inDb).State = EntityState.Detached;
+            // sinhVienDbContext.Entry(sinhVien).State = EntityState.Modified;
+            // Cách 2 :  
+            inDb.HoTen = sinhVienDto.HoTen;
+            inDb.GioiTinh = sinhVienDto.GioiTinh;
+            inDb.NgaySinh = sinhVienDto.NgaySinh;
+            inDb.QueQuan = sinhVienDto.QueQuan;
+            inDb.DiaChiThuongTru = sinhVienDto.DiaChiThuongTru;
+            inDb.NgayVaoTruong = sinhVienDto.NgayVaoTruong;
+            inDb.SoDienThoai = sinhVienDto.SoDienThoai;
+            inDb.Email = sinhVienDto.Email;
+            inDb.LopQuanLi = lopQuanLi;
+            sinhVienDbContext.SaveChanges();
+            return inDb;
         }
 
         [HttpDelete("{maSinhVien}")]
