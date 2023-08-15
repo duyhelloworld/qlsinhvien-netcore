@@ -13,9 +13,10 @@ public class SinhVienDto {
     [JsonConverter(typeof(DateTime))]
     public DateTime NgaySinh { get; set; }
 
-    public string DiaChiThuongTru { get; set; }
+    public string? DiaChiThuongTru { get; set; }
 
-    public string QueQuan { get; set; }
+    [JsonInclude]
+    public string? QueQuan { get; set; }
 
     [JsonRequired]
     public string Email { get; set; }
