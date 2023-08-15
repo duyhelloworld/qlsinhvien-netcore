@@ -357,7 +357,7 @@ namespace qlsinhvien.Migrations
                     b.HasOne("qlsinhvien.Entities.MonHoc", "MonHoc")
                         .WithMany("LopMonHocs")
                         .HasForeignKey("MaMonHoc")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("GiangVien");
