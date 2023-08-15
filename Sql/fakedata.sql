@@ -5,12 +5,12 @@ VALUES
   (N'Khoa Kinh Tế'),
   (N'Khoa Khoa Học Xã Hội'),
   (N'Khoa Khoa Học Tự Nhiên'),
-  (N'Khoa Ngôn Ngữ Anh');
+  (N'Khoa Ngoại Ngữ');
 
 INSERT INTO [BoMon] ([TenBoMon])
 VALUES
   (N'Công nghệ phần mềm'),
-  (N'Tiếng Anh Khoa Học Kĩ thuật và Công Nghệ'),
+  (N'Ngoại ngữ'),
   (N'Hệ thống thông tin'),
   (N'Kĩ thuật máy tính'),
   (N'Công nghệ sinh học'), 
@@ -27,26 +27,8 @@ VALUES
   (N'Marketing'),
   (N'Dịch thuật, Văn hoá và Lí thuyết tiếng');
 
-INSERT INTO [KhoaBoMon] ([MaKhoa], [MaBoMon])
-VALUES 
-  (1, 1),
-  (1, 3),
-  (1, 4),
-  (1, 6),
-  (2, 11),
-  (2, 12),
-  (2, 13),
-  (2, 14),
-  (2, 15), 
-  (2, 16),
-  (3, 9),
-  (3, 10), 
-  (3, 12),
-  (4, 5),
-  (4, 7), 
-  (4, 8),
-  (5, 2),
-  (5, 17),
+INSERT INTO (KhoaBoMon) 
+VALUES ()
 
 INSERT INTO [GiangVien] ([HoTen], [GioiTinh], [NgaySinh], [DiaChiThuongTru], [QueQuan], [Email], [SoDienThoai], [MaBoMon])
 VALUES
@@ -63,17 +45,63 @@ VALUES
 
 INSERT INTO [MonHoc] ([TenMonHoc], [SoTinChi], [BatBuoc], [MoTa], [MaMonTienQuyet], [MaBoMon])
 VALUES
-  (N'Tiếng Anh 1', 3, 1, N'Học tiếng Anh cơ bản cấp độ 1', NULL, 1),
-  (N'Tiếng Anh 2', 3, 1, N'Tiếp tục học tiếng Anh cấp độ 2', 1, 1),
-  (N'Tin học đại cương', 2, 1, N'Học tin học căn bản', NULL, 2),
-  (N'Lập trình căn bản', 3, 1, N'Học lập trình cơ bản', NULL, 2),
-  (N'Cơ sở dữ liệu', 3, 1, N'Học về cơ sở dữ liệu', NULL, 2),
-  (N'Lập trình nâng cao', 3, 1, N'Học lập trình nâng cao', 4, 2),
-  (N'Xây dựng website', 2, 1, N'Học xây dựng website cơ bản', 4, 2),
-  (N'Hệ điều hành', 3, 1, N'Học về hệ điều hành', NULL, 2),
-  (N'Thực tập công nghệ phần mềm', 3, 0, N'Thực tập công nghệ phần mềm tại công ty ABC', NULL, 2),
-  (N'Triết học Mác-Lênin', 3, 1, N'Học về triết', NULL, 3);
-
+  (N'Sinh học tế bào và phân tử', 3, 1, NULL, NULL, 5),
+  (N'Vi sinh học', 3, 1, NULL, NULL, 8),
+  (N'Hóa sinh', 3, 1, NULL, NULL, 8),
+  (N'Kỹ thuật di truyền', 3, 1, NULL, NULL, 5),
+  (N'Kiến trúc dữ liệu và cơ sở dữ liệu', 3, 1, NULL, NULL, 6),
+  (N'Thu thập và xử lý dữ liệu lớn', 3, 1, NULL, NULL, 6),
+  (N'Phân tích dữ liệu thống kê', 3, 1, NULL, NULL, 6),
+  (N'Học máy', 3, 1, NULL, NULL, 6),
+  (N'Thị giác máy tính', 3, 1, NULL, NULL, 6),
+  (N'Khoa học ngôn ngữ tự nhiên', 3, 1, NULL, NULL, 6),
+  (N'Xử lý ngôn ngữ tự nhiên', 3, 1, NULL, NULL, 6),
+  (N'Hóa học thực phẩm', 3, 1, NULL, NULL, 7),
+  (N'Sinh học thực phẩm', 3, 1, NULL, NULL, 7),
+  (N'Vật lý thực phẩm', 3, 1, NULL, NULL, 7),
+  (N'An toàn thực phẩm', 3, 1, NULL, NULL, 7),
+  (N'Kỹ thuật chế biến thực phẩm', 3, 1, NULL, NULL, 7),
+  (N'Quản lý chất lượng thực phẩm', 3, 1, NULL, NULL, 7),
+  (N'Tâm lý học xã hội', 3, 1, NULL, NULL, 10),
+  (N'Tâm lý học nhận thức', 3, 1, NULL, NULL, 10),
+  (N'Tâm lý học phát triển', 3, 1, NULL, NULL, 10),
+  (N'Tâm lý học nhân cách', 3, 1, NULL, NULL, 10),
+  (N'Tâm lý học giáo dục', 3, 1, NULL, NULL, 10),
+  (N'Tâm lý học kinh doanh', 3, 1, NULL, NULL, 10),
+  (N'Tâm lý học quản lý', 3, 1, NULL, NULL, 10),
+  (N'Kinh tế vi mô', 3, 1, NULL, NULL, 11),
+  (N'Kinh tế vĩ mô', 3, 1, NULL, NULL, 11),
+  (N'Nguyên lý kế toán', 3, 1, NULL, NULL, 11),
+  (N'Tài chính doanh nghiệp', 3, 1, NULL, NULL, 11),
+  (N'Quản trị tài chính', 3, 1, NULL, NULL, 11),
+  (N'Phân tích đầu tư', 3, 1, NULL, NULL, 11),
+  (N'Kinh tế quốc tế', 3, 1, NULL, NULL, 11),
+  (N'Kinh tế phát triển', 3, 1, NULL, NULL, 11),
+  (N'Kinh tế môi trường', 3, 1, NULL, NULL, 11),
+  (N'Marketing căn bản', 3, 1, NULL, NULL, 16),
+  (N'Nghiên cứu thị trường', 3, 1, NULL, NULL, 16),
+  (N'Chiến lược marketing', 3, 1, NULL, NULL, 16),
+  (N'Bán hàng và quản lý kênh phân phối', 3, 1, NULL, NULL, 16),
+  (N'Truyền thông marketing', 3, 1, NULL, NULL, 16),
+  (N'Marketing quốc tế', 3, 1, NULL, NULL, 16),
+  (N'Marketing dịch vụ', 3, 1, NULL, NULL, 16),
+  (N'Marketing thương hiệu', 3, 1, NULL, NULL, 16),
+  (N'Marketing trực tuyến', 3, 1, NULL, NULL, 16),
+  (N'Marketing xã hội', 3, 1, NULL, NULL, 16),
+  (N'Tiếng Anh 1', 3, 1, N'Học tiếng Anh cơ bản cấp độ 1', NULL, 2),
+  (N'Tiếng Anh 2', 3, 1, N'Tiếp tục học tiếng Anh cấp độ 2', 1, 2),
+  (N'Tin học đại cương', 2, 1, N'Học tin học căn bản', NULL, 1),
+  (N'Lập trình căn bản', 3, 1, N'Học lập trình cơ bản', NULL, 1),
+  (N'Cơ sở dữ liệu', 3, 1, N'Học về cơ sở dữ liệu', NULL, 1),
+  (N'Lập trình nâng cao', 3, 1, N'Học lập trình nâng cao', 4, 1),
+  (N'Xây dựng website', 2, 1, N'Học xây dựng website cơ bản', 4, 1),
+  (N'Hệ điều hành', 3, 1, N'Học về hệ điều hành', NULL, 1),
+  (N'Thực tập công nghệ phần mềm', 3, 0, N'Thực tập công nghệ phần mềm tại công ty ABC', NULL, 1),
+  (N'Triết học Mác-Lênin', 3, 1, N'Học về triết', NULL, 9),
+  (N'Kinh tế chính trị Mác-Lênin', 2, 1, NULL, 9),
+  (N'Chủ nghĩa xã hội khoa học', 2, 1, NULL, 9),
+  (N'Lịch sử Đảng Cộng sản Việt Nam', 2, 1, NULL, 9),
+  (N'Tư tưởng Hồ Chí Minh', 2, 1, NULL, 9);
 INSERT INTO [LopQuanLi] ([TenLopQuanLi], [MaGiangVien], [MaKhoa])
 VALUES
   (N'66IT5', 1, 1),
@@ -87,12 +115,31 @@ VALUES
   (N'66KT1', 9, 2),
   (N'69IT2', 10, 1);
 
-INSERT INTO [LopMonHoc] ([TenLopMonHoc], [MaMonHoc], [MaGiangVien])
+-- Khi lỗi mất 1 số dòng
+-- SET IDENTITY_INSERT [LopQuanLi] ON;
+-- INSERT INTO [LopQuanLi] ([MaLopQuanLi], [TenLopQuanLi], [MaGiangVien], [MaKhoa] )
+-- VALUES (1, N'66IT4', 2, 2);
+-- DBCC CHECKIDENT ('LopQuanLi', RESEED, 1);
+
+INSERT INTO [Khoa-MonHoc] ([MaKhoa], [MaMonHoc])
 VALUES
-  (N'68IT3', 3, 1),
-  (N'64IT1', 7, 3),
-  (N'66NV1', 3, 1),
-  (N'68XH5', 4, ),
+  (1, 3),
+  (2, 3),
+  (3, 3),
+  (1, 5),
+  (2, 5),
+  (3, 6),
+  (1, 7),
+  (2, 8),
+  (3, 8),
+  (3, 9);
+
+INSERT INTO [LopMonHoc] ([TenLopMonHoc], [MaMonHoc])
+VALUES
+  (N'68IT3', 3),
+  (N'64IT1', 7),
+  (N'66NV1', 3),
+  (N'68TH5', 4),
   (N'67IT1', 5),
   (N'65CS2', 6),
   (N'64IT2', 7),
@@ -102,7 +149,7 @@ VALUES
 
 INSERT INTO [SinhVien] ([NgayVaoTruong], [MaLopQuanLi], [HoTen], [GioiTinh], [NgaySinh], [DiaChiThuongTru], [QueQuan], [Email], [SoDienThoai])
 VALUES
-  ('2008-09-01', 1, N'Nguyễn Văn An', 1, '1995-03-15', N'Hà Nội', N'Hưng Yên', N'nguyenvanan@gmail.com', '0987654321'),
+  ('2008-09-01', 11, N'Nguyễn Văn An', 1, '1995-03-15', N'Hà Nội', N'Hưng Yên', N'nguyenvanan@gmail.com', '0987654321'),
   ('2009-08-15', 2, N'Phạm Thị Bình', 0, '1996-07-10', N'Thái Bình', N'Thái Bình', N'phamthibinh@gmail.com', '0976543210'),
   ('2010-09-01', 3, N'Lê Thành Công', 1, '1997-05-20', N'Hồ Chí Minh', N'Hà Nội', N'lethanhcong@gmail.com', '0965432109'),
   ('2007-08-20', 4, N'Trần Thị Diễm', 0, '1998-12-25', N'Hà Nội', N'Hưng Yên', N'tranthidiem@gmail.com', '0954321098'),
@@ -112,7 +159,7 @@ VALUES
   ('2008-08-20', 8, N'Phạm Văn Hiếu', 1, '1997-07-20', N'Hà Nội', N'Hưng Yên', N'phamvanhieu@gmail.com', '0910987654'),
   ('2010-09-01', 9, N'Lê Thị Huệ', 0, '1998-05-15', N'Hồ Chí Minh', N'Hà Nội', N'lethihue@gmail.com', '0909876543'),
   ('2011-08-15', 10, N'Trần Văn Khánh', 1, '1999-04-10', N'Hưng Yên', N'Thái Bình', N'tranvankhanh@gmail.com', '0898765432'),
-  ('2008-09-01', 1, N'Lê Thị Lý', 0, '1995-03-25', N'Hồ Chí Minh', N'Hưng Yên', N'lethily@gmail.com', '0887654321'),
+  ('2008-09-01', 11, N'Lê Thị Lý', 0, '1995-03-25', N'Hồ Chí Minh', N'Hưng Yên', N'lethily@gmail.com', '0887654321'),
   ('2009-08-15', 2, N'Vũ Thành Minh', 1, '1996-06-20', N'Hà Nội', N'Thái Bình', N'vuthanhminh@gmail.com', '0876543210'),
   ('2010-09-01', 3, N'Trương Hoàng Nam', 1, '1997-05-05', N'Hồ Chí Minh', N'Hà Nội', N'truonghoangnam@gmail.com', '0865432109'),
   ('2007-08-20', 4, N'Nguyễn Thị Ngọc', 0, '1998-12-10', N'Hưng Yên', N'Hưng Yên', N'nguyenthingoc@gmail.com', '0854321098'),
@@ -122,7 +169,7 @@ VALUES
   ('2008-08-20', 8, N'Phạm Thị Quỳnh', 0, '1997-08-10', N'Hồ Chí Minh', N'Hà Nội', N'phamthiquynh@gmail.com', '0810987654'),
   ('2010-09-01', 9, N'Lê Thị Quyên', 1, '1998-07-20', N'Hưng Yên', N'Thái Bình', N'lethiquyen@gmail.com', '0809876543'),
   ('2011-08-15', 10, N'Trần Văn Rạng', 1, '1999-06-25', N'Hà Nội', N'Thái Bình', N'tranvanrang@gmail.com', '0798765432'),
-  ('2008-09-01', 1, N'Vũ Thị Sáng', 0, '1995-02-10', N'Hồ Chí Minh', N'Hưng Yên', N'vuthisang@gmail.com', '0787654321'),
+  ('2008-09-01', 11, N'Vũ Thị Sáng', 0, '1995-02-10', N'Hồ Chí Minh', N'Hưng Yên', N'vuthisang@gmail.com', '0787654321'),
   ('2009-08-15', 2, N'Trần Hoàng Sơn', 1, '1996-09-05', N'Hưng Yên', N'Hưng Yên', N'tranhoangson@gmail.com', '0776543210'),
   ('2010-09-01', 3, N'Trương Văn Tùng', 1, '1997-08-15', N'Hồ Chí Minh', N'Hưng Yên', N'truongvantung@gmail.com', '0765432109'),
   ('2007-08-20', 4, N'Nguyễn Thị Út', 0, '1998-1-20', N'Thái Bình', N'Thái Bình', N'nguyenthaut@gmail.com', '0754321098'),
@@ -165,3 +212,7 @@ VALUES
   (8, 27, 8.5, 9.0, 9.5, 1, N'Giỏi'),
   (9, 28, 6.0, 6.5, 7.0, 2, N'Tốt'),
   (10, 29, 7.0, 7.5, 8.0, 1, N'Khá');
+
+-- EXEC sp_rename 'SinhVien.PhoneNumber',
+-- 'SoDienThoai',
+-- 'COLUMN';
