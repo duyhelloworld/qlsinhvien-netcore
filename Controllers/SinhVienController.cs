@@ -104,9 +104,10 @@ namespace qlsinhvien.Controllers
             {
                 return NotFound("Không tồn tại sinh viên mã số " + maSinhVien);
             }
-            // Cách 1 : bỏ kết nối của inDb
+            // Cách 1 : bỏ kết nối của inDb, tạo 1 sinhVien mới với dữ liệu của dto (như [post])
             // sinhVienDbContext.Entry(inDb).State = EntityState.Detached;
             // sinhVienDbContext.Entry(sinhVien).State = EntityState.Modified;
+
             // Cách 2 :  
             inDb.HoTen = sinhVienDto.HoTen;
             inDb.GioiTinh = sinhVienDto.GioiTinh;
