@@ -1,19 +1,20 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-namespace qlsinhvien.Entities
+using Microsoft.EntityFrameworkCore;
+
+namespace qlsinhvien.Entities;
+[Table("Khoa")]
+[Index(nameof(TenKhoa), IsUnique = true)]
+public class Khoa
 {
-    [Table("Khoa")]
-    public class Khoa
-    {
-        [Key]
-        public int MaKhoa { get; set; }
+    [Key]
+    public int MaKhoa { get; set; }
 
-        [Required]
-        [StringLength(80)]
-        public string? TenKhoa { get; set; }
+    [Required]
+    [StringLength(80)]
+    public string TenKhoa { get; set; }
 
-        public ICollection<LopQuanLi> LopQuanLis { get; set; } = new HashSet<LopQuanLi>();
+    public ICollection<LopQuanLi> LopQuanLis { get; set; } = new HashSet<LopQuanLi>();
 
-        public ICollection<BoMon> BoMons { get; set; } = new HashSet<BoMon>();
-    }
+    public ICollection<BoMon> BoMons { get; set; } = new HashSet<BoMon>();
 }
