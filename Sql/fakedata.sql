@@ -9,12 +9,30 @@ VALUES
 
 INSERT INTO [BoMon] ([TenBoMon])
 VALUES
-(N'Bộ môn Ngoại ngữ'),
-(N'Bộ môn Công nghệ thông tin'),
-(N'Bộ môn Lý luận chính trị');
-INSERT INTO [GiangVien] ([HoTen], [GioiTinh], [NgaySinh], [DiaChiThuongTru], [QueQuan], [Email], [SoDienThoai], [MaKhoa], [MaBoMon])
+  (N'Công nghệ phần mềm'),
+  (N'Tiếng Anh Khoa Học Kĩ thuật và Công Nghệ'),
+  (N'Hệ thống thông tin'),
+  (N'Kĩ thuật máy tính'),
+  (N'Công nghệ sinh học'), 
+  (N'Khoa học dữ liệu'),
+  (N'Công nghệ thực phẩm'),
+  (N'Vi sinh - Hoá sinh - SH phân tử'),
+  (N'Khoa học chính trị'),
+  (N'Tâm lí xã hội'),
+  (N'Kinh tế - Tài chính'), 
+  (N'Kinh tế học'),
+  (N'Kinh tế thủy sản'),
+  (N'Kinh doanh thương mại'), 
+  (N'Quản trị kinh doanh'), 
+  (N'Marketing'),
+  (N'Dịch thuật, Văn hoá và Lí thuyết tiếng');
+
+INSERT INTO (KhoaBoMon) 
+VALUES ()
+
+INSERT INTO [GiangVien] ([HoTen], [GioiTinh], [NgaySinh], [DiaChiThuongTru], [QueQuan], [Email], [SoDienThoai], [MaBoMon])
 VALUES
-  ('Nguyễn Trung Hoà', 1, '1980-05-21', 'Đà Nẵng', 'Huế', 'hoanguyen@example.com', '0123456789',1, 2),
+  ('Nguyễn Trung Hoà', 1, '1980-05-21', 'Đà Nẵng', 'Huế', 'hoanguyen@example.com', '0123456789', 2),
   ('Đặng Trường Nam', 1, '1975-12-03', 'Hồ Chí Minh', 'Quảng Nam', 'namdang@example.com', '0987654321',3, 3),
   ('Phạm Thị Thu Trang', 0, '1995-08-12', 'Hà Nội', 'Hải Phòng', 'trangpham@example.com', '0369874521',3, 3),
   ('Trần Văn Anh', 1, '1965-02-28', 'Cần Thơ', 'Sóc Trăng', 'anhtran@example.com', '0562314789',1, 2),
