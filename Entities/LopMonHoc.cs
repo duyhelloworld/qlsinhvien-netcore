@@ -16,6 +16,7 @@ namespace qlsinhvien.Entities
 
         [Required]
         [ForeignKey("MaMonHoc")]
+        [DeleteBehavior(DeleteBehavior.NoAction)]
         public MonHoc MonHoc { get; set; }
 
         [Required]

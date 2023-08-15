@@ -11,7 +11,7 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 {
     // options.EnableSensitiveDataLogging(true);
     options
-        .EnableDetailedErrors()
+        // .EnableDetailedErrors()
         .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionStrings"));
 });
 

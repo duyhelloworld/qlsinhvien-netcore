@@ -166,8 +166,7 @@ namespace qlsinhvien.Migrations
                         name: "FK_LopMonHoc_MonHoc_MaMonHoc",
                         column: x => x.MaMonHoc,
                         principalTable: "MonHoc",
-                        principalColumn: "MaMonHoc",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "MaMonHoc");
                 });
 
             migrationBuilder.CreateTable(

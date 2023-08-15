@@ -12,7 +12,7 @@ using qlsinhvien.Context;
 namespace qlsinhvien.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20230815033735_taobang")]
+    [Migration("20230815035531_taobang")]
     partial class taobang
     {
         /// <inheritdoc />
@@ -360,7 +360,7 @@ namespace qlsinhvien.Migrations
                     b.HasOne("qlsinhvien.Entities.MonHoc", "MonHoc")
                         .WithMany("LopMonHocs")
                         .HasForeignKey("MaMonHoc")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("GiangVien");
