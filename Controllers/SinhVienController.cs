@@ -60,10 +60,11 @@ namespace qlsinhvien.Controllers
         [HttpPost]
         public ActionResult AddSinhVien([FromBody] SinhVien sinhVien)
         {
+            var maLopQuanLi = sinhVien.LopQuanLi.MaLopQuanLi;
             if (sinhVien.MaSinhVien != 0 
-                    || sinhVien.MaLopQuanLi == 0)
+                    || maLopQuanLi  == 0)
                 return BadRequest("Chứa tham số không hợp lệ");
-            var lopQuanLi = sinhVienDbContext.LopQuanLis.Find(sinhVien.MaLopQuanLi);
+            var lopQuanLi = sinhVienDbContext.LopQuanLis.Find(maLopQuanLi);
             if (lopQuanLi == null)
                 return BadRequest("Lớp quản lí không hợp lệ");
 

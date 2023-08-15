@@ -28,15 +28,15 @@ namespace qlsinhvien.Controllers
                                 lql.TenLopQuanLi,
                                 GiangVien = new
                                 {
-                                    lql.MaGiangVien,
+                                    lql.GiangVien.MaGiangVien,
                                     lql.GiangVien.HoTen,
                                     lql.GiangVien.SoDienThoai,
                                     lql.GiangVien.Email,
-                                    Khoa = lql.GiangVien.Khoa.TenKhoa,
+                                    lql.GiangVien.BoMon.TenBoMon
                                 },
                                 Khoa = new
                                 {
-                                    lql.MaKhoa,
+                                    lql.Khoa.MaKhoa,
                                     lql.Khoa.TenKhoa
                                 }
                             });
@@ -50,22 +50,22 @@ namespace qlsinhvien.Controllers
                 // join khoa in lopQuanLiDbContext.Khoas
                     // on lql.MaKhoa equals khoa.MaKhoa
                 join giangvien in lopQuanLiDbContext.GiangViens
-                    on lql.MaGiangVien equals giangvien.MaGiangVien
+                    on lql.GiangVien.MaGiangVien equals giangvien.MaGiangVien
                 where lql.TenLopQuanLi.Contains(tenLopQuanLi)
                 select new {
                     lql.MaLopQuanLi,
                     lql.TenLopQuanLi,
                     GiangVien = new
                     {
-                        lql.MaGiangVien,
+                        lql.GiangVien.MaGiangVien,
                         lql.GiangVien.HoTen,
                         lql.GiangVien.SoDienThoai,
                         lql.GiangVien.Email,
-                        lql.GiangVien.Khoa.TenKhoa,
+                        lql.GiangVien.BoMon.TenBoMon,
                     },
                     Khoa = new
                     {
-                        lql.MaKhoa,
+                        lql.Khoa.MaKhoa,
                         lql.Khoa.TenKhoa
                     }
                 };
@@ -81,14 +81,10 @@ namespace qlsinhvien.Controllers
                                 new {
                                     ketQua.MaLopQuanLi,
                                     ketQua.TenLopQuanLi,
-                                    GiangVien = new
-                                    {
-                                        ketQua.MaGiangVien,
-                                        ketQua.GiangVien
-                                    },
+                                    ketQua.GiangVien,
                                     Khoa = new
                                     {
-                                        ketQua.MaKhoa,
+                                        ketQua.Khoa.MaKhoa,
                                         ketQua.Khoa
                                     }});
         }
@@ -104,7 +100,7 @@ namespace qlsinhvien.Controllers
             // Lấy sĩ số
             var groupByResult = from l in joinedResult
                                 join s in lopQuanLiDbContext.SinhViens
-                                    on l.MaLopQuanLi equals s.MaLopQuanLi
+                                    on l.MaLopQuanLi equals s.LopQuanLi.MaLopQuanLi
                                 group l by l.MaLopQuanLi into grouped
                                 let lql = grouped.FirstOrDefault()
                                 select new 
@@ -122,24 +118,24 @@ namespace qlsinhvien.Controllers
         public ActionResult AddLopQL([FromBody] LopQuanLi lopQuanLi)
         {
             // Bắt buộc khi thêm phải có : tên lớp, mã khoa
-            if (lopQuanLi.MaLopQuanLi != 0 || lopQuanLi.MaKhoa == 0)
+            if (lopQuanLi.MaLopQuanLi != 0 || lopQuanLi.Khoa.MaKhoa == 0)
             {
                 return BadRequest("Thiếu mã khoa; mã lql phải = 0");
             }
-            var khoa = lopQuanLiDbContext.Khoas.Find(lopQuanLi.MaKhoa);
+            var khoa = lopQuanLiDbContext.Khoas.Find(lopQuanLi.Khoa.MaKhoa);
             if (khoa == null)
             {
-                return NotFound($"{nameof(Khoa)} {lopQuanLi.MaKhoa}");
+                return NotFound($"{nameof(Khoa)} {lopQuanLi.Khoa.MaKhoa}");
             }
-            if (lopQuanLi.MaGiangVien != 0)
+            if (lopQuanLi.GiangVien.MaGiangVien != 0)
             {
-                var giangVien = lopQuanLiDbContext.GiangViens.Find(lopQuanLi.MaGiangVien);
+                var giangVien = lopQuanLiDbContext.GiangViens.Find(lopQuanLi.GiangVien.MaGiangVien);
                 if (giangVien == null)
                 {
-                    return NotFound($"{nameof(GiangVien)} {lopQuanLi.MaGiangVien}");
+                    return NotFound($"{nameof(GiangVien)} {lopQuanLi.GiangVien.MaGiangVien}");
                 }
                 // giảng viên khoa này phải chủ nhiệm lớp thuộc khoa đó
-                if (giangVien.MaKhoa != lopQuanLi.MaKhoa)
+                if (giangVien.BoMon.Khoa.MaKhoa != lopQuanLi.Khoa.MaKhoa)
                 {
                     return BadRequest("Not match");
                 }
@@ -159,8 +155,8 @@ namespace qlsinhvien.Controllers
                 return NotFound();                
             }
             inDb.TenLopQuanLi = lopQuanLi.TenLopQuanLi;
-            inDb.MaKhoa = lopQuanLi.MaKhoa;
-            inDb.MaGiangVien = lopQuanLi.MaGiangVien;
+            // inDb.MaKhoa = lopQuanLi.MaKhoa;
+            // inDb.MaGiangVien = lopQuanLi.MaGiangVien;
             lopQuanLiDbContext.SaveChanges();
             return Ok(inDb);
         }

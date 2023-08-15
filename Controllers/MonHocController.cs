@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using qlsinhvien.Context;
 using qlsinhvien.Entities;
-using qlsinhvien.Controllers;
 
 namespace qlsinhvien.Controllers
 {
@@ -38,64 +37,68 @@ namespace qlsinhvien.Controllers
         // [HttpGet("{khoa}")]
         public ActionResult<MonHoc> GetByKhoa(string khoa)
         {
-            var monHoc = from mh in appContext.MonHocs
-                         join kmh in appContext.KhoaMonHocs on mh.MaMonHoc equals kmh.MaMonHoc
-                         join k in appContext.Khoas on kmh.MaKhoa equals k.MaKhoa
-                         where k.TenKhoa.Contains(khoa)
-                         select new
-                         {
-                             mh.MaMonHoc,
-                             mh.TenMonHoc,
-                             mh.SoTinChi,
-                             mh.BatBuoc,
-                             mh.MonTienQuyet,
-                             k.TenKhoa,
-                             mh.MoTa
-                         };
-            return monHoc == null ? NotFound() : Ok(monHoc);
+            // var monHoc = from mh in appContext.MonHocs
+            //             //  join kmh in appContext.KhoaMonHocs on mh.MaMonHoc equals kmh.MaMonHoc
+            //              join k in appContext.Khoas on kmh.MaKhoa equals k.MaKhoa
+            //              where k.TenKhoa.Contains(khoa)
+            //              select new
+            //              {
+            //                  mh.MaMonHoc,
+            //                  mh.TenMonHoc,
+            //                  mh.SoTinChi,
+            //                  mh.BatBuoc,
+            //                  mh.MonTienQuyet,
+            //                  k.TenKhoa,
+            //                  mh.MoTa
+            //              };
+            // return monHoc == null ? NotFound() : Ok(monHoc);
+            return NoContent();
         }
-        [HttpPost("khoamonhoc={khoamonhoc}")]
-        public ActionResult AddMonHoc([FromBody] KhoaMonHoc khoaMonHoc)
-        {
-            MonHoc monHoc = khoaMonHoc.MonHoc;
-            Khoa khoa = khoaMonHoc.Khoa;
 
-            var khoaId = appContext.Khoas.Find(khoa);
-            var monHocId = appContext.MonHocs.Find(monHoc.MaMonHoc);
-            if (khoaId != null)
-            {
-                appContext.KhoaMonHocs.Add(khoaMonHoc);
-                appContext.SaveChanges();
-                // return Ok(new
-                // {
-                //     maMonHoc = khoaMonHoc.MaMonHoc,
-                //     maKhoa = khoaMonHoc.MaKhoa
-                // });
-                if (monHocId == null)
-                {
-                    appContext.MonHocs.Add(monHoc);
-                    appContext.SaveChanges();
-                    return Ok(new
-                    {
-                        maMonHoc = monHoc.MaMonHoc,
-                        tenMonHoc = monHoc.TenMonHoc,
-                        soTinChi = monHoc.SoTinChi,
-                        batBuoc = monHoc.BatBuoc,
-                        monTienQuyet = monHoc.MonTienQuyet,
-                        // khoa = Khoa.Khoa,
-                        moTa = monHoc.MoTa
-                    });
-                }
-                else
-                {
-                    return BadRequest("Môn học đã tồn tại trong cơ sở dữ liệu.");
-                }
-            }
-            else
-            {
-                return BadRequest("Khoa không hợp lệ.");
-            }
-        }
+        // [HttpPost("khoamonhoc={khoamonhoc}")]
+        // public ActionResult AddMonHoc([FromBody] KhoaMonHoc khoaMonHoc)
+        // {
+        //     MonHoc monHoc = khoaMonHoc.MonHoc;
+        //     Khoa khoa = khoaMonHoc.Khoa;
+
+        //     var khoaId = appContext.Khoas.Find(khoa);
+        //     var monHocId = appContext.MonHocs.Find(monHoc.MaMonHoc);
+        //     if (khoaId != null)
+        //     {
+        //         appContext.KhoaMonHocs.Add(khoaMonHoc);
+        //         appContext.SaveChanges();
+        //         // return Ok(new
+        //         // {
+        //         //     maMonHoc = khoaMonHoc.MaMonHoc,
+        //         //     maKhoa = khoaMonHoc.MaKhoa
+        //         // });
+        //         if (monHocId == null)
+        //         {
+        //             appContext.MonHocs.Add(monHoc);
+        //             appContext.SaveChanges();
+        //             return Ok(new
+        //             {
+        //                 maMonHoc = monHoc.MaMonHoc,
+        //                 tenMonHoc = monHoc.TenMonHoc,
+        //                 soTinChi = monHoc.SoTinChi,
+        //                 batBuoc = monHoc.BatBuoc,
+        //                 monTienQuyet = monHoc.MonTienQuyet,
+        //                 // khoa = Khoa.Khoa,
+        //                 moTa = monHoc.MoTa
+        //             });
+        //         }
+        //         else
+        //         {
+        //             return BadRequest("Môn học đã tồn tại trong cơ sở dữ liệu.");
+        //         }
+        //     }
+        //     else
+        //     {
+        //         return BadRequest("Khoa không hợp lệ.");
+        //     }
+        // }
+
+
         [HttpPut("{id}")]
         public ActionResult UpdateMonHoc(int id, [FromBody] MonHoc monHoc)
         {
@@ -116,6 +119,7 @@ namespace qlsinhvien.Controllers
 
             return Ok(mon);
         }
+
         [HttpDelete("{id}")]
         public ActionResult DeleteMonHoc(int id)
         {
@@ -129,7 +133,6 @@ namespace qlsinhvien.Controllers
 
             return Ok(new
             {
-                message = "Xóa môn học thành công.",
                 maMonHoc = monHoc.MaMonHoc,
                 tenMonHoc = monHoc.TenMonHoc,
                 soTinChi = monHoc.SoTinChi,
