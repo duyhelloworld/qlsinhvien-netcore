@@ -12,8 +12,8 @@ namespace qlsinhvien.Entities
         [StringLength(80)]
         public string? TenKhoa { get; set; }
 
-        public List<LopQuanLi> LopQuanLis { get; set; }
+        public ICollection<LopQuanLi> LopQuanLis { get; set; } = new HashSet<LopQuanLi>();
 
-        public List<BoMon> BoMons { get; set; }
+        public ICollection<BoMon> BoMons { get; set; } = new HashSet<BoMon>();
     }
 }
