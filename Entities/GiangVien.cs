@@ -13,8 +13,7 @@ public class GiangVien : ConNguoi
     [ForeignKey("MaBoMon")]
     public BoMon BoMon { get; set; }
 
-    [ForeignKey("MaLopQuanLi")]
-    public LopQuanLi LopQuanLi { get; set; }
+    public LopQuanLi? LopQuanLi { get; set; }
 
-    public List<LopMonHoc> LopMonHocs { get; set; }
+    public ICollection<LopMonHoc> LopMonHocs { get; set; } = new HashSet<LopMonHoc>();
 }

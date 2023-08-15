@@ -22,7 +22,6 @@ namespace qlsinhvien.Entities
         [MaxLength]
         public string? MoTa { get; set; }
 
-        public int? MaMonTienQuyet { get; set; }
         [ForeignKey("MaMonTienQuyet")]
         [DeleteBehavior(DeleteBehavior.NoAction)]
         public MonHoc? MonTienQuyet { get; set; }
@@ -30,6 +29,6 @@ namespace qlsinhvien.Entities
         [ForeignKey("MaBoMon")]
         public BoMon BoMon { get; set; }
 
-        public List<LopMonHoc> LopMonHocs { get; set; }
+        public ICollection<LopMonHoc> LopMonHocs { get; set; } = new HashSet<LopMonHoc>();
     }
 }

@@ -8,8 +8,6 @@ namespace qlsinhvien.Entities
     public class LopQuanLi
     {
         [Key]
-        [ForeignKey("GiangVien")]
-        // 1 lớp quản lí ko thể lưu nếu thiếu trường giảng viên (mã)
         public int MaLopQuanLi { get; set; }
 
         [Required]
@@ -17,7 +15,7 @@ namespace qlsinhvien.Entities
         public string TenLopQuanLi { get; set; }
 
         [Required]
-        // [ForeignKey("MaGiangVien")]
+        [ForeignKey("MaGiangVien")]
         public GiangVien GiangVien { get; set; }
 
         [Required]

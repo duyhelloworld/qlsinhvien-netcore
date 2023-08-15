@@ -18,6 +18,6 @@ namespace qlsinhvien.Entities
         [ForeignKey("MaLopQuanLi")]
         public LopQuanLi LopQuanLi { get; set; }
 
-        public List<DiemSinhVien>? DiemSinhViens { get; set; }
+        public ICollection<DiemSinhVien>? DiemSinhViens { get; set; } = new HashSet<DiemSinhVien>();
     }
 }

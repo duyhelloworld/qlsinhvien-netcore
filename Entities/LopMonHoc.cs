@@ -22,6 +22,6 @@ namespace qlsinhvien.Entities
         [ForeignKey("MaGiangVien")]
         public GiangVien GiangVien { get; set; }
 
-        public List<DiemSinhVien>? DiemSinhViens { get; set; }
+        public ICollection<DiemSinhVien>? DiemSinhViens { get; set; } = new HashSet<DiemSinhVien>();
     }
 }
