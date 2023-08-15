@@ -10,13 +10,11 @@ public class GiangVien : ConNguoi
     [Key]
     public int MaGiangVien { get; set; }
     
-    [Required]
-    public int MaKhoa { get; set; }
-    [ForeignKey("MaKhoa")]
-    public Khoa? Khoa { get; set; }
-
-    [Required]
-    public int MaBoMon { get; set; }
     [ForeignKey("MaBoMon")]
-    public BoMon? BoMon { get; set; }
+    public BoMon BoMon { get; set; }
+
+    [ForeignKey("MaLopQuanLi")]
+    public LopQuanLi LopQuanLi { get; set; }
+
+    public List<LopMonHoc> LopMonHocs { get; set; }
 }

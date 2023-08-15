@@ -5,25 +5,23 @@ using Microsoft.EntityFrameworkCore;
 namespace qlsinhvien.Entities
 {
     [Table("LopQuanLi")]
-    [Index(nameof(MaGiangVien), IsUnique = true)] // 1-1 giảng viên - lớp quản lí
     public class LopQuanLi
     {
         [Key]
+        [ForeignKey("GiangVien")]
+        // 1 lớp quản lí ko thể lưu nếu thiếu trường giảng viên (mã)
         public int MaLopQuanLi { get; set; }
 
         [Required]
         [StringLength(20)]
-        public string? TenLopQuanLi { get; set; }
+        public string TenLopQuanLi { get; set; }
 
         [Required]
-        public int MaGiangVien {set; get; }
-        [ForeignKey("MaGiangVien")]
-        public GiangVien? GiangVien { get; set; }
+        // [ForeignKey("MaGiangVien")]
+        public GiangVien GiangVien { get; set; }
 
         [Required]
-        public int MaKhoa { get; set; }
         [ForeignKey("MaKhoa")]
-        [DeleteBehavior(DeleteBehavior.NoAction)]
-        public Khoa? Khoa { get; set; }
+        public Khoa Khoa { get; set; }
     }
 }

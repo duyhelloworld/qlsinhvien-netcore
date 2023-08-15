@@ -15,8 +15,9 @@ namespace qlsinhvien.Entities
         public DateTime NgayVaoTruong { get; set; }
 
         [Required]
-        public int MaLopQuanLi {get; set;}
         [ForeignKey("MaLopQuanLi")]
-        public LopQuanLi? LopQuanLi { get; set; }
+        public LopQuanLi LopQuanLi { get; set; }
+
+        public List<DiemSinhVien>? DiemSinhViens { get; set; }
     }
 }

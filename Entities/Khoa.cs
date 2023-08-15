@@ -11,5 +11,9 @@ namespace qlsinhvien.Entities
         [Required]
         [StringLength(80)]
         public string? TenKhoa { get; set; }
+
+        public List<LopQuanLi> LopQuanLis { get; set; }
+
+        public List<BoMon> BoMons { get; set; }
     }
 }
