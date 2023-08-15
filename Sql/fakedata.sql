@@ -10,7 +10,7 @@ VALUES
 INSERT INTO [BoMon] ([TenBoMon])
 VALUES
   (N'Công nghệ phần mềm'),
-  (N'Ngoại ngữ'),
+  (N'Tiếng Anh Khoa Học Kĩ thuật và Công Nghệ'),
   (N'Hệ thống thông tin'),
   (N'Kĩ thuật máy tính'),
   (N'Công nghệ sinh học'), 
@@ -50,22 +50,21 @@ VALUES
 
 INSERT INTO [GiangVien] ([HoTen], [GioiTinh], [NgaySinh], [DiaChiThuongTru], [QueQuan], [Email], [SoDienThoai], [MaBoMon])
 VALUES
-  ('Nguyễn Trung Hoà', 1, '1980-05-21', 'Đà Nẵng', 'Huế', 'hoanguyen@example.com', '0123456789', 1),
-  ('Đặng Trường Nam', 1, '1975-12-03', 'Hồ Chí Minh', 'Quảng Nam', 'namdang@example.com', '0987654321', 2),
-  ('Phạm Thị Thu Trang', 0, '1995-08-12', 'Hà Nội', 'Hải Phòng', 'trangpham@example.com', '0369874521', 3),
-  ('Trần Văn Anh', 1, '1965-02-28', 'Cần Thơ', 'Sóc Trăng', 'anhtran@example.com', '0562314789', 4),
-  ('Vũ Thị Hồng', 0, '1988-09-17', 'Hải Dương', 'Bắc Ninh', 'hongvu@example.com', '0963142578', 4),
-  ('Lê Quang Minh', 1, '1973-06-11', 'Ninh Bình', 'Thái Bình', 'minhle@example.com', '0987123456', 5),
-  ('Mai Thế Dũng', 1, '1968-11-30', 'Hà Giang', 'Cao Bằng', 'dungmai@example.com', '0912345678', 6),
-  ('Nguyễn Thị Tâm', 0, '1990-03-25', 'Đồng Nai', 'Bình Dương', 'tamnguyen@example.com', '0332581476', 8),
-  ('Trương Hữu Thành', 1, '1970-10-09', 'Bà Rịa - Vũng Tàu', 'Cần Giờ', 'thanht[email protected]', '0965324871', 10),
-  ('Lý Văn Tú', 1, '1985-07-14', 'Đắk Lắk', 'Khánh Hòa', 'tuly@example.com', '0987412365', 11);
-
+  ('Nguyễn Trung Hoà', 1, '1980-05-21', 'Đà Nẵng', 'Huế', 'hoanguyen@example.com', '0123456789', 2),
+  ('Đặng Trường Nam', 1, '1975-12-03', 'Hồ Chí Minh', 'Quảng Nam', 'namdang@example.com', '0987654321',3, 3),
+  ('Phạm Thị Thu Trang', 0, '1995-08-12', 'Hà Nội', 'Hải Phòng', 'trangpham@example.com', '0369874521',3, 3),
+  ('Trần Văn Anh', 1, '1965-02-28', 'Cần Thơ', 'Sóc Trăng', 'anhtran@example.com', '0562314789',1, 2),
+  ('Vũ Thị Hồng', 0, '1988-09-17', 'Hải Dương', 'Bắc Ninh', 'hongvu@example.com', '0963142578',5, 1),
+  ('Lê Quang Minh', 1, '1973-06-11', 'Ninh Bình', 'Thái Bình', 'minhle@example.com', '0987123456',5, 1),
+  ('Mai Thế Dũng', 1, '1968-11-30', 'Hà Giang', 'Cao Bằng', 'dungmai@example.com', '0912345678',3, 3),
+  ('Nguyễn Thị Tâm', 0, '1990-03-25', 'Đồng Nai', 'Bình Dương', 'tamnguyen@example.com', '0332581476',3, 3),
+  ('Trương Hữu Thành', 1, '1970-10-09', 'Bà Rịa - Vũng Tàu', 'Cần Giờ', 'thanht[email protected]', '0965324871',1, 2),
+  ('Lý Văn Tú', 1, '1985-07-14', 'Đắk Lắk', 'Khánh Hòa', 'tuly@example.com', '0987412365',5, 1);
 
 INSERT INTO [MonHoc] ([TenMonHoc], [SoTinChi], [BatBuoc], [MoTa], [MaMonTienQuyet], [MaBoMon])
 VALUES
   (N'Tiếng Anh 1', 3, 1, N'Học tiếng Anh cơ bản cấp độ 1', NULL, 1),
-  (N'Tiếng Anh 2', 3, 1, N'Học tiếng Anh cấp độ 2', 1, 1),
+  (N'Tiếng Anh 2', 3, 1, N'Tiếp tục học tiếng Anh cấp độ 2', 1, 1),
   (N'Tin học đại cương', 2, 1, N'Học tin học căn bản', NULL, 2),
   (N'Lập trình căn bản', 3, 1, N'Học lập trình cơ bản', NULL, 2),
   (N'Cơ sở dữ liệu', 3, 1, N'Học về cơ sở dữ liệu', NULL, 2),
