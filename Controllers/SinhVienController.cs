@@ -63,25 +63,17 @@ namespace qlsinhvien.Controllers
             if (sinhVien.MaSinhVien != 0 
                     || sinhVien.MaLopQuanLi == 0)
                 return BadRequest("Chứa tham số không hợp lệ");
-            
-            try
-            {
-                var lopQuanLi = sinhVienDbContext.LopQuanLis.Find(sinhVien.MaLopQuanLi);
-                if (lopQuanLi == null)
-                    return BadRequest("Lớp quản lí không hợp lệ");
+            var lopQuanLi = sinhVienDbContext.LopQuanLis.Find(sinhVien.MaLopQuanLi);
+            if (lopQuanLi == null)
+                return BadRequest("Lớp quản lí không hợp lệ");
 
-                sinhVienDbContext.SinhViens.Add(sinhVien);
-                sinhVienDbContext.SaveChanges();
+            sinhVienDbContext.SinhViens.Add(sinhVien);
+            sinhVienDbContext.SaveChanges();
 
-                return CreatedAtAction(
-                        nameof(GetById),
-                        new { maSoSinhVien = sinhVien.MaSinhVien},
-                        sinhVien);
-            }
-            catch (HttpRequestException)
-            {
-                return BadRequest();
-            }
+            return CreatedAtAction(
+                    nameof(GetById),
+                    new { maSoSinhVien = sinhVien.MaSinhVien},
+                    sinhVien);            
         }
 
         [HttpPut("{maSinhVien}")]
@@ -91,7 +83,7 @@ namespace qlsinhvien.Controllers
             {
                 return BadRequest("Tham số không hợp lệ");
             }
-            // Bỏ qua giá trị sinhVien.MaSinhVien
+            // Bỏ qua giá trị sinhVien.MaSinhVien được gửi lên
             sinhVien.MaSinhVien = maSinhVien;
             
             var inDb = sinhVienDbContext.SinhViens

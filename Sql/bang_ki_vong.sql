@@ -39,7 +39,9 @@ CREATE TABLE
         dia_chi_hien_tai VARCHAR(200),
         que_quan VARCHAR(200),
         email VARCHAR(40) UNIQUE,
-        so_dien_thoai VARCHAR(10) UNIQUE
+        so_dien_thoai VARCHAR(10) UNIQUE,
+        ma_khoa INT NOT NULL,
+        Foreign Key (ma_khoa) REFERENCES Khoa(ma_khoa)
     );
 
 CREATE TABLE

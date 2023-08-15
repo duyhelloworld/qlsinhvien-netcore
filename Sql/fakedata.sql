@@ -1,7 +1,7 @@
 -- Active: 1691980956871@@127.0.0.1@1433@qlsinhvien
 INSERT INTO [Khoa] ([TenKhoa])
 VALUES
-  (N'Khoa Kỹ Thuật Công Nghệ Thông Tin'),
+  (N'Khoa Công Nghệ Thông Tin'),
   (N'Khoa Kinh Tế'),
   (N'Khoa Khoa Học Xã Hội'),
   (N'Khoa Khoa Học Tự Nhiên'),
@@ -41,16 +41,16 @@ VALUES
 
 INSERT INTO [LopQuanLi] ([TenLopQuanLi], [MaGiangVien], [MaKhoa])
 VALUES
-  (N'66IT5', 1, 2),
-  (N'68KT1', 2, 3),
-  (N'66IT3', 3, 1),
-  (N'68KT2', 4, 3),
-  (N'67KT1', 5, 3),
-  (N'67IT1', 6, 1),
-  (N'69IT1', 7, 1),
-  (N'69KT1', 8, 3),
-  (N'66KT1', 9, 3),
-  (N'69KT2', 10, 3);
+  (N'66IT5', 1, 1),
+  (N'68KT1', 3, 2),
+  (N'66IT3', 2, 1),
+  (N'68XH2', 4, 3),
+  (N'67TN1', 5, 4),
+  (N'67XH1', 7, 3),
+  (N'69TN1', 6, 4),
+  (N'69NN1', 8, 5),
+  (N'66KT1', 9, 2),
+  (N'69IT2', 10, 1);
 
 -- Khi lỗi mất 1 số dòng
 -- SET IDENTITY_INSERT [LopQuanLi] ON;
