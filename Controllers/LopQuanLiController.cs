@@ -135,10 +135,10 @@ namespace qlsinhvien.Controllers
                     return NotFound($"{nameof(GiangVien)} {lopQuanLi.GiangVien.MaGiangVien}");
                 }
                 // giảng viên khoa này phải chủ nhiệm lớp thuộc khoa đó
-                if (giangVien.BoMon.Khoa.MaKhoa != lopQuanLi.Khoa.MaKhoa)
-                {
-                    return BadRequest("Not match");
-                }
+                // if (giangVien.BoMon. != lopQuanLi.Khoa.MaKhoa)
+                // {
+                    // return BadRequest("Not match");
+                // }
             }
             lopQuanLiDbContext.LopQuanLis.Add(lopQuanLi);
             lopQuanLiDbContext.SaveChanges();
