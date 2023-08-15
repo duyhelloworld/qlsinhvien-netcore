@@ -15,7 +15,6 @@ public class ApplicationContext : DbContext
     public DbSet<Khoa> Khoas { get; set; }
     public DbSet<LopMonHoc> LopMonHocs { get; set; }
     public DbSet<LopQuanLi> LopQuanLis { get; set; }
-    public DbSet<KhoaMonHoc> KhoaMonHocs { get; set; }
     public DbSet<MonHoc> MonHocs { get; set; }
 
     public DbSet<BoMon> BoMons { get; set; }
