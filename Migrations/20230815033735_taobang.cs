@@ -38,6 +38,32 @@ namespace qlsinhvien.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "GiangVien",
+                columns: table => new
+                {
+                    MaGiangVien = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MaBoMon = table.Column<int>(type: "int", nullable: false),
+                    HoTen = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    GioiTinh = table.Column<bool>(type: "bit", nullable: true),
+                    NgaySinh = table.Column<DateTime>(type: "date", nullable: true),
+                    DiaChiThuongTru = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: true),
+                    QueQuan = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    SoDienThoai = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GiangVien", x => x.MaGiangVien);
+                    table.ForeignKey(
+                        name: "FK_GiangVien_BoMon_MaBoMon",
+                        column: x => x.MaBoMon,
+                        principalTable: "BoMon",
+                        principalColumn: "MaBoMon",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "MonHoc",
                 columns: table => new
                 {
@@ -97,76 +123,23 @@ namespace qlsinhvien.Migrations
                     MaLopQuanLi = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TenLopQuanLi = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    MaGiangVien = table.Column<int>(type: "int", nullable: false),
                     MaKhoa = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_LopQuanLi", x => x.MaLopQuanLi);
                     table.ForeignKey(
+                        name: "FK_LopQuanLi_GiangVien_MaGiangVien",
+                        column: x => x.MaGiangVien,
+                        principalTable: "GiangVien",
+                        principalColumn: "MaGiangVien",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_LopQuanLi_Khoa_MaKhoa",
                         column: x => x.MaKhoa,
                         principalTable: "Khoa",
                         principalColumn: "MaKhoa",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "GiangVien",
-                columns: table => new
-                {
-                    MaGiangVien = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MaBoMon = table.Column<int>(type: "int", nullable: false),
-                    MaLopQuanLi = table.Column<int>(type: "int", nullable: false),
-                    HoTen = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-                    GioiTinh = table.Column<bool>(type: "bit", nullable: true),
-                    NgaySinh = table.Column<DateTime>(type: "date", nullable: true),
-                    DiaChiThuongTru = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: true),
-                    QueQuan = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    SoDienThoai = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GiangVien", x => x.MaGiangVien);
-                    table.ForeignKey(
-                        name: "FK_GiangVien_BoMon_MaBoMon",
-                        column: x => x.MaBoMon,
-                        principalTable: "BoMon",
-                        principalColumn: "MaBoMon",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_GiangVien_LopQuanLi_MaLopQuanLi",
-                        column: x => x.MaLopQuanLi,
-                        principalTable: "LopQuanLi",
-                        principalColumn: "MaLopQuanLi",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SinhVien",
-                columns: table => new
-                {
-                    MaSinhVien = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NgayVaoTruong = table.Column<DateTime>(type: "date", nullable: false),
-                    MaLopQuanLi = table.Column<int>(type: "int", nullable: false),
-                    HoTen = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-                    GioiTinh = table.Column<bool>(type: "bit", nullable: true),
-                    NgaySinh = table.Column<DateTime>(type: "date", nullable: true),
-                    DiaChiThuongTru = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: true),
-                    QueQuan = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    SoDienThoai = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SinhVien", x => x.MaSinhVien);
-                    table.ForeignKey(
-                        name: "FK_SinhVien_LopQuanLi_MaLopQuanLi",
-                        column: x => x.MaLopQuanLi,
-                        principalTable: "LopQuanLi",
-                        principalColumn: "MaLopQuanLi",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -194,6 +167,33 @@ namespace qlsinhvien.Migrations
                         column: x => x.MaMonHoc,
                         principalTable: "MonHoc",
                         principalColumn: "MaMonHoc",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SinhVien",
+                columns: table => new
+                {
+                    MaSinhVien = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NgayVaoTruong = table.Column<DateTime>(type: "date", nullable: false),
+                    MaLopQuanLi = table.Column<int>(type: "int", nullable: false),
+                    HoTen = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    GioiTinh = table.Column<bool>(type: "bit", nullable: true),
+                    NgaySinh = table.Column<DateTime>(type: "date", nullable: true),
+                    DiaChiThuongTru = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: true),
+                    QueQuan = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    SoDienThoai = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SinhVien", x => x.MaSinhVien);
+                    table.ForeignKey(
+                        name: "FK_SinhVien_LopQuanLi_MaLopQuanLi",
+                        column: x => x.MaLopQuanLi,
+                        principalTable: "LopQuanLi",
+                        principalColumn: "MaLopQuanLi",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -246,12 +246,6 @@ namespace qlsinhvien.Migrations
                 column: "MaBoMon");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GiangVien_MaLopQuanLi",
-                table: "GiangVien",
-                column: "MaLopQuanLi",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_LopMonHoc_MaGiangVien",
                 table: "LopMonHoc",
                 column: "MaGiangVien");
@@ -260,6 +254,12 @@ namespace qlsinhvien.Migrations
                 name: "IX_LopMonHoc_MaMonHoc",
                 table: "LopMonHoc",
                 column: "MaMonHoc");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LopQuanLi_MaGiangVien",
+                table: "LopQuanLi",
+                column: "MaGiangVien",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_LopQuanLi_MaKhoa",
@@ -304,19 +304,19 @@ namespace qlsinhvien.Migrations
                 name: "SinhVien");
 
             migrationBuilder.DropTable(
-                name: "GiangVien");
-
-            migrationBuilder.DropTable(
                 name: "MonHoc");
 
             migrationBuilder.DropTable(
                 name: "LopQuanLi");
 
             migrationBuilder.DropTable(
-                name: "BoMon");
+                name: "GiangVien");
 
             migrationBuilder.DropTable(
                 name: "Khoa");
+
+            migrationBuilder.DropTable(
+                name: "BoMon");
         }
     }
 }
