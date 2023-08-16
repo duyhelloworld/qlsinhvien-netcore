@@ -11,7 +11,7 @@ namespace qlsinhvien.Entities
 
         [Required]
         [StringLength(80)]
-        public string? TenBoMon { get; set; }
+        public string TenBoMon { get; set; }
 
         public ICollection<MonHoc> MonHocs { get; set; } = new HashSet<MonHoc>();
 
