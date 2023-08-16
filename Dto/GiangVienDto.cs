@@ -10,6 +10,7 @@ public class GiangVienDto : ConNguoiDto
     [JsonRequired]
     public int MaBoMon { get; set; }
 
-    [JsonRequired]
-    public int MaLopQuanLi { get; set; }
+    public int? MaLopQuanLi { get; set; }
+
+    public ICollection<int>? MaLopMonHocs { get; set; }
 }
