@@ -234,15 +234,27 @@ namespace qlsinhvien.Migrations
                 column: "MaSinhVien");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GiangVien_Email_SoDienThoai",
+                name: "IX_GiangVien_Email",
                 table: "GiangVien",
-                columns: new[] { "Email", "SoDienThoai" },
+                column: "Email",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_GiangVien_MaBoMon",
                 table: "GiangVien",
                 column: "MaBoMon");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GiangVien_SoDienThoai",
+                table: "GiangVien",
+                column: "SoDienThoai",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Khoa_TenKhoa",
+                table: "Khoa",
+                column: "TenKhoa",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_LopMonHoc_MaGiangVien",
@@ -276,15 +288,21 @@ namespace qlsinhvien.Migrations
                 column: "MaMonTienQuyet");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SinhVien_Email_SoDienThoai",
+                name: "IX_SinhVien_Email",
                 table: "SinhVien",
-                columns: new[] { "Email", "SoDienThoai" },
+                column: "Email",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_SinhVien_MaLopQuanLi",
                 table: "SinhVien",
                 column: "MaLopQuanLi");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SinhVien_SoDienThoai",
+                table: "SinhVien",
+                column: "SoDienThoai",
+                unique: true);
         }
 
         /// <inheritdoc />

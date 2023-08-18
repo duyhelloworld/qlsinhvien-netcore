@@ -30,8 +30,8 @@ public class GiangVienController : ControllerBase
         return gv == null ? NotFound() : Ok(gv);
     }
 
-    [HttpGet("hoten")]
-    public ActionResult GetByName([FromQuery] string hoTen)
+    [HttpGet("hoten/{hoten}")]
+    public ActionResult GetByName(string hoTen)
     {
         var gv = giangVienDbContext.GiangViens
             .Where(GiangVien => GiangVien.HoTen.Contains(hoTen))
@@ -44,7 +44,8 @@ public class GiangVienController : ControllerBase
     public ActionResult GetByBoMon(int maBoMon)
     {
         var boMon = giangVienDbContext.BoMons.Find(maBoMon);
-        if (boMon == null) {
+        if (boMon == null)
+        {
             return NotFound($"Bộ môn mã số {maBoMon} không tồn tại");
         }
         giangVienDbContext.BoMons.Entry(boMon).Collection(bm => bm.GiangViens).Load();
@@ -54,55 +55,55 @@ public class GiangVienController : ControllerBase
             return NotFound();
         }
         var ketQua = from gv in giangViens
-                    select new {
-                        gv.MaGiangVien,
-                        gv.HoTen,
-                        gv.Email,
-                        gv.SoDienThoai,
-                        BoMon = new {
-                            gv.BoMon.MaBoMon,
-                            gv.BoMon.TenBoMon
-                        }
-                    };
+                     select new
+                     {
+                         gv.MaGiangVien,
+                         gv.HoTen,
+                         gv.Email,
+                         gv.SoDienThoai,
+                         BoMon = new
+                         {
+                             gv.BoMon.MaBoMon,
+                             gv.BoMon.TenBoMon
+                         }
+                     };
         return Ok(ketQua);
     }
 
     [HttpGet("lopquanli/{maLopQuanLi}")]
     public ActionResult GetByLopQuanLi(int maLopQuanLi)
     {
-        // var kq = from gv in giangVienDbContext.GiangViens
-        //          join lql in giangVienDbContext.LopQuanLis on gv.MaGiangVien equals lql.MaGiangVien
-        //          where lql.TenLopQuanLi.Contains(lopql)
-        //          select new
-        //          {
-        //              gv.MaGiangVien,
-        //              gv.HoTen,
-        //              gv.GioiTinh,
-        //              gv.Email,
-        //              lql.TenLopQuanLi
-        //          };
-        // return kq == null ? NotFound() : Ok(kq);
-        return NoContent();
+        var kq = from gv in giangVienDbContext.GiangViens
+                 join lql in giangVienDbContext.LopQuanLis on gv.MaGiangVien equals lql.GiangVien.MaGiangVien
+                 where lql.MaLopQuanLi == maLopQuanLi
+                 select new
+                 {
+                     gv.MaGiangVien,
+                     gv.HoTen,
+                     gv.GioiTinh,
+                     gv.Email,
+                     lql.TenLopQuanLi
+                 };
+        return kq == null ? NotFound() : Ok(kq);
+        // return NoContent();
     }
 
     [HttpGet("lopmonhoc/{malopmonhoc}")]
     public ActionResult GetByLopMonHoc(string lopmh)
     {
-        // var kq = from gv in giangVienDbContext.GiangViens
-        //          join bm in giangVienDbContext.BoMons on gv.MaBoMon equals bm.MaBoMon
-        //          join mh in giangVienDbContext.MonHocs on bm.MaBoMon equals mh.MaBoMon
-        //          join lmh in giangVienDbContext.LopMonHocs on mh.MaMonHoc equals lmh.MaMonHoc
-        //          where lmh.TenLopMonHoc.Contains(lopmh)
-        //          select new
-        //          {
-        //              gv.MaGiangVien,
-        //              gv.HoTen,
-        //              gv.GioiTinh,
-        //              gv.Email,
-        //              lmh.TenLopMonHoc
-        //          };
-        // return kq == null ? NotFound() : Ok(kq);
-        return NoContent();
+        var kq = from gv in giangVienDbContext.GiangViens
+                 join lmh in giangVienDbContext.LopMonHocs on gv.MaGiangVien equals lmh.GiangVien.MaGiangVien
+                 where lmh.TenLopMonHoc.Contains(lopmh)
+                 select new
+                 {
+                     gv.MaGiangVien,
+                     gv.HoTen,
+                     gv.GioiTinh,
+                     gv.Email,
+                     lmh.TenLopMonHoc
+                 };
+        return kq == null ? NotFound() : Ok(kq);
+        // return NoContent();
     }
 
     [HttpPost]
@@ -120,7 +121,8 @@ public class GiangVienController : ControllerBase
             return NotFound($"Không tồn tại bộ môn có mã {maBoMon}!");
         }
         // Check tên, tuổi bla bla
-        var giangVien = new GiangVien() {
+        var giangVien = new GiangVien()
+        {
             MaGiangVien = 0,
             HoTen = giangVienDto.HoTen,
             GioiTinh = giangVienDto.GioiTinh,
@@ -131,19 +133,14 @@ public class GiangVienController : ControllerBase
             Email = giangVienDto.Email,
             BoMon = boMon
         };
-        // Thêm lớp quản lí
-        if (maLopQuanLi != 0)
-        {
-            var lopQuanLi = giangVienDbContext.LopQuanLis.Find(maLopQuanLi);
-            if (lopQuanLi == null)
-            {
-                return BadRequest($"Không tồn tại lớp quản lí có mã {maLopQuanLi}");
-            }
-            giangVien.LopQuanLi = lopQuanLi;
-        }
+        // Thêm lớp quản lí (lớp quản lí của 1 giảng viên có thể null)
+        // Nếu gán lớp ql đã có sẵn cho giảng viên mới thì giảng viên mới sẽ tiếp quản lớp đó thay người cũ
+        var lopQuanLi = giangVienDbContext.LopQuanLis.Find(maLopQuanLi);
+        giangVien.LopQuanLi = lopQuanLi;
         // Thêm các lớp môn học
         var maLopMonHocs = giangVienDto.MaLopMonHocs;
-        if (maLopMonHocs != null && maLopMonHocs.Count() != 0) {
+        if (maLopMonHocs != null && maLopMonHocs.Count() != 0)
+        {
             var lopMonHocs = giangVienDbContext.LopMonHocs
                 .Where(lmh => maLopMonHocs.Contains(lmh.MaLopMonHoc))
                 .ToList();
@@ -159,24 +156,28 @@ public class GiangVienController : ControllerBase
         }
         catch (DbUpdateException ex)
         {
-            if (ex.InnerException.Message.Contains("email")) {
+            if (ex.InnerException.Message.Contains("email"))
+            {
                 return BadRequest($"Email {giangVienDto.Email} đã được sử dụng");
-            } else if (ex.InnerException.Message.Contains("SoDienThoai")) {
+            }
+            else if (ex.InnerException.Message.Contains("SoDienThoai"))
+            {
                 return BadRequest($"Số điện thoại {giangVienDto.SoDienThoai} đã được sử dụng");
             }
             throw;
         }
 
         return CreatedAtAction(nameof(GetById),
-            new { 
-                giangVien.MaGiangVien, 
+            new
+            {
+                giangVien.MaGiangVien,
                 giangVien.HoTen,
                 giangVien.Email,
                 giangVien.BoMon.TenBoMon,
                 TenLopQuanLi = giangVien.LopQuanLi == null ? null : giangVien.LopQuanLi.TenLopQuanLi
             });
-        }
-    
+    }
+
     [HttpPut("{magiangvien}")]
     public ActionResult UpdateThongTinGiangVien(int magiangvien, [FromBody] GiangVienDto giangVienDto)
     {
@@ -186,7 +187,7 @@ public class GiangVienController : ControllerBase
             return NotFound($"Không tồn tại bộ môn có mã {giangVienDto.MaBoMon}!");
         }
         var gv = giangVienDbContext.GiangViens.Find(magiangvien);
-        if(gv == null)
+        if (gv == null)
         {
             return NotFound();
         }
@@ -199,9 +200,10 @@ public class GiangVienController : ControllerBase
         gv.SoDienThoai = giangVienDto.SoDienThoai;
         gv.Email = giangVienDto.Email;
         gv.BoMon = boMon;
-        // Ko cập nhật lớp quản lí / lớp môn học
+        // Ko cập nhật lớp quản lí / lớp môn học vì có hàm riêng để làm chuyện ấy
         giangVienDbContext.SaveChanges();
-        return Ok(new {
+        return Ok(new
+        {
             gv.MaGiangVien,
             gv.HoTen,
             gv.Email,
@@ -210,8 +212,10 @@ public class GiangVienController : ControllerBase
     }
 
     [HttpPut("lopquanli/{magiangvien}")]
-    public ActionResult UpdateLopQuanLi_GiangVien(int magiangvien, [FromBody] int maLopQuanLi) {
-        if (maLopQuanLi == 0) {
+    public ActionResult UpdateLopQuanLi_GiangVien(int magiangvien, [FromBody] int maLopQuanLi)
+    {
+        if (maLopQuanLi == 0)
+        {
             return BadRequest();
         }
         var giangVien = giangVienDbContext.GiangViens.Find(magiangvien);
@@ -230,7 +234,8 @@ public class GiangVienController : ControllerBase
     }
 
     [HttpPut("lopmonhoc/{magiangvien}")]
-    public ActionResult UpdateLopMonHocs_GiangVien(int magiangvien, [FromBody] ICollection<int> maLopMonHocs) {
+    public ActionResult UpdateLopMonHocs_GiangVien(int magiangvien, [FromBody] ICollection<int> maLopMonHocs)
+    {
         if (maLopMonHocs.Count == 0)
         {
             return BadRequest();
@@ -253,7 +258,32 @@ public class GiangVienController : ControllerBase
     }
 
     [HttpDelete("{magiangvien}")]
-    public ActionResult DeleteGiangVien(int magiangvien) {
-        return NoContent();
+    public ActionResult DeleteGiangVien(int magiangvien)
+    {
+        var gv = giangVienDbContext.GiangViens.Find(magiangvien);
+
+        if (gv == null)
+        {
+            return NotFound();
+        }
+
+        // Tìm các lớp quản lí liên quan và đặt mã giảng viên thành null
+        var lqlList = giangVienDbContext.LopQuanLis.Where(lql => lql.GiangVien.MaGiangVien == magiangvien);
+        foreach (var lql in lqlList)
+        {
+            lql.GiangVien = null;
+        }
+
+        // Tìm các lớp môn học liên quan và đặt mã giảng viên thành null
+        var lmhList = giangVienDbContext.LopMonHocs.Where(lmh => lmh.GiangVien.MaGiangVien == magiangvien);
+        foreach (var lmh in lmhList)
+        {
+            lmh.GiangVien = null;
+        }
+
+        giangVienDbContext.SaveChanges();
+
+        return Ok(gv);
     }
+
 }

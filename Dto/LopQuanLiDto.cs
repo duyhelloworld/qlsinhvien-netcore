@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using qlsinhvien.Entities;
 
 namespace qlsinhvien.Dto;
 
@@ -12,4 +13,6 @@ public class LopQuanLiDto
 
     [JsonRequired]
     public int MaKhoa { get; set; }
+    // [JsonRequired]
+    public GiangVien? giangVien{ get; set; }
 }
