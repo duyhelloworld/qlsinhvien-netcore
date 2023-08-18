@@ -85,7 +85,7 @@ public class GiangVienController : ControllerBase
         return NoContent();
     }
 
-    [HttpGet("lopmh={lopmh}")]
+    [HttpGet("lopmonhoc/{malopmonhoc}")]
     public ActionResult GetByLopMonHoc(string lopmh)
     {
         // var kq = from gv in giangVienDbContext.GiangViens
