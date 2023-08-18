@@ -127,9 +127,12 @@ namespace qlsinhvien.Migrations
 
                     b.HasKey("MaGiangVien");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.HasIndex("MaBoMon");
 
-                    b.HasIndex("Email", "SoDienThoai")
+                    b.HasIndex("SoDienThoai")
                         .IsUnique();
 
                     b.ToTable("GiangVien");
@@ -149,6 +152,9 @@ namespace qlsinhvien.Migrations
                         .HasColumnType("nvarchar(80)");
 
                     b.HasKey("MaKhoa");
+
+                    b.HasIndex("TenKhoa")
+                        .IsUnique();
 
                     b.ToTable("Khoa");
                 });
@@ -293,9 +299,12 @@ namespace qlsinhvien.Migrations
 
                     b.HasKey("MaSinhVien");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.HasIndex("MaLopQuanLi");
 
-                    b.HasIndex("Email", "SoDienThoai")
+                    b.HasIndex("SoDienThoai")
                         .IsUnique();
 
                     b.ToTable("SinhVien");
