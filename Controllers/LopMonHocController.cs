@@ -26,18 +26,18 @@ namespace qlsinhvien.Controllers
             var lmh = appContext.LopMonHocs.Where(lmh => lmh.GiangVien.MaGiangVien == magiangvien).ToList();
             return lmh == null ? NotFound() : Ok(lmh);
         }
-        [HttpPut("{malopmonhoc}")]
-        public ActionResult UpdateLopMonHoc(int malopmonhoc)
-        {
-            var lmh = appContext.LopMonHocs.Find(malopmonhoc);
-            if (lmh == null)
-            {
-                return NotFound();
-            }
-            else 
-            {
-                lmh.TenLopMonHoc = LopMonHocDto.;
-            }
-        }
+        // [HttpPut("{malopmonhoc}")]
+        // public ActionResult UpdateLopMonHoc(int malopmonhoc)
+        // {
+        //     var lmh = appContext.LopMonHocs.Find(malopmonhoc);
+        //     if (lmh == null)
+        //     {
+        //         return NotFound();
+        //     }
+        //     else 
+        //     {
+        //         lmh.TenLopMonHoc = LopMonHocDto.;
+        //     }
+        // }
     }
 }
