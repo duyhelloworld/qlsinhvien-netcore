@@ -1,214 +1,78 @@
-using System.Data;
-using System.Runtime.Intrinsics.X86;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using qlsinhvien.Context;
+
 using qlsinhvien.Dto;
 using qlsinhvien.Entities;
+using qlsinhvien.Services;
+
 namespace qlsinhvien.Controllers;
 
 [ApiController]
-[Route("/[controller]")]
+[Route("[controller]")]
 public class GiangVienController : ControllerBase
 {
-    private readonly ApplicationContext giangVienDbContext;
-    public GiangVienController(ApplicationContext giangVienDbContext)
+    private readonly IGiangVienService _service;
+    public GiangVienController(IGiangVienService service)
     {
-        this.giangVienDbContext = giangVienDbContext;
+        _service = service;
     }
 
     [HttpGet]
-    public ActionResult<ICollection<GiangVien>> GetAll()
+    public async Task<IEnumerable<GiangVien>> GetAllAsync()
     {
-        return giangVienDbContext.GiangViens.ToList();
+        return await _service.GetAllAsync();
     }
 
-    [HttpGet("{magiangvien}")]
-    public ActionResult GetById(int magiangvien)
+    [HttpGet("{magiangvien:int:min(1)}")]
+    public async Task<IActionResult> GetByIdAsync(int magiangvien)
     {
-        var gv = giangVienDbContext.GiangViens.Find(magiangvien);
-        return gv == null ? NotFound() : Ok(gv);
-    }
-
-    [HttpGet("hoten/{hoten}")]
-    public ActionResult GetByName(string hoTen)
-    {
-        var gv = giangVienDbContext.GiangViens
-            .Where(GiangVien => GiangVien.HoTen.Contains(hoTen))
-            .OrderBy(g => g.MaGiangVien)
-            .ToList();
-        return gv.Count == 0 ? NotFound() : Ok(gv);
-    }
-
-    [HttpGet("bomon/{maBoMon}")]
-    public ActionResult GetByBoMon(int maBoMon)
-    {
-        var boMon = giangVienDbContext.BoMons.Find(maBoMon);
-        if (boMon == null)
-        {
-            return NotFound($"Bộ môn mã số {maBoMon} không tồn tại");
-        }
-        giangVienDbContext.BoMons.Entry(boMon).Collection(bm => bm.GiangViens).Load();
-        var giangViens = boMon.GiangViens;
-        if (giangViens == null || giangViens.Count == 0)
+        var giangVien = await _service.GetByIdAsync(magiangvien);
+        if (giangVien == null)
         {
             return NotFound();
         }
-        var ketQua = from gv in giangViens
-                     select new
-                     {
-                         gv.MaGiangVien,
-                         gv.HoTen,
-                         gv.Email,
-                         gv.SoDienThoai,
-                         BoMon = new
-                         {
-                             gv.BoMon.MaBoMon,
-                             gv.BoMon.TenBoMon
-                         }
-                     };
-        return Ok(ketQua);
+        return Ok(giangVien);
     }
 
-    [HttpGet("lopquanli/{maLopQuanLi}")]
-    public ActionResult GetByLopQuanLi(int maLopQuanLi)
+    [HttpGet("hoten/{hoten:length(1, 40)}")]
+    public async Task<IEnumerable<GiangVien>> GetByNameAsync(string hoTen)
     {
-        var kq = from gv in giangVienDbContext.GiangViens
-                 join lql in giangVienDbContext.LopQuanLis on gv.MaGiangVien equals lql.GiangVien.MaGiangVien
-                 where lql.MaLopQuanLi == maLopQuanLi
-                 select new
-                 {
-                     gv.MaGiangVien,
-                     gv.HoTen,
-                     gv.GioiTinh,
-                     gv.Email,
-                     lql.TenLopQuanLi
-                 };
-        return kq == null ? NotFound() : Ok(kq);
-        // return NoContent();
+        return await _service.GetByTenAsync(hoTen);
     }
 
-    [HttpGet("lopmonhoc/{malopmonhoc}")]
-    public ActionResult GetByLopMonHoc(string lopmh)
+    [HttpGet("bomon/{maBoMon:int:min(1)}")]
+    public async Task<IActionResult> GetByBoMonAsync(int maBoMon)
     {
-        var kq = from gv in giangVienDbContext.GiangViens
-                 join lmh in giangVienDbContext.LopMonHocs on gv.MaGiangVien equals lmh.GiangVien.MaGiangVien
-                 where lmh.TenLopMonHoc.Contains(lopmh)
-                 select new
-                 {
-                     gv.MaGiangVien,
-                     gv.HoTen,
-                     gv.GioiTinh,
-                     gv.Email,
-                     lmh.TenLopMonHoc
-                 };
-        return kq == null ? NotFound() : Ok(kq);
-        // return NoContent();
+        var giangViens = await _service.GetByBoMonAsync(maBoMon);
+        return Ok(giangViens);
+    }
+
+    [HttpGet("lopquanli/{maLopQuanLi:int:min(1)}")]
+    public async Task<IActionResult> GetByLopQuanLiAsync(int maLopQuanLi)
+    {
+        var giangViens = await _service.GetByLopQuanLiAsync(maLopQuanLi);
+        return Ok(giangViens);
+    }
+
+    [HttpGet("lopmonhoc/{malopmonhoc:int:min(1)}")]
+    public async Task<IActionResult> GetByLopMonHoc([FromRoute] int maLopMonHoc)
+    {
+        var ketQua = await _service.GetByLopMonHocAsync(maLopMonHoc);
+        return Ok(ketQua);        
     }
 
     [HttpPost]
-    public ActionResult AddGiangVien([FromBody] GiangVienDto giangVienDto)
+    public async Task<IActionResult> AddGiangVien([FromBody] GiangVienDto giangVienDto)
     {
-        if (giangVienDto.MaGiangVien != 0 || giangVienDto.MaBoMon == 0)
-        {
-            return BadRequest("Chứa tham số không hợp lệ");
-        }
-        int maBoMon = giangVienDto.MaBoMon;
-        var maLopQuanLi = giangVienDto.MaLopQuanLi;
-        var boMon = giangVienDbContext.BoMons.Find(maBoMon);
-        if (boMon == null)
-        {
-            return NotFound($"Không tồn tại bộ môn có mã {maBoMon}!");
-        }
-        // Check tên, tuổi bla bla
-        var giangVien = new GiangVien()
-        {
-            MaGiangVien = 0,
-            HoTen = giangVienDto.HoTen,
-            GioiTinh = giangVienDto.GioiTinh,
-            NgaySinh = giangVienDto.NgaySinh,
-            QueQuan = giangVienDto.QueQuan,
-            DiaChiThuongTru = giangVienDto.DiaChiThuongTru,
-            SoDienThoai = giangVienDto.SoDienThoai,
-            Email = giangVienDto.Email,
-            BoMon = boMon
-        };
-        // Thêm lớp quản lí (lớp quản lí của 1 giảng viên có thể null)
-        // Nếu gán lớp ql đã có sẵn cho giảng viên mới thì giảng viên mới sẽ tiếp quản lớp đó thay người cũ
-        var lopQuanLi = giangVienDbContext.LopQuanLis.Find(maLopQuanLi);
-        giangVien.LopQuanLi = lopQuanLi;
-        // Thêm các lớp môn học
-        var maLopMonHocs = giangVienDto.MaLopMonHocs;
-        if (maLopMonHocs != null && maLopMonHocs.Count() != 0)
-        {
-            var lopMonHocs = giangVienDbContext.LopMonHocs
-                .Where(lmh => maLopMonHocs.Contains(lmh.MaLopMonHoc))
-                .ToList();
-            if (lopMonHocs.Count() != 0)
-            {
-                giangVien.LopMonHocs = lopMonHocs;
-            }
-        }
-        try
-        {
-            giangVienDbContext.GiangViens.Add(giangVien);
-            giangVienDbContext.SaveChanges();
-        }
-        catch (DbUpdateException ex)
-        {
-            if (ex.InnerException.Message.Contains("email"))
-            {
-                return BadRequest($"Email {giangVienDto.Email} đã được sử dụng");
-            }
-            else if (ex.InnerException.Message.Contains("SoDienThoai"))
-            {
-                return BadRequest($"Số điện thoại {giangVienDto.SoDienThoai} đã được sử dụng");
-            }
-            throw;
-        }
-
-        return CreatedAtAction(nameof(GetById),
-            new
-            {
-                giangVien.MaGiangVien,
-                giangVien.HoTen,
-                giangVien.Email,
-                giangVien.BoMon.TenBoMon,
-                TenLopQuanLi = giangVien.LopQuanLi == null ? null : giangVien.LopQuanLi.TenLopQuanLi
-            });
+        var ketQua = await _service.AddNewAsync(giangVienDto);
+        return Ok(ketQua);
     }
 
-    [HttpPut("{magiangvien}")]
-    public ActionResult UpdateThongTinGiangVien(int magiangvien, [FromBody] GiangVienDto giangVienDto)
+    [HttpPut("{magiangvien:int:min(1)}")]
+    public async Task<IActionResult> UpdateThongTinGiangVien([FromRoute] int magiangvien, [FromBody] GiangVienDto giangVienDto)
     {
-        var boMon = giangVienDbContext.BoMons.Find(giangVienDto.MaBoMon);
-        if (boMon == null)
-        {
-            return NotFound($"Không tồn tại bộ môn có mã {giangVienDto.MaBoMon}!");
-        }
-        var gv = giangVienDbContext.GiangViens.Find(magiangvien);
-        if (gv == null)
-        {
-            return NotFound();
-        }
-        giangVienDto.MaGiangVien = magiangvien;
-        gv.HoTen = giangVienDto.HoTen;
-        gv.GioiTinh = giangVienDto.GioiTinh;
-        gv.NgaySinh = giangVienDto.NgaySinh;
-        gv.QueQuan = giangVienDto.QueQuan;
-        gv.DiaChiThuongTru = giangVienDto.DiaChiThuongTru;
-        gv.SoDienThoai = giangVienDto.SoDienThoai;
-        gv.Email = giangVienDto.Email;
-        gv.BoMon = boMon;
-        // Ko cập nhật lớp quản lí / lớp môn học vì có hàm riêng để làm chuyện ấy
-        giangVienDbContext.SaveChanges();
-        return Ok(new
-        {
-            gv.MaGiangVien,
-            gv.HoTen,
-            gv.Email,
-            gv.BoMon.TenBoMon
-        });
+        var ketQua = await _service.UpdateAsync(magiangvien, giangVienDto);
+        return Ok(ketQua);
     }
 
     [HttpPut("lopquanli/{magiangvien}")]
@@ -218,18 +82,18 @@ public class GiangVienController : ControllerBase
         {
             return BadRequest();
         }
-        var giangVien = giangVienDbContext.GiangViens.Find(magiangvien);
+        var giangVien = _context.GiangViens.Find(magiangvien);
         if (giangVien == null)
         {
             return NotFound();
         }
-        var lopQuanLi = giangVienDbContext.LopQuanLis.Find(maLopQuanLi);
+        var lopQuanLi = _context.LopQuanLis.Find(maLopQuanLi);
         if (lopQuanLi == null)
         {
             return BadRequest($"Không tồn tại lớp quản lí có mã {maLopQuanLi}");
         }
         giangVien.LopQuanLi = lopQuanLi;
-        giangVienDbContext.SaveChanges();
+        _context.SaveChanges();
         return Ok(giangVien);
     }
 
@@ -240,12 +104,12 @@ public class GiangVienController : ControllerBase
         {
             return BadRequest();
         }
-        var giangVien = giangVienDbContext.GiangViens.Find(magiangvien);
+        var giangVien = _context.GiangViens.Find(magiangvien);
         if (giangVien == null)
         {
             return NotFound($"Không tồn tại giảng viên mã số {magiangvien}");
         }
-        var lopMonHocs = giangVienDbContext.LopMonHocs
+        var lopMonHocs = _context.LopMonHocs
                 .Where(lmh => maLopMonHocs.Contains(lmh.MaLopMonHoc))
                 .ToList();
         if (lopMonHocs.Count() == 0)
@@ -253,14 +117,14 @@ public class GiangVienController : ControllerBase
             return NotFound("Không tồn tại các lớp môn học này.");
         }
         giangVien.LopMonHocs = lopMonHocs;
-        giangVienDbContext.SaveChanges();
+        _context.SaveChanges();
         return Ok(giangVien);
     }
 
     [HttpDelete("{magiangvien}")]
     public ActionResult DeleteGiangVien(int magiangvien)
     {
-        var gv = giangVienDbContext.GiangViens.Find(magiangvien);
+        var gv = _context.GiangViens.Find(magiangvien);
 
         if (gv == null)
         {
@@ -268,20 +132,20 @@ public class GiangVienController : ControllerBase
         }
 
         // Tìm các lớp quản lí liên quan và đặt mã giảng viên thành null
-        var lqlList = giangVienDbContext.LopQuanLis.Where(lql => lql.GiangVien.MaGiangVien == magiangvien);
+        var lqlList = _context.LopQuanLis.Where(lql => lql.GiangVien.MaGiangVien == magiangvien);
         foreach (var lql in lqlList)
         {
             lql.GiangVien = null;
         }
 
         // Tìm các lớp môn học liên quan và đặt mã giảng viên thành null
-        var lmhList = giangVienDbContext.LopMonHocs.Where(lmh => lmh.GiangVien.MaGiangVien == magiangvien);
+        var lmhList = _context.LopMonHocs.Where(lmh => lmh.GiangVien.MaGiangVien == magiangvien);
         foreach (var lmh in lmhList)
         {
             lmh.GiangVien = null;
         }
 
-        giangVienDbContext.SaveChanges();
+        _context.SaveChanges();
 
         return Ok(gv);
     }

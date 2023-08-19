@@ -12,7 +12,7 @@ namespace qlsinhvien.Entities
 
         [Required]
         [StringLength(10)]
-        public string? TenLopMonHoc { get; set; }
+        public required string TenLopMonHoc { get; set; }
 
         [Required]
         [ForeignKey("MaMonHoc")]
@@ -21,6 +21,7 @@ namespace qlsinhvien.Entities
 
         [Required]
         [ForeignKey("MaGiangVien")]
+        [DeleteBehavior(DeleteBehavior.NoAction)]
         public GiangVien GiangVien { get; set; }
 
         public ICollection<DiemSinhVien>? DiemSinhViens { get; set; } = new HashSet<DiemSinhVien>();

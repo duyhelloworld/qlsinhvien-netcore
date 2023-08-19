@@ -5,6 +5,7 @@ namespace qlsinhvien.Context;
 
 public class ApplicationContext : DbContext
 {
+
     public ApplicationContext(DbContextOptions<ApplicationContext> dbContextOptions) : base(dbContextOptions)
     {
 
@@ -16,6 +17,5 @@ public class ApplicationContext : DbContext
     public DbSet<LopMonHoc> LopMonHocs { get; set; }
     public DbSet<LopQuanLi> LopQuanLis { get; set; }
     public DbSet<MonHoc> MonHocs { get; set; }
-
     public DbSet<BoMon> BoMons { get; set; }
 }

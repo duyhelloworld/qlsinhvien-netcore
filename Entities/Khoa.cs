@@ -12,7 +12,7 @@ public class Khoa
 
     [Required]
     [StringLength(80)]
-    public string TenKhoa { get; set; }
+    public required string TenKhoa { get; set; }
 
     public ICollection<LopQuanLi> LopQuanLis { get; set; } = new HashSet<LopQuanLi>();
 

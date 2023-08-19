@@ -10,9 +10,9 @@ public class ConNguoi
 {
     [Required]
     [StringLength(40)]
-    public string HoTen { get; set; }
+    public required string HoTen { get; set; }
 
-    public bool? GioiTinh { get; set; }
+    public bool GioiTinh { get; set; }
 
     [Column(TypeName = "date")]
     public DateTime? NgaySinh { get; set; }
@@ -25,9 +25,9 @@ public class ConNguoi
 
     [Required]
     [MaxLength(150)]
-    public string Email { get; set; }
+    public required string Email { get; set; }
 
     [Required]
     [StringLength(10)]
-    public string SoDienThoai { get; set; }
+    public required string SoDienThoai { get; set; }
 }

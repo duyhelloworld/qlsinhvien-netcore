@@ -12,7 +12,7 @@ namespace qlsinhvien.Entities
 
         [Required]
         [StringLength(60)]
-        public string? TenMonHoc { get; set; }
+        public required string TenMonHoc { get; set; }
 
         [Column(TypeName = "tinyint")]
         public short SoTinChi { get; set; }
