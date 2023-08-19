@@ -15,12 +15,12 @@ public class GiangVienService : IGiangVienService
     }
 
 
-    public async Task<IEnumerable<GiangVien>> GetAllAsync()
+    public async Task<IEnumerable<GiangVien>> GetAll()
     {
         return await _context.GiangViens.ToListAsync();
     }
 
-    public async Task<GiangVien?> GetByIdAsync(int maSoGiangVien)
+    public async Task<GiangVien?> GetById(int maSoGiangVien)
     {
         if (maSoGiangVien <= 0)
         {
@@ -29,7 +29,7 @@ public class GiangVienService : IGiangVienService
         return await _context.GiangViens.FindAsync(maSoGiangVien);
     }
 
-    public async Task<IEnumerable<GiangVien>> GetByTenAsync(string tenGiangVien)
+    public async Task<IEnumerable<GiangVien>> GetByTen(string tenGiangVien)
     {
         return await _context.GiangViens
             .Where(gv => gv.HoTen.Contains(tenGiangVien))
@@ -37,7 +37,7 @@ public class GiangVienService : IGiangVienService
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<GiangVien>> GetByBoMonAsync(int maBoMon)
+    public async Task<IEnumerable<GiangVien>> GetByBoMon(int maBoMon)
     {
         var boMon = await _context.BoMons.FindAsync(maBoMon);
         if (boMon == null)
@@ -53,7 +53,7 @@ public class GiangVienService : IGiangVienService
         return giangViens;
     }
 
-    public async Task<GiangVien?> GetByLopQuanLiAsync(int maLopQuanLi)
+    public async Task<GiangVien?> GetByLopQuanLi(int maLopQuanLi)
     {
         var lopQuanLi = await _context.LopQuanLis.FindAsync(maLopQuanLi);
         if (lopQuanLi == null)
@@ -69,7 +69,7 @@ public class GiangVienService : IGiangVienService
         return giangVien;
     }
 
-    public async Task<GiangVien?> GetByLopMonHocAsync(int maLopMonHoc)
+    public async Task<GiangVien?> GetByLopMonHoc(int maLopMonHoc)
     {
         var lopMonHoc = await _context.LopMonHocs.FindAsync(maLopMonHoc);
         if (lopMonHoc == null)
@@ -85,7 +85,7 @@ public class GiangVienService : IGiangVienService
         return giangVien;
     }
 
-    public Task<GiangVien?> GetByLopMonHocAsync(IEnumerable<int> maLopMonHocs)
+    public Task<GiangVien?> GetByLopMonHoc(IEnumerable<int> maLopMonHocs)
     {
         // var lopMonHocsInDb = await _context.LopMonHocs
         //         .Where(lmh => maLopMonHocs.Contains(lmh.MaLopMonHoc))
@@ -102,7 +102,7 @@ public class GiangVienService : IGiangVienService
         throw new NotImplementedException();
     }
 
-    public async Task<GiangVien> AddNewAsync(GiangVienDto giangVienDto)
+    public async Task<GiangVien> AddNew(GiangVienDto giangVienDto)
     {
         var boMon = await _context.BoMons.FindAsync(giangVienDto.MaBoMon);
         if (boMon == null)
@@ -164,13 +164,8 @@ public class GiangVienService : IGiangVienService
         return giangVien;
     }
 
-    public async Task<GiangVien> UpdateAsync(int maGiangVien, GiangVienDto giangVienDto)
+    public async Task<GiangVien> UpdateProfile(int maGiangVien, GiangVienDto giangVienDto)
     {
-        var boMon = await _context.BoMons.FindAsync(giangVienDto.MaBoMon);
-        if (boMon == null)
-        {
-            throw new HttpException(404, $"Không tồn tại bộ môn có mã {giangVienDto.MaBoMon}!");
-        }
         var giangVien = await _context.GiangViens.FindAsync(maGiangVien);
         if (giangVien == null)
         {
@@ -192,7 +187,7 @@ public class GiangVienService : IGiangVienService
             }
             throw new HttpException(400, msg);
         }
-        
+
         giangVienDto.MaGiangVien = maGiangVien;
         giangVien.HoTen = giangVienDto.HoTen;
         giangVien.GioiTinh = giangVienDto.GioiTinh;
@@ -201,21 +196,108 @@ public class GiangVienService : IGiangVienService
         giangVien.DiaChiThuongTru = giangVienDto.DiaChiThuongTru;
         giangVien.SoDienThoai = giangVienDto.SoDienThoai;
         giangVien.Email = giangVienDto.Email;
-        giangVien.BoMon = boMon;
-        // Ko cập nhật lớp quản lí / lớp môn học vì có hàm riêng để làm chuyện ấy
+        // Ko cập nhật bộ môn / lớp quản lí / lớp môn học vì có hàm riêng để làm chuyện ấy
         _context.SaveChanges();
         return giangVien;
     }    
 
-    
-
-    public Task RemoveAsync(int maSoGiangVien)
+    public async Task<GiangVien> UpdateLopQuanLi_GiangVien(int maGiangVien, int maLopQuanLi)
     {
-        throw new NotImplementedException();
+        var giangVien = await _context.GiangViens.FindAsync(maGiangVien);
+        if (giangVien == null)
+        {
+            throw new HttpException(404, $"Không tồn tại giảng viên có mã {maGiangVien}!");
+        }
+        var lopQuanLi = await _context.LopQuanLis.FindAsync(maLopQuanLi);
+        if (lopQuanLi == null)
+        {
+            throw new HttpException(404, $"Không tồn tại lớp quản lí có mã {maLopQuanLi}");
+        }
+        giangVien.LopQuanLi = lopQuanLi;
+        _context.SaveChanges();
+        return giangVien;
     }
 
-    public Task<int> RemoveRangeAsync(ICollection<int> maSoGiangViens)
+    public async Task<GiangVien> UpdateBoMon_GiangVien(int maGiangVien, int maBoMon)
     {
-        throw new NotImplementedException();
+        var giangVien = await _context.GiangViens.FindAsync(maGiangVien);
+        if (giangVien == null)
+        {
+            throw new HttpException(404, $"Không tồn tại giảng viên có mã {maGiangVien}!");
+        }
+        var boMon = await _context.BoMons.FindAsync(maBoMon);
+        if (boMon == null)
+        {
+            throw new HttpException(404, $"Không tồn tại bộ môn có mã {maBoMon}!");
+        }
+        giangVien.BoMon = boMon;
+        await _context.SaveChangesAsync();
+        return giangVien;
     }
+
+    public async Task<GiangVien> UpdateLopMonHocs_GiangVien(int maGiangVien, ICollection<int> maLopMonHocs)
+    {
+        var giangVien = await _context.GiangViens.FindAsync(maGiangVien);
+        if (giangVien == null)
+        {
+            throw new HttpException(404, $"Không tồn tại giảng viên mã số {maGiangVien}");
+        }
+        var lopMonHocs = await _context.LopMonHocs
+                .Where(lmh => maLopMonHocs.Contains(lmh.MaLopMonHoc))
+                .ToListAsync();
+        if (lopMonHocs.Any())
+        {
+            throw new HttpException(404, "Không tồn tại các lớp môn học này");
+        }
+        giangVien.LopMonHocs = lopMonHocs;
+        var soUpdated = _context.SaveChanges();
+        if (soUpdated != lopMonHocs.Count())
+        {
+            var khongTonTai = new List<int>();
+            int dem = 0;
+            while (dem == soUpdated)
+            {
+                foreach (var maLop in maLopMonHocs)
+                {
+                    foreach (var lop in lopMonHocs)
+                    {
+                        if (maLop != lop.MaLopMonHoc)
+                        {
+                            khongTonTai.Add(maLop);
+                            dem++;
+                        }
+                    }
+                }
+            }
+            throw new HttpException(200, @$"Cập nhật thành công {soUpdated} lớp môn học.\n
+                    Các mã lớp không được cập nhật là {khongTonTai}");
+        }
+        return giangVien;
+    }
+
+    public async Task Remove(int maGiangVien)
+    {
+        var giangVien = await _context.GiangViens.FindAsync(maGiangVien);
+        if (giangVien == null)
+        {
+            throw new HttpException(404, $"Không tồn tại giảng viên mã số {maGiangVien}");
+        }
+
+        // Tìm các lớp quản lí liên quan và đặt mã giảng viên thành null
+        await _context.GiangViens.Entry(giangVien).Reference(gv => gv.LopQuanLi).LoadAsync();
+        giangVien.LopQuanLi!.GiangVien = null;
+
+        // Tìm các lớp môn học liên quan và đặt mã giảng viên thành null
+        var lmhList = _context.LopMonHocs.Where(lmh => lmh.GiangVien.MaGiangVien == maGiangVien);
+        foreach (var lmh in lmhList)
+        {
+            lmh.GiangVien = null;
+        }
+        _context.SaveChanges();
+    }
+
+    // public Task<int> RemoveRange(ICollection<int> maSoGiangViens)
+    // {
+    //     throw new NotImplementedException();
+    // }
 }

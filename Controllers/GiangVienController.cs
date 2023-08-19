@@ -20,13 +20,13 @@ public class GiangVienController : ControllerBase
     [HttpGet]
     public async Task<IEnumerable<GiangVien>> GetAllAsync()
     {
-        return await _service.GetAllAsync();
+        return await _service.GetAll();
     }
 
     [HttpGet("{magiangvien:int:min(1)}")]
     public async Task<IActionResult> GetByIdAsync(int magiangvien)
     {
-        var giangVien = await _service.GetByIdAsync(magiangvien);
+        var giangVien = await _service.GetById(magiangvien);
         if (giangVien == null)
         {
             return NotFound();
@@ -37,117 +37,61 @@ public class GiangVienController : ControllerBase
     [HttpGet("hoten/{hoten:length(1, 40)}")]
     public async Task<IEnumerable<GiangVien>> GetByNameAsync(string hoTen)
     {
-        return await _service.GetByTenAsync(hoTen);
+        return await _service.GetByTen(hoTen);
     }
 
     [HttpGet("bomon/{maBoMon:int:min(1)}")]
     public async Task<IActionResult> GetByBoMonAsync(int maBoMon)
     {
-        var giangViens = await _service.GetByBoMonAsync(maBoMon);
+        var giangViens = await _service.GetByBoMon(maBoMon);
         return Ok(giangViens);
     }
 
     [HttpGet("lopquanli/{maLopQuanLi:int:min(1)}")]
     public async Task<IActionResult> GetByLopQuanLiAsync(int maLopQuanLi)
     {
-        var giangViens = await _service.GetByLopQuanLiAsync(maLopQuanLi);
+        var giangViens = await _service.GetByLopQuanLi(maLopQuanLi);
         return Ok(giangViens);
     }
 
     [HttpGet("lopmonhoc/{malopmonhoc:int:min(1)}")]
     public async Task<IActionResult> GetByLopMonHoc([FromRoute] int maLopMonHoc)
     {
-        var ketQua = await _service.GetByLopMonHocAsync(maLopMonHoc);
+        var ketQua = await _service.GetByLopMonHoc(maLopMonHoc);
         return Ok(ketQua);        
     }
 
-    [HttpPost]
+    [HttpPost("/")]
     public async Task<IActionResult> AddGiangVien([FromBody] GiangVienDto giangVienDto)
     {
-        var ketQua = await _service.AddNewAsync(giangVienDto);
+        var ketQua = await _service.AddNew(giangVienDto);
         return Ok(ketQua);
     }
 
     [HttpPut("{magiangvien:int:min(1)}")]
     public async Task<IActionResult> UpdateThongTinGiangVien([FromRoute] int magiangvien, [FromBody] GiangVienDto giangVienDto)
     {
-        var ketQua = await _service.UpdateAsync(magiangvien, giangVienDto);
+        var ketQua = await _service.UpdateProfile(magiangvien, giangVienDto);
         return Ok(ketQua);
     }
 
-    [HttpPut("lopquanli/{magiangvien}")]
-    public ActionResult UpdateLopQuanLi_GiangVien(int magiangvien, [FromBody] int maLopQuanLi)
+    [HttpPut("{magiangvien:int:min(1)}/lopquanli/{malopquanli:int:min(1)}")]
+    public async Task<IActionResult> UpdateLopQuanLi_GiangVien([FromRoute] int magiangvien, [FromRoute] int maLopQuanLi)
     {
-        if (maLopQuanLi == 0)
-        {
-            return BadRequest();
-        }
-        var giangVien = _context.GiangViens.Find(magiangvien);
-        if (giangVien == null)
-        {
-            return NotFound();
-        }
-        var lopQuanLi = _context.LopQuanLis.Find(maLopQuanLi);
-        if (lopQuanLi == null)
-        {
-            return BadRequest($"Không tồn tại lớp quản lí có mã {maLopQuanLi}");
-        }
-        giangVien.LopQuanLi = lopQuanLi;
-        _context.SaveChanges();
-        return Ok(giangVien);
+        var ketQua = await _service.UpdateLopQuanLi_GiangVien(magiangvien, maLopQuanLi);
+        return Ok(ketQua);
     }
 
     [HttpPut("lopmonhoc/{magiangvien}")]
-    public ActionResult UpdateLopMonHocs_GiangVien(int magiangvien, [FromBody] ICollection<int> maLopMonHocs)
+    public async Task<IActionResult> UpdateLopMonHocs_GiangVien(int magiangvien, [FromBody] ICollection<int> maLopMonHocs)
     {
-        if (maLopMonHocs.Count == 0)
-        {
-            return BadRequest();
-        }
-        var giangVien = _context.GiangViens.Find(magiangvien);
-        if (giangVien == null)
-        {
-            return NotFound($"Không tồn tại giảng viên mã số {magiangvien}");
-        }
-        var lopMonHocs = _context.LopMonHocs
-                .Where(lmh => maLopMonHocs.Contains(lmh.MaLopMonHoc))
-                .ToList();
-        if (lopMonHocs.Count() == 0)
-        {
-            return NotFound("Không tồn tại các lớp môn học này.");
-        }
-        giangVien.LopMonHocs = lopMonHocs;
-        _context.SaveChanges();
-        return Ok(giangVien);
+        var ketQua = await _service.UpdateLopMonHocs_GiangVien(magiangvien, maLopMonHocs);
+        return Ok(ketQua);
     }
 
     [HttpDelete("{magiangvien}")]
-    public ActionResult DeleteGiangVien(int magiangvien)
+    public async Task DeleteGiangVien(int magiangvien)
     {
-        var gv = _context.GiangViens.Find(magiangvien);
-
-        if (gv == null)
-        {
-            return NotFound();
-        }
-
-        // Tìm các lớp quản lí liên quan và đặt mã giảng viên thành null
-        var lqlList = _context.LopQuanLis.Where(lql => lql.GiangVien.MaGiangVien == magiangvien);
-        foreach (var lql in lqlList)
-        {
-            lql.GiangVien = null;
-        }
-
-        // Tìm các lớp môn học liên quan và đặt mã giảng viên thành null
-        var lmhList = _context.LopMonHocs.Where(lmh => lmh.GiangVien.MaGiangVien == magiangvien);
-        foreach (var lmh in lmhList)
-        {
-            lmh.GiangVien = null;
-        }
-
-        _context.SaveChanges();
-
-        return Ok(gv);
+        await _service.Remove(magiangvien);
     }
-
 }
