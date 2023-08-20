@@ -82,14 +82,14 @@ public class GiangVienController : ControllerBase
         return Ok(ketQua);
     }
 
-    [HttpPut("lopmonhoc/{magiangvien}")]
+    [HttpPut("lopmonhoc/{magiangvien:int:min(1)}")]
     public async Task<IActionResult> UpdateLopMonHocs_GiangVien(int magiangvien, [FromBody] ICollection<int> maLopMonHocs)
     {
         var ketQua = await _service.UpdateLopMonHocs_GiangVien(magiangvien, maLopMonHocs);
         return Ok(ketQua);
     }
 
-    [HttpDelete("{magiangvien}")]
+    [HttpDelete("{magiangvien:int:min(1)}")]
     public async Task DeleteGiangVien(int magiangvien)
     {
         await _service.Remove(magiangvien);
