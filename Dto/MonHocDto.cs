@@ -17,7 +17,7 @@ public class MonHocDto
 
     public int MaMonTienQuyet { get; set; }
     [JsonRequired]
-    public BoMon BoMon { get; set; }
+    public int MaBoMon { get; set; }
 
     public int MaLopMonHoc { get; set; }
 }

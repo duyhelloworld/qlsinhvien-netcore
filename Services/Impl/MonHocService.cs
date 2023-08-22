@@ -18,7 +18,7 @@ public class MonHocService : IMonHocService
 
     public async Task<MonHoc> AddNew(MonHocDto monHocDto)
     {
-        var boMon = await _context.BoMons.FindAsync(monHocDto.BoMon);
+        var boMon = await _context.BoMons.FindAsync(monHocDto.MaBoMon);
         if (boMon == null)
         {
             throw new HttpException(404, $"Không tồn tại bộ môn{boMon}");
@@ -87,13 +87,18 @@ public class MonHocService : IMonHocService
         {
             throw new HttpException(404, $"Không tồn tại môn học có mã môn học: {maSoMonHoc}.");
         }
+        var boMon = await _context.BoMons.FindAsync(monHocDto.MaBoMon);
+        if (boMon == null)
+        {
+            throw new HttpException(404, $"Không tồn tại bộ môn có mã: {monHocDto.MaBoMon}.");
+        }
         monHocDto.MaMonHoc = maSoMonHoc;
         mh.TenMonHoc = monHocDto.TenMonHoc;
         mh.SoTinChi = monHocDto.SoTinChi;
         mh.BatBuoc = monHocDto.BatBuoc;
         mh.MoTa = monHocDto.MoTa;
-        mh.BoMon = monHocDto.BoMon;
-        _context.SaveChanges();
+        mh.BoMon = boMon;
+        await _context.SaveChangesAsync();
         return mh;
     }
 }
