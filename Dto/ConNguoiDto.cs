@@ -4,10 +4,8 @@ namespace qlsinhvien.Dto;
 
 public abstract class ConNguoiDto
 {
-    [JsonRequired]
     public string HoTen { get; set; }
 
-    [JsonRequired]
     public bool GioiTinh { get; set; }
 
     public DateTime NgaySinh { get; set; }
@@ -17,8 +15,8 @@ public abstract class ConNguoiDto
     public string? QueQuan { get; set; }
 
     [JsonRequired]
-    public string Email { get; set; }
+    public string Email { get; set; } = "";
 
     [JsonRequired]
-    public string SoDienThoai { get; set; }
+    public string SoDienThoai { get; set; } = "";
 }
