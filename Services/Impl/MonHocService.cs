@@ -18,7 +18,7 @@ public class MonHocService : IMonHocService
 
     public async Task<MonHoc> AddNew(MonHocDto monHocDto)
     {
-        var boMon = await _context.BoMons.FindAsync(monHocDto.BoMon);
+        var boMon = await _context.BoMons.FindAsync(monHocDto.MaBoMon);
         if (boMon == null)
         {
             throw new HttpException(404, $"Không tồn tại bộ môn{boMon}");
@@ -50,7 +50,7 @@ public class MonHocService : IMonHocService
         return mh;
     }
 
-    async Task<IEnumerable<MonHoc>> IMonHocService.GetByTenMon(string tenMonHoc)
+    async Task<IEnumerable<MonHoc>> GetByTenMon(string tenMonHoc)
     {
         return await _context.MonHocs
             .Where(mh => mh.TenMonHoc.Contains(tenMonHoc))
@@ -87,13 +87,19 @@ public class MonHocService : IMonHocService
         {
             throw new HttpException(404, $"Không tồn tại môn học có mã môn học: {maSoMonHoc}.");
         }
+        
         monHocDto.MaMonHoc = maSoMonHoc;
         mh.TenMonHoc = monHocDto.TenMonHoc;
         mh.SoTinChi = monHocDto.SoTinChi;
         mh.BatBuoc = monHocDto.BatBuoc;
         mh.MoTa = monHocDto.MoTa;
-        mh.BoMon = monHocDto.BoMon;
+        mh.BoMon = monHocDto.;
         _context.SaveChanges();
         return mh;
+    }
+
+    Task<IEnumerable<MonHoc>> IMonHocService.GetByTenMon(string tenMonHoc)
+    {
+        throw new NotImplementedException();
     }
 }
