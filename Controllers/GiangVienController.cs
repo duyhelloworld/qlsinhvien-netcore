@@ -97,7 +97,7 @@ public class GiangVienController : ControllerBase
         return Ok(ketQua);
     }
 
-    [HttpPut("lopmonhoc/{magiangvien:int:min(1)}")]
+    [HttpPut("{magiangvien:int:min(1)}/lopmonhoc")]
     public async Task<IActionResult> UpdateLopMonHocs_GiangVien(int magiangvien, [FromBody] ICollection<int> maLopMonHocs)
     {
         var ketQua = await _service.UpdateLopMonHocs_GiangVien(magiangvien, maLopMonHocs);
