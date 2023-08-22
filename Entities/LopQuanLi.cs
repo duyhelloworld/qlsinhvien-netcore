@@ -15,7 +15,7 @@ namespace qlsinhvien.Entities
         public required string TenLopQuanLi { get; set; }
 
         [ForeignKey("MaGiangVien")]
-        public GiangVien GiangVien { get; set; }
+        public GiangVien? GiangVien { get; set; }
 
         [Required]
         [ForeignKey("MaKhoa")]
