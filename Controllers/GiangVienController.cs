@@ -16,7 +16,6 @@ public class GiangVienController : ControllerBase
     {
         _service = service;
     }
-
     [HttpGet]
     public async Task<IEnumerable<GiangVien>> GetAllAsync()
     {
@@ -35,8 +34,17 @@ public class GiangVienController : ControllerBase
     }
 
     [HttpGet("hoten/{hoten:length(1, 40)}")]
-    public async Task<IEnumerable<GiangVien>> GetByNameAsync(string hoTen)
+    public async Task<IEnumerable<GiangVien>> GetByNameViaRoute(string hoTen)
     {
+        return await _service.GetByTen(hoTen);
+    }
+    [HttpGet("hoten")]
+    public async Task<IEnumerable<GiangVien>> GetByNameViaQuery([FromQuery] string hoTen)
+    {
+        if (hoTen.Length < 1 || hoTen.Length > 40)
+        {
+            return Enumerable.Empty<GiangVien>().ToList();
+        }
         return await _service.GetByTen(hoTen);
     }
 
@@ -61,7 +69,7 @@ public class GiangVienController : ControllerBase
         return Ok(ketQua);        
     }
 
-    [HttpPost("/")]
+    [HttpPost("")]
     public async Task<IActionResult> AddGiangVien([FromBody] GiangVienDto giangVienDto)
     {
         var ketQua = await _service.AddNew(giangVienDto);
@@ -79,6 +87,13 @@ public class GiangVienController : ControllerBase
     public async Task<IActionResult> UpdateLopQuanLi_GiangVien([FromRoute] int magiangvien, [FromRoute] int maLopQuanLi)
     {
         var ketQua = await _service.UpdateLopQuanLi_GiangVien(magiangvien, maLopQuanLi);
+        return Ok(ketQua);
+    }
+
+    [HttpPut("{magiangvien:int:min(1)}/bomon/{mabomon:int:min(1)}")]
+    public async Task<IActionResult> UpdateBoMon_GiangVien([FromRoute] int magiangvien, [FromRoute] int maBoMon)
+    {
+        var ketQua = await _service.UpdateBoMon_GiangVien(magiangvien, maBoMon);
         return Ok(ketQua);
     }
 
