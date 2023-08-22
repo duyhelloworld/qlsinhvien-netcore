@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using qlsinhvien.Entities;
 
 namespace qlsinhvien.Dto;
 public class MonHocDto

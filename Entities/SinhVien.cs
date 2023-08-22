@@ -13,8 +13,9 @@ namespace qlsinhvien.Entities
         public DateTime NgayVaoTruong { get; set; }
 
         [Required]
-        [ForeignKey("MaLopQuanLi")]
         public LopQuanLi LopQuanLi { get; set; }
+        [ForeignKey("MaLopQuanLi")]
+        public int MaLopQuanLi { get; set; }
 
         public ICollection<DiemSinhVien>? DiemSinhViens { get; set; } = new HashSet<DiemSinhVien>();
     }
