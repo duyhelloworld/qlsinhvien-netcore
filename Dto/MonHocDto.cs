@@ -6,11 +6,8 @@ public class MonHocDto
 {
     [JsonRequired]
     public int MaMonHoc { get; set; }
-    [JsonRequired]
     public string TenMonHoc { get; set; }
-    [JsonRequired]
     public short SoTinChi { get; set; }
-    [JsonRequired]
     public bool BatBuoc { get; set; }
 
     public string MoTa { get; set; }

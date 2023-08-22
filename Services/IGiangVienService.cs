@@ -19,5 +19,8 @@ public interface IGiangVienService
     public Task<GiangVien> UpdateBoMon_GiangVien(int maGiangVien, int maBoMon);
     public Task<GiangVien> UpdateLopMonHocs_GiangVien(int maGiangVien, ICollection<int> maLopMonHocs);
     public Task Remove(int maGiangVien);
+    public Task RemoveLopQuanLiHienTai(int maLopQuanLi);
+    public Task RemoveAllLopMonHoc(ICollection<int> maLopMonHocs);
+
     // public Task<int> RemoveRange(ICollection<int> maGiangViens);
 }
