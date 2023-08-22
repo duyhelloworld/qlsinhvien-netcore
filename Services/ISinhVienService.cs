@@ -1,14 +1,18 @@
 using Microsoft.AspNetCore.Mvc;
 using qlsinhvien.Dto;
+using qlsinhvien.Entities;
 
 namespace qlsinhvien.Services;
-public interface SinhVienService
+public interface ISinhVienService
 {
-    public Task<ActionResult> GetAllAsync();
-    public Task<ActionResult> GetByIdAsync(int maSoSinhVien);
-    public Task<ActionResult> GetByLopQuanLiAsync(int maLopQuanLi);
-    public Task<ActionResult> AddNewAsync(SinhVienDto sinhVienDto);
-    public Task<ActionResult> UpdateAsync(SinhVienDto sinhVienDto);
-    public Task<ActionResult> RemoveAsync(int maSoSinhVien);
-    public Task<ActionResult> RemoveRangeAsync(ICollection<int> maSoSinhViens);
+    public Task<IEnumerable<SinhVien>> GetAll();
+    public Task<SinhVien?> GetById(int maSoSinhVien);
+    public Task<IEnumerable<SinhVien>> GetByHoTen(string hoTen);
+    public Task<IEnumerable<SinhVien>> GetByLopQuanLi(int maLopQuanLi);
+    public Task<IEnumerable<SinhVien>> GetByLopMonHoc(int maLopMonHoc);
+    public Task<SinhVien> AddNew(SinhVienDto sinhVienDto);
+    public Task<SinhVien> UpdateProfile(int maSoSinhVien, SinhVienDto sinhVienDto);
+    public Task Remove(int maSoSinhVien);
+    
+    // public Task<SinhVien> UpdateLopMonHoc(int maSoSinhVien, );
 }
