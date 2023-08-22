@@ -1,14 +1,14 @@
-using Microsoft.AspNetCore.Mvc;
 using qlsinhvien.Dto;
+using qlsinhvien.Entities;
 
 namespace qlsinhvien.Services;
 
 public interface IKhoaService
 {
-    public Task<ActionResult> GetAllAsync();
-    public Task<ActionResult> GetByIdAsync(int maKhoa);
-    public Task<ActionResult> GetByTenAsync(string tenKhoa);
-    public Task<ActionResult> AddNewAsync(KhoaDto KhoaDto);
-    public Task<ActionResult> UpdateAsync(int maKhoa, KhoaDto KhoaDto);
-    public Task<ActionResult> RemoveAsync(int maKhoa);
+    public Task<IEnumerable<Khoa>> GetAll();
+    public Task<Khoa?> GetById(int maKhoa);
+    public Task<IEnumerable<Khoa>> GetByTen(string tenKhoa);
+    public Task<Khoa> AddNew(KhoaDto KhoaDto);
+    public Task<Khoa> Update(int maKhoa, KhoaDto KhoaDto);
+    public Task Remove(int maKhoa);
 }
