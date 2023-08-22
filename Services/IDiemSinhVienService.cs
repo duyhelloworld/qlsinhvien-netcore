@@ -1,16 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
 using qlsinhvien.Dto;
+using qlsinhvien.Entities;
 
 namespace qlsinhvien.Services;
 
 public interface IDiemSinhVienService
 {
-    public Task<ActionResult> GetAllAsync();
-    public Task<ActionResult> GetByIdAsync(int maDiemSinhVien);
-    public Task<ActionResult> GetByLopQuanLiAsync(int maDiemSinhVien);
-    public Task<ActionResult> GetByLopMonHocAsync(ICollection<int> maDiemSinhViens);
-    public Task<ActionResult> AddNewAsync(DiemSinhVienDto diemSinhVienDto);
-    public Task<ActionResult> UpdateAsync(int maDiemSinhVien);
-    public Task<ActionResult> RemoveAsync(int maDiemSinhVien);
-    public Task<ActionResult> RemoveRangeAsync(ICollection<int> maDiemSinhViens);
+    public Task<IEnumerable<DiemSinhVien>> GetAllAsync();
+    public Task<IEnumerable<DiemSinhVienDetail>> GetByIdAsync(int maSinhVien);
+    public Task<IEnumerable<DiemSinhVienDetail>> GetByLopQuanLiAsync(int maLopQuanLi);
+    public Task<IEnumerable<DiemSinhVienDetail>> GetByLopMonHocAsync(int maLopMonHoc);
+    // public Task<DiemSinhVien> AddNewAsync(DiemSinhVienDto diemSinhVienDto);
+    public Task<DiemSinhVien> UpdateAsync(int maSinhVien, DiemSinhVienDto diemSinhVienDto);
+    public Task<DiemSinhVien> RemoveAsync(int maSinhVien, DiemSinhVienDto diemSinhVienDto);
+    // public Task<DiemSinhVien> RemoveRangeAsync(ICollection<int> maDiemSinhViens);
 }
