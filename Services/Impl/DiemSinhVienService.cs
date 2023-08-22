@@ -6,11 +6,11 @@ using qlsinhvien.Exceptions;
 
 namespace qlsinhvien.Services.Impl;
 
-public class DiemSinhVien : IDiemSinhVienService
+public class DiemSinhVienService : IDiemSinhVienService
 {
     private readonly ApplicationContext _context;
 
-    public DiemSinhVien(ApplicationContext context)
+    public DiemSinhVienService(ApplicationContext context)
     {
         _context = context;
     }
@@ -35,7 +35,7 @@ public class DiemSinhVien : IDiemSinhVienService
 
         var query = from diem in _context.DiemSinhViens
                     join lmh in _context.LopMonHocs on diem.MaLopMonHoc equals lmh.MaLopMonHoc
-                    join mh in _context.MonHocs on lmh.MaMonHoc equals mh.MaMonHoc
+                    join mh in _context.MonHocs on lmh.MonHoc.MaMonHoc equals mh.MaMonHoc
                     join sv in _context.SinhViens on diem.MaSinhVien equals sv.MaSinhVien
                     where diem.MaSinhVien == maSinhVien
                     select new DiemSinhVienDetail
@@ -62,7 +62,7 @@ public class DiemSinhVien : IDiemSinhVienService
 
         var query = from diem in _context.DiemSinhViens
                     join lmh in _context.LopMonHocs on diem.MaLopMonHoc equals lmh.MaLopMonHoc
-                    join mh in _context.MonHocs on lmh.MaMonHoc equals mh.MaMonHoc
+                    join mh in _context.MonHocs on lmh.MonHoc.MaMonHoc equals mh.MaMonHoc
                     join sv in _context.SinhViens on diem.MaSinhVien equals sv.MaSinhVien
                     where diem.MaLopMonHoc == maLopMonHoc
                     select new DiemSinhVienDetail
@@ -89,7 +89,7 @@ public class DiemSinhVien : IDiemSinhVienService
 
         var query = from diem in _context.DiemSinhViens
                     join lmh in _context.LopMonHocs on diem.MaLopMonHoc equals lmh.MaLopMonHoc
-                    join mh in _context.MonHocs on lmh.MaMonHoc equals mh.MaMonHoc
+                    join mh in _context.MonHocs on lmh.MonHoc.MaMonHoc equals mh.MaMonHoc
                     join sv in _context.SinhViens on diem.MaSinhVien equals sv.MaSinhVien
                     join lql in _context.LopQuanLis on sv.MaLopQuanLi equals lql.MaLopQuanLi
                     where lql.MaLopQuanLi == maLopQuanLi
