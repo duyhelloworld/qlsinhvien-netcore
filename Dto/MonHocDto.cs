@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using qlsinhvien.Entities;
 
 namespace qlsinhvien.Dto;
 public class MonHocDto
@@ -16,7 +17,7 @@ public class MonHocDto
 
     public int MaMonTienQuyet { get; set; }
     [JsonRequired]
-    public int MaBoMon { get; set; }
+    public BoMon BoMon { get; set; }
 
     public int MaLopMonHoc { get; set; }
 }
