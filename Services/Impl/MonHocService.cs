@@ -1,10 +1,9 @@
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using qlsinhvien.Context;
 using qlsinhvien.Dto;
 using qlsinhvien.Entities;
 using qlsinhvien.Exceptions;
+using qlsinhvien.Services;
 
 namespace qlsinhvien.Services.Impl;
 public class MonHocService : IMonHocService
@@ -39,18 +38,18 @@ public class MonHocService : IMonHocService
     }
 
 
-    async Task<IEnumerable<MonHoc>> IMonHocService.GetAll()
+    public async Task<IEnumerable<MonHoc>> GetAll()
     {
         return await _context.MonHocs.ToListAsync();
     }
 
-    async Task<MonHoc> IMonHocService.GetById(int maSoMonHoc)
+    public async Task<MonHoc?> GetById(int maSoMonHoc)
     {
         var mh = await _context.MonHocs.FindAsync(maSoMonHoc);
         return mh;
     }
 
-    async Task<IEnumerable<MonHoc>> IMonHocService.GetByTenMon(string tenMonHoc)
+    public async Task<IEnumerable<MonHoc>> GetByTenMon(string tenMonHoc)
     {
         return await _context.MonHocs
             .Where(mh => mh.TenMonHoc.Contains(tenMonHoc))
@@ -58,7 +57,7 @@ public class MonHocService : IMonHocService
             .ToListAsync();
     }
 
-    public async Task<MonHoc> Remove(int maSoMonHoc)
+    public async Task Remove(int maSoMonHoc)
     {
         var mh = await _context.MonHocs.FindAsync(maSoMonHoc);
 
@@ -69,18 +68,9 @@ public class MonHocService : IMonHocService
 
         _context.MonHocs.Remove(mh);
         await _context.SaveChangesAsync();
-
-        return mh;
     }
 
-
-
-    // Task<MonHoc> IMonHocService.RemoveRange(ICollection<int> maSoMonHocs)
-    // {
-    //     throw new NotImplementedException();
-    // }
-
-    async Task<MonHoc> IMonHocService.Update(int maSoMonHoc, MonHocDto monHocDto)
+    public async Task<MonHoc> Update(int maSoMonHoc, MonHocDto monHocDto)
     {
         var mh = await _context.MonHocs.FindAsync(maSoMonHoc);
         if (mh == null)

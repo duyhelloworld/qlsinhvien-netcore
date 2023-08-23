@@ -1,16 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
 using qlsinhvien.Dto;
+using qlsinhvien.Entities;
 
 namespace qlsinhvien.Services;
 
 public interface ILopQuanLiService
 {
-    public Task<ActionResult> GetAllAsync();
-    public Task<ActionResult> GetWithSiSoAsync();
-    public Task<ActionResult> GetByIdAsync(int maLopQuanLi);
-    public Task<ActionResult> GetByTenAsync(string tenLopQuanLi);
-    public Task<ActionResult> AddNewAsync(LopQuanLiDto lopQuanLiDto);
-    public Task<ActionResult> UpdateAsync(int maLopQuanLi, LopQuanLiDto lopQuanLiDto);
-    public Task<ActionResult> RemoveAsync(int maLopQuanLi);
-    public Task<ActionResult> RemoveRangeAsync(ICollection<int> maLopQuanLis);
+    public Task<LopQuanLi> GetAll();
+    public Task<LopQuanLi> GetWithSiSo();
+    public Task<LopQuanLi> GetById(int maLopQuanLi);
+    public Task<LopQuanLi> GetByTen(string tenLopQuanLi);
+    public Task<LopQuanLi> AddNew(LopQuanLiDto lopQuanLiDto);
+    public Task<LopQuanLi> Update(int maLopQuanLi, LopQuanLiDto lopQuanLiDto);
+    public Task<LopQuanLi> Remove(int maLopQuanLi);
+    public Task<LopQuanLi> RemoveRange(ICollection<int> maLopQuanLis);
 }

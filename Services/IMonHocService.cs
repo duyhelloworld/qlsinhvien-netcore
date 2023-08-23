@@ -11,6 +11,5 @@ public interface IMonHocService
     public Task<IEnumerable<MonHoc>> GetByTenMon(string tenMonHoc);
     public Task<MonHoc> AddNew(MonHocDto monHocDto);
     public Task<MonHoc> Update(int maSoMonHoc, MonHocDto monHocDto);
-    public Task<MonHoc> Remove(int maSoMonHoc);
-    // public Task<MonHoc> RemoveRange(ICollection<int> maSoMonHocs);
+    public Task Remove(int maSoMonHoc);
 }

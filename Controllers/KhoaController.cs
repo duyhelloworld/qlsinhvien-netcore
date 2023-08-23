@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using qlsinhvien.Context;
 using qlsinhvien.Dto;
 using qlsinhvien.Entities;
+using qlsinhvien.Services;
 
 namespace qlsinhvien.Controllers;
 
@@ -12,88 +13,44 @@ namespace qlsinhvien.Controllers;
 [Route("[controller]")]
 public class KhoaController : ControllerBase
 {
-    private readonly ApplicationContext applicationContext;
-    public KhoaController(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-    }
+    private readonly IKhoaService _service;
 
-    [HttpGet]
-    public ActionResult<IEnumerable<Khoa>> GetAll() {
-        return applicationContext.Khoas
-            .ToList();
-    }
-
-    [HttpGet("{makhoa}")]
-    public ActionResult<Khoa> GetById(int makhoa)
+    public KhoaController(IKhoaService khoaService)
     {
-        var ketQua = applicationContext.Khoas.Find(makhoa);
-        return ketQua == null ? NotFound() : Ok(ketQua);
+        _service = khoaService;
+    }    
+
+    [HttpGet("/")]
+    public async Task<IEnumerable<Khoa>> GetAll() {
+        return await _service.GetAll();
+    }
+
+    [HttpGet("{makhoa:int:min(1)}")]
+    public async Task<Khoa?> GetById(int makhoa)
+    {
+        return await _service.GetById(makhoa); ;
     }
 
     [HttpGet("tim")]
-    public ActionResult<IEnumerable<Khoa>> GetByName([FromQuery] string tenkhoa)
+    public async Task<IEnumerable<Khoa>> GetByName([FromQuery] string tenkhoa)
     {
-        var ketQua = applicationContext.Khoas
-                    .Where(k => k.TenKhoa.Contains(tenkhoa))
-                    .OrderBy(k => k.MaKhoa);
-        return ketQua == null ? NotFound() : Ok(ketQua);
+        return await _service.GetByTen(tenkhoa);
     }
 
     [HttpPost]
-    public ActionResult AddKhoa([FromBody] KhoaDto khoaDto)
+    public async Task<Khoa> AddKhoa([FromBody] KhoaDto khoaDto)
     {
-        if (khoaDto.MaKhoa != 0) {
-            return BadRequest("Mã khoa sai");
-        }
-        try
-        {
-            var khoa = new Khoa() {
-                MaKhoa = khoaDto.MaKhoa,
-                TenKhoa = khoaDto.TenKhoa
-            };
-            applicationContext.Khoas.Add(khoa);
-            applicationContext.SaveChanges();
-            return Ok(khoa);
-        }
-        catch (DbUpdateException)
-        {
-            return BadRequest("Khoa đã tồn tại");
-        }
+        return await _service.AddNew(khoaDto);
     }
 
     [HttpPut("{makhoa}")]
-    public ActionResult<Khoa> UpdateKhoa(int maKhoa, [FromBody] KhoaDto khoaDto)
+    public async Task<Khoa> UpdateKhoa(int maKhoa, [FromBody] KhoaDto khoaDto)
     {
-        khoaDto.MaKhoa = maKhoa;
-        var khoa = applicationContext.Khoas.Find(maKhoa);
-        if (khoa == null)
-        {
-            return BadRequest();
-        }
-        khoa.TenKhoa = khoaDto.TenKhoa;
-        applicationContext.SaveChanges();
-        return Ok(khoa);
+       return await _service.Update(maKhoa, khoaDto);
     }
 
     [HttpDelete("{maKhoa}")]
-    public async Task<ActionResult> DeleteKhoa(int maKhoa) {
-        var khoa = applicationContext.Khoas.Find(maKhoa);
-        if (khoa == null)
-        {
-            return BadRequest();
-        }
-        var httpClient = new HttpClient();
-        applicationContext.Khoas.Entry(khoa).Collection(k => k.LopQuanLis).Load();
-        applicationContext.Khoas.Entry(khoa).Collection(k => k.BoMons).Load();
-        var lopQuanLis = khoa.LopQuanLis;
-        foreach (var l in lopQuanLis)
-        {
-            var resp = await httpClient.DeleteAsync($"http://localhost:5277/lopquanli/{l.MaLopQuanLi}");
-            resp.EnsureSuccessStatusCode();            
-        }
-        khoa.BoMons.Clear();
-        applicationContext.Khoas.Remove(khoa);
-        applicationContext.SaveChanges();
-        return NoContent();
+    public async Task DeleteKhoa(int maKhoa) {
+        await _service.Remove(maKhoa);
     }
 }

@@ -83,22 +83,6 @@ public class GiangVienService : IGiangVienService
         return giangVien;
     }
 
-    public Task<GiangVien?> GetByLopMonHoc(IEnumerable<int> maLopMonHocs)
-    {
-        // var lopMonHocsInDb = await _context.LopMonHocs
-        //         .Where(lmh => maLopMonHocs.Contains(lmh.MaLopMonHoc))
-        //         .ToListAsync();
-        // if (lopMonHocsInDb.Count == 0)
-        // {
-        //     throw new HttpException(404, $"Không có lớp môn học nào giống danh sách");
-        // }
-        // foreach (var lop in lopMonHocsInDb)
-        // {
-        //     await _context.LopMonHocs.Entry(lop).Reference(lmh => lmh.GiangVien).LoadAsync();
-        // }
-        // return ;
-        throw new NotImplementedException();
-    }
 
     public async Task<GiangVien> AddNew(GiangVienDto giangVienDto)
     {
@@ -246,7 +230,7 @@ public class GiangVienService : IGiangVienService
         return giangVien;
     }
 
-    public async Task<GiangVien> UpdateLopMonHocs_GiangVien(int maGiangVien, ICollection<int> maLopMonHocs)
+    public async Task<int> UpdateLopMonHocs_GiangVien(int maGiangVien, ICollection<int> maLopMonHocs)
     {
         var giangVien = await _context.GiangViens.FindAsync(maGiangVien);
         if (giangVien == null)
@@ -261,29 +245,12 @@ public class GiangVienService : IGiangVienService
             throw new HttpException(404, "Không tồn tại các lớp môn học này");
         }
         giangVien.LopMonHocs = lopMonHocs;
-        var soUpdated = _context.SaveChanges();
-        if (soUpdated != lopMonHocs.Count())
-        {
-            var khongTonTai = new List<int>();
-            int dem = 0;
-            while (dem == soUpdated)
-            {
-                foreach (var maLop in maLopMonHocs)
-                {
-                    foreach (var lop in lopMonHocs)
-                    {
-                        if (maLop != lop.MaLopMonHoc)
-                        {
-                            khongTonTai.Add(maLop);
-                            dem++;
-                        }
-                    }
-                }
-            }
-            throw new HttpException(200, @$"Cập nhật thành công {soUpdated} lớp môn học.\n
-                    Các mã lớp không được cập nhật là {khongTonTai}");
-        }
-        return giangVien;
+        var numberOfUpdatedMonHocs = await _context.SaveChangesAsync();
+        return numberOfUpdatedMonHocs;
+        // var khongCapNhat = new List<int>();
+        // foreach (var maCu in maLopMonHocs.Order())        // {        //     foreach (var maMoi in giangVien.LopMonHocs.Select(l => l.MaLopMonHoc).Order())        //     {        //         if (maCu != maMoi && !khongCapNhat.Contains(maCu))        //         {        //             khongCapNhat.Add(maCu);        //             break;}}}
+        // throw new HttpException(200, @$"Cập nhật thành công {soLopCapNhat} lớp môn học.\n
+        // Các mã lớp không được cập nhật là {JsonSerializer.Serialize(khongCapNhat)}");
     }
 
     public async Task Remove(int maGiangVien)
@@ -300,7 +267,7 @@ public class GiangVienService : IGiangVienService
         if (lql != null) {
             lql.GiangVien = null;
         }
-        // - Đặt giangVien = null
+        // - Đặt lopQuanLi.giangVien = null
 
         // - xoá tất cả lớp quản lí liên quan
         // - throw exception để dừng hàm nếu có lớp quản lí
@@ -313,7 +280,7 @@ public class GiangVienService : IGiangVienService
         {
             lmh.GiangVien = null;
         }
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
     public async Task RemoveLopQuanLiHienTai(int maLopQuanLi)
@@ -332,13 +299,15 @@ public class GiangVienService : IGiangVienService
         await _context.SaveChangesAsync();
     }
 
-    public Task RemoveAllLopMonHoc(ICollection<int> maLopMonHocs)
+    public async Task RemoveAllLopMonHoc(int maGiangVien)
     {
-        throw new NotImplementedException();
+        var giangVien = await _context.GiangViens.FindAsync(maGiangVien);
+        if (giangVien == null)
+        {
+            throw new HttpException(404, $"Không tồn tại giảng viên mã số {maGiangVien}");
+        }
+        await _context.Entry(giangVien).Collection(gv => gv.LopMonHocs).LoadAsync();
+        giangVien.LopMonHocs = null;
+        await _context.SaveChangesAsync();
     }
-
-    // public Task<int> RemoveRange(ICollection<int> maSoGiangViens)
-    // {
-    //     throw new NotImplementedException();
-    // }
 }
