@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using qlsinhvien.Context;
+using qlsinhvien.Dto;
 using qlsinhvien.Entities;
+using qlsinhvien.Services;
 
 namespace qlsinhvien.Controllers
 {
@@ -9,73 +11,45 @@ namespace qlsinhvien.Controllers
     [Route("/[controller]")]
     public class MonHocController : ControllerBase
     {
-        private readonly ApplicationContext appContext;
-
-        public MonHocController(ApplicationContext appContext)
-        {
-            this.appContext = appContext;
-        }
+        private readonly IMonHocService _service;
+    public MonHocController(IMonHocService service)
+    {
+        _service = service;
+    }
 
         [HttpGet]
-        public ActionResult<ICollection<MonHoc>> GetAll()
+        public async Task<IEnumerable<MonHoc>> GetAll()
         {
-            return appContext.MonHocs.ToList();
+            return await _service.GetAll();
         }
 
         [HttpGet("{id}")]
-        public ActionResult<MonHoc> GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var monHoc = appContext.MonHocs.Find(id);
-            return monHoc == null ? NotFound() : Ok(monHoc);
-        }
-        [HttpGet("name={name}")]
-        public ActionResult<MonHoc> GetByName([FromQuery] string name)
-        {
-            var monHoc = appContext.MonHocs.Find(name);
-            return monHoc == null ? NotFound() : Ok(monHoc);
-        }
-
-        [HttpPut("{id}")]
-        public ActionResult UpdateMonHoc(int id, [FromBody] MonHoc monHoc)
-        {
-            var mon = appContext.MonHocs.Find(id);
-            if (mon == null)
-            {
-                return NotFound();
-            }
-
-            mon.TenMonHoc = monHoc.TenMonHoc;
-            mon.SoTinChi = monHoc.SoTinChi;
-            mon.BatBuoc = monHoc.BatBuoc;
-            mon.MonTienQuyet = monHoc.MonTienQuyet;
-            mon.MoTa = monHoc.MoTa;
-
-            appContext.MonHocs.Update(mon);
-            appContext.SaveChanges();
-
-            return Ok(mon);
-        }
-
-        [HttpDelete("{id}")]
-        public ActionResult DeleteMonHoc(int id)
-        {
-            var monHoc = appContext.MonHocs.Find(id);
+            var monHoc = await _service.GetById(id);
             if (monHoc == null)
             {
                 return NotFound();
             }
-            appContext.MonHocs.Remove(monHoc);
-            appContext.SaveChanges();
+            return Ok(monHoc);
+        }
+        [HttpGet("name={name}")]
+        public async Task<IEnumerable<MonHoc>> GetByName([FromQuery] string name)
+        {
+            return await _service.GetByTenMon(name);
+        }
 
-            return Ok(new
-            {
-                maMonHoc = monHoc.MaMonHoc,
-                tenMonHoc = monHoc.TenMonHoc,
-                soTinChi = monHoc.SoTinChi,
-                batBuoc = monHoc.BatBuoc,
-                monTienQuyet = monHoc.MonTienQuyet,
-                moTa = monHoc.MoTa
-            });
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateMonHoc(int id, [FromBody] MonHocDto monHoc)
+        {
+            var mon = await _service.Update(id, monHoc);
+            return Ok(mon);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task DeleteMonHoc(int id)
+        {
+            await _service.Remove(id);
         }
     }
 }

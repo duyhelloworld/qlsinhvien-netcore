@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
-builder.Services.AddScoped<IGiangVienService, GiangVienService>();
+builder.Services.AddScoped<IMonHocService, MonHocService>();
 
 // builder.Services.AddHttpClient("httpClient", client => {
 //     client.BaseAddress = new Uri("http://localhost:5277");

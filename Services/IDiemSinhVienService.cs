@@ -14,4 +14,6 @@ public interface IDiemSinhVienService
     public Task<DiemSinhVien> UpdateAsync(int maSinhVien, DiemSinhVienDto diemSinhVienDto);
     public Task<DiemSinhVien> RemoveAsync(int maSinhVien, DiemSinhVienDto diemSinhVienDto);
     // public Task<DiemSinhVien> RemoveRangeAsync(ICollection<int> maDiemSinhViens);
+    public Task<DiemSinhVien> UpdateTheoLopMonHoc(int maLopMonHoc, DiemSinhVienDto diemSinhVienDto);
+    public Task<DiemSinhVien> RemoveTheoLopMonHoc(int maLopMonHoc, DiemSinhVienDto diemSinhVienDto);
 }

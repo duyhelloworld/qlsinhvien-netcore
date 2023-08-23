@@ -50,7 +50,7 @@ public class MonHocService : IMonHocService
         return mh;
     }
 
-    async Task<IEnumerable<MonHoc>> GetByTenMon(string tenMonHoc)
+    async Task<IEnumerable<MonHoc>> IMonHocService.GetByTenMon(string tenMonHoc)
     {
         return await _context.MonHocs
             .Where(mh => mh.TenMonHoc.Contains(tenMonHoc))
@@ -97,13 +97,9 @@ public class MonHocService : IMonHocService
         mh.SoTinChi = monHocDto.SoTinChi;
         mh.BatBuoc = monHocDto.BatBuoc;
         mh.MoTa = monHocDto.MoTa;
+        // mh.MonTienQuyet = monHocDto.MonTienQuyet;
         mh.BoMon = boMon;
         await _context.SaveChangesAsync();
         return mh;
-    }
-
-    Task<IEnumerable<MonHoc>> IMonHocService.GetByTenMon(string tenMonHoc)
-    {
-        throw new NotImplementedException();
     }
 }
