@@ -87,6 +87,7 @@ public class MonHocService : IMonHocService
         mh.SoTinChi = monHocDto.SoTinChi;
         mh.BatBuoc = monHocDto.BatBuoc;
         mh.MoTa = monHocDto.MoTa;
+        // mh.MonTienQuyet = monHocDto.MonTienQuyet;
         mh.BoMon = boMon;
         await _context.SaveChangesAsync();
         return mh;

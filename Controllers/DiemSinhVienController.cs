@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using qlsinhvien.Context;
+using qlsinhvien.Dto;
 using qlsinhvien.Entities;
+using qlsinhvien.Services;
 
 namespace qlsinhvien.Controllers
 {
@@ -9,172 +11,50 @@ namespace qlsinhvien.Controllers
     [Route("/[controller]")]
     public class DiemSinhVienController : ControllerBase
     {
-        private readonly ApplicationContext appContext;
-        public DiemSinhVienController(ApplicationContext appContext)
+        private readonly IDiemSinhVienService _service;
+        public DiemSinhVienController(IDiemSinhVienService _service)
         {
-            this.appContext = appContext;
+            this._service = _service;
         }
         [HttpGet("{masinhvien}")]
-        public ActionResult GetById(int masinhvien)
+        public async Task<IEnumerable<DiemSinhVienDetail>> GetById(int masinhvien)
         {
-            var diem = appContext.DiemSinhViens.Find(masinhvien);
-            if (diem == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                var kq = from diemSv in appContext.DiemSinhViens
-                         join lopMh in appContext.LopMonHocs on diemSv.MaLopMonHoc equals lopMh.MaLopMonHoc
-                         join mh in appContext.MonHocs on lopMh.MonHoc.MaMonHoc equals mh.MaMonHoc
-                         where masinhvien == diemSv.MaSinhVien
-                         orderby mh.MaMonHoc
-                         select new
-                         {
-                             mh.MaMonHoc,
-                             mh.TenMonHoc,
-                             lopMh.TenLopMonHoc,
-                             diemSv.DiemChuyenCan,
-                             diemSv.DiemGiuaKi,
-                             //  diemSv.DiemQuaTrinh,
-                             diemSv.DiemCuoiKi,
-                             //  diemSv.DiemTongKet,
-                             diemSv.GhiChu
-                         };
-                return Ok(kq);
-            }
-            // return NoContent();
+            return await _service.GetByIdAsync(masinhvien);
         }
 
         [HttpGet("malopmonhoc")]
-        public ActionResult GetByLopMonHoc(int malopmonhoc)
+        public async Task<IEnumerable<DiemSinhVienDetail>> GetByLopMonHoc(int malopmonhoc)
         {
-            var lop = appContext.DiemSinhViens.Find(malopmonhoc);
-            if (lop == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                var kq = from diemSv in appContext.DiemSinhViens
-                         join lopMh in appContext.LopMonHocs on diemSv.MaLopMonHoc equals lopMh.MaLopMonHoc
-                         join mh in appContext.MonHocs on lopMh.MonHoc.MaMonHoc equals mh.MaMonHoc
-                         join sv in appContext.SinhViens on diemSv.MaSinhVien equals sv.MaSinhVien
-                         where malopmonhoc == diemSv.MaLopMonHoc
-                         select new
-                         {
-                             sv.MaSinhVien,
-                             sv.HoTen,
-                             sv.LopQuanLi,
-                             diemSv.DiemChuyenCan,
-                             diemSv.DiemGiuaKi,
-                             //  diemSv.DiemQuaTrinh,
-                             diemSv.DiemCuoiKi,
-                             //  diemSv.DiemTongKet,
-                             //  diemSv.DiemHe4,
-                             diemSv.GhiChu
-                         };
-                return Ok(kq);
-            }
-            // return NoContent();
+            return await _service.GetByLopMonHocAsync(malopmonhoc);
+        }
+
+        [HttpGet("malopquanli")]
+        public async Task<IEnumerable<DiemSinhVienDetail>> GetByLopQuanLi(int malopquanli)
+        {
+            return await _service.GetByLopQuanLiAsync(malopquanli);
         }
 
         [HttpPut("{masinhvien}")]
-        public ActionResult UpdateDiemSinhVien(int masinhvien, [FromBody] DiemSinhVien diemSinhVien)
+        public async Task<IActionResult> UpdateDiemSinhVien(int masinhvien, [FromBody] DiemSinhVienDto diemSinhVien)
         {
-            var diem = appContext.DiemSinhViens.Find(masinhvien);
-            if (diem == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                diem.DiemChuyenCan = diemSinhVien.DiemChuyenCan;
-                diem.DiemGiuaKi = diemSinhVien.DiemGiuaKi;
-                diem.DiemCuoiKi = diemSinhVien.DiemCuoiKi;
-
-                // appContext.DiemSinhViens.Update(diem);
-                appContext.SaveChanges();
-                return Ok(new
-                {
-                    diemChuyenCan = diemSinhVien.DiemChuyenCan,
-                    diemGiuaKi = diemSinhVien.DiemGiuaKi,
-                    // diemQuaTrinh = diemSinhVien.DiemQuaTrinh,
-                    diemCuoiKi = diemSinhVien.DiemCuoiKi,
-                    // diemTongKet = diemSinhVien.DiemTongKet,
-                    // diemHe4 = diemSinhVien.DiemHe4,
-                    // diemChu = diemSinhVien.DiemChu
-                });
-                return NoContent();
-            }
+            var diem = await _service.UpdateAsync(masinhvien, diemSinhVien);
+            return Ok(diem);
         }
         [HttpPut("{malopmonhoc}")]
-        public ActionResult UpdateDiemSinhVienTheoLopMonHoc(int malopmonhoc, [FromBody] DiemSinhVien diemSinhVien)
+        public async Task<IActionResult> UpdateDiemSinhVienTheoLopMonHoc(int malopmonhoc, [FromBody] DiemSinhVienDto diemSinhVien)
         {
-            var lop = appContext.DiemSinhViens.Find(malopmonhoc);
-            if (lop == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                lop.DiemChuyenCan = diemSinhVien.DiemChuyenCan;
-                lop.DiemGiuaKi = diemSinhVien.DiemGiuaKi;
-                lop.DiemCuoiKi = diemSinhVien.DiemCuoiKi;
-
-                // appContext.DiemSinhViens.Update(diem);
-                appContext.SaveChanges();
-                return Ok(new
-                {
-                    diemChuyenCan = diemSinhVien.DiemChuyenCan,
-                    diemGiuaKi = diemSinhVien.DiemGiuaKi,
-                    // diemQuaTrinh = diemSinhVien.DiemQuaTrinh,
-                    diemCuoiKi = diemSinhVien.DiemCuoiKi,
-                    // diemTongKet = diemSinhVien.DiemTongKet,
-                    // diemHe4 = diemSinhVien.DiemHe4,
-                    // diemChu = diemSinhVien.DiemChu
-                });
-                // return NoContent();
-
-            }
+            var diem = await _service.UpdateTheoLopMonHoc(malopmonhoc, diemSinhVien);
+            return Ok(diem);
         }
         [HttpDelete("{masinhvien}")]
-        public ActionResult DeleteDiemSinhVien(int masinhvien)
+        public async Task DeleteDiemSinhVien(int masinhvien, DiemSinhVienDto diemSinhVienDto)
         {
-            var diem = appContext.DiemSinhViens.Find(masinhvien);
-            if (diem == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                diem.DiemChuyenCan = 0;
-                diem.DiemGiuaKi = 0;
-                diem.DiemCuoiKi = 0;
-
-                // appContext.DiemSinhViens.Update(diem);
-                appContext.SaveChanges();
-                return Ok(diem);
-            }
+            await _service.RemoveAsync(masinhvien, diemSinhVienDto);
         }
         [HttpDelete("{malopmonhoc}")]
-        public ActionResult DeleteDiemSinhVienTheoLopMonHoc(int malopmonhoc)
+        public async Task DeleteDiemSinhVienTheoLopMonHoc(int malopmonhoc, DiemSinhVienDto diemSinhVienDto)
         {
-            var lop = appContext.DiemSinhViens.Find(malopmonhoc);
-            if (lop == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                lop.DiemChuyenCan = 0;
-                lop.DiemGiuaKi = 0;
-                lop.DiemCuoiKi = 0;
-
-                // appContext.DiemSinhViens.Update(diem);
-                appContext.SaveChanges();
-                return Ok(lop);
-            }
+            await _service.RemoveTheoLopMonHoc(malopmonhoc, diemSinhVienDto);
         }
     }
 }

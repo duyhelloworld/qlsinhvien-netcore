@@ -139,4 +139,32 @@ public class DiemSinhVienService : IDiemSinhVienService
         _context.SaveChanges();
         return diem;
     }
+
+    public async Task<Entities.DiemSinhVien> UpdateTheoLopMonHoc(int maLopMonHoc, DiemSinhVienDto diemSinhVienDto)
+    {
+        var diem = await _context.DiemSinhViens.FindAsync(maLopMonHoc);
+        if (diem == null)
+        {
+            throw new HttpException(404, $"Không có điểm của lớp môn học có mã {maLopMonHoc}");
+        }
+        diem.DiemChuyenCan = diemSinhVienDto.DiemChuyenCan;
+        diem.DiemGiuaKi = diemSinhVienDto.DiemGiuaKi;
+        diem.DiemCuoiKi = diemSinhVienDto.DiemCuoiKi;
+        _context.SaveChanges();
+        return diem;
+    }
+
+    public async Task<Entities.DiemSinhVien> RemoveTheoLopMonHoc(int maLopMonHoc, DiemSinhVienDto diemSinhVienDto)
+    {
+        var diem = await _context.DiemSinhViens.FindAsync(maLopMonHoc);
+        if (diem == null)
+        {
+            throw new HttpException(404, $"Không có điểm của sinh viên có mã {maLopMonHoc}");
+        }
+        diem.DiemChuyenCan = 0;
+        diem.DiemGiuaKi = 0;
+        diem.DiemCuoiKi = 0;
+        _context.SaveChanges();
+        return diem;
+    }
 }
