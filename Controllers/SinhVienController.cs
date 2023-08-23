@@ -30,6 +30,18 @@ namespace qlsinhvien.Controllers
             return kq == null ? NotFound() : Ok(kq);
         }
 
+        [HttpGet("lopquanli/{malopquanli:int:min(1)}")]
+        public async Task<IEnumerable<SinhVien>> GetByLopQuanLi(int malopquanli)
+        {
+            return await _service.GetByLopQuanLi(malopquanli);
+        }
+
+        [HttpGet("lopmonhoc/{malopmonhoc:int:min(1)}")]
+        public async Task<IEnumerable<SinhVien>> GetByLopMonHoc(int malopmonhoc)
+        {
+            return await _service.GetByLopMonHoc(malopmonhoc);
+        }
+
         [HttpGet("hoten")]
         public async Task<IEnumerable<SinhVien>> GetByName([FromQuery] string hoTen)
         {
