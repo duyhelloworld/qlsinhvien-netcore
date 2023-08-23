@@ -9,12 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 // Service
-builder.Services.AddSingleton<IGiangVienService, GiangVienService>();
-builder.Services.AddSingleton<IKhoaService, KhoaService>();
-builder.Services.AddSingleton<IDiemSinhVienService, DiemSinhVienService>();
-builder.Services.AddSingleton<ISinhVienService, SinhVienService>();
-builder.Services.AddSingleton<IMonHocService, MonHocService>();
-
+builder.Services.AddScoped<IGiangVienService, GiangVienService>();
+builder.Services.AddScoped<IKhoaService, KhoaService>();
+builder.Services.AddScoped<IDiemSinhVienService, DiemSinhVienService>();
+builder.Services.AddScoped<ISinhVienService, SinhVienService>();
+builder.Services.AddScoped<IMonHocService, MonHocService>();
 
 // builder.Services.AddHttpClient("httpClient", client => {
 //     client.BaseAddress = new Uri("http://localhost:5277");
