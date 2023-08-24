@@ -32,7 +32,9 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 });
 
 // In secretKey
-Console.WriteLine(builder.Configuration.GetSection("AppSetting:SecretKey").Value);
+var secretKey = builder.Configuration.GetSection("AppSetting:SecretKey").Value;
+var secretKeyBytes = Encoding.UTF8.GetBytes(secretKey!);
+Console.WriteLine("Secret Key = " + secretKey);
 
 // Nếu dùng IOptionMonitor ở UserController
 // builder.Services.Configure<AppSetting>(builder.Configuration.GetSection("AppSetting"));
@@ -67,7 +69,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         // Đặt route cho API cuối (Audience) có phân biệt kí tự / không
         // IgnoreTrailingSlashWhenValidatingAudience = true,
 
-
         // Lưu token sau khi validate
         // SaveSigninToken = false,
 
@@ -75,7 +76,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         // TokenDecryptionKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("duypham")),
 
         // Thuật toán kiểm tra tính hợp lệ của chữ ký số trong token khi token được gửi đến máy chủ
-        // IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("hiepnguyen")),
+        IssuerSigningKey = new SymmetricSecurityKey(secretKeyBytes),
 
         // Các thuật toán cho phép để kiểm tra tính hợp lệ của chữ kí số, token. Chi tiết trên https://jwt.io
         // ValidAlgorithms = new [] {"HS256", "HS512"},
