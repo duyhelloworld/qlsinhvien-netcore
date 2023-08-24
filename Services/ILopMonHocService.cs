@@ -11,6 +11,7 @@ public interface ILopMonHocService
     public Task<ActionResult> GetByTenAsync(string tenLopMonHoc);
     public Task<ActionResult> AddNewAsync(LopMonHocDto lopMonHocDto);
     public Task<ActionResult> UpdateAsync(int maLopMonHoc, LopMonHocDto lopMonHocDto);
-    public Task<ActionResult> RemoveAsync(int maLopMonHoc);
+    public Task RemoveAsync(int maLopMonHoc);
     public Task<ActionResult> RemoveRangeAsync(ICollection<int> maLopMonHocs);
+    public Task RemoveTheoMonHoc(int maMonHoc);
 }
