@@ -130,6 +130,25 @@ public class SinhVienService : ISinhVienService
         await _context.SaveChangesAsync();
         return sinhVien;
     }
+    public async Task<SinhVien> UpdateLopQuanLi(int maSoSinhVien, int maLopQuanLi)
+    {
+        var sinhVien = await _context.SinhViens
+            .FirstOrDefaultAsync(sv => sv.MaSinhVien == maSoSinhVien);
+        if (sinhVien == null)
+        {
+            throw new HttpException(404, $"Sinh viên mã {maSoSinhVien} không tồn tại");
+        }
+        var lopQuanLi = await _context.LopQuanLis
+            .FirstOrDefaultAsync(lql => lql.MaLopQuanLi == maLopQuanLi);
+        if (lopQuanLi == null)
+        {
+            throw new HttpException(404, $"Lớp quản lí mã {maLopQuanLi} không tồn tại");
+        }
+        sinhVien.LopQuanLi = lopQuanLi;
+        await _context.SaveChangesAsync();
+        return sinhVien;
+    }
+
     public async Task Remove(int maSoSinhVien)
     {
         var sinhVien = await _context.SinhViens.FindAsync(maSoSinhVien);

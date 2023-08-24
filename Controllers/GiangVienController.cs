@@ -62,17 +62,30 @@ public class GiangVienController : ControllerBase
         return Ok(giangViens);
     }
 
+    [HttpGet("{magiangvien:int:min(1)}/lopmonhoc")]
+    public async Task<IActionResult> GetLopMonHocs([FromRoute] int maGiangVien)
+    {
+        var ketQua = await _service.GetLopMonHoc(maGiangVien);
+        return Ok(ketQua);        
+    }
     [HttpGet("lopmonhoc/{malopmonhoc:int:min(1)}")]
     public async Task<IActionResult> GetByLopMonHoc([FromRoute] int maLopMonHoc)
     {
         var ketQua = await _service.GetByLopMonHoc(maLopMonHoc);
-        return Ok(ketQua);        
+        return Ok(ketQua);
     }
 
     [HttpPost("")]
     public async Task<IActionResult> AddGiangVien([FromBody] GiangVienDto giangVienDto)
     {
         var ketQua = await _service.AddNew(giangVienDto);
+        return Ok(ketQua);
+    }
+
+    [HttpPost("{magiangvien:int:min(1)}/lopmonhoc")]
+    public async Task<IActionResult> UpdateLopMonHocs_GiangVien(int magiangvien, [FromBody] ICollection<int> maLopMonHocs)
+    {
+        var ketQua = await _service.AddNewLopMonHoc(magiangvien, maLopMonHocs);
         return Ok(ketQua);
     }
 
@@ -94,13 +107,6 @@ public class GiangVienController : ControllerBase
     public async Task<IActionResult> UpdateBoMon_GiangVien([FromRoute] int magiangvien, [FromRoute] int maBoMon)
     {
         var ketQua = await _service.UpdateBoMon_GiangVien(magiangvien, maBoMon);
-        return Ok(ketQua);
-    }
-
-    [HttpPut("{magiangvien:int:min(1)}/lopmonhoc")]
-    public async Task<IActionResult> UpdateLopMonHocs_GiangVien(int magiangvien, [FromBody] ICollection<int> maLopMonHocs)
-    {
-        var ketQua = await _service.UpdateLopMonHocs_GiangVien(magiangvien, maLopMonHocs);
         return Ok(ketQua);
     }
 

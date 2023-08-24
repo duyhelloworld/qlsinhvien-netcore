@@ -12,6 +12,7 @@ public interface ISinhVienService
     public Task<IEnumerable<SinhVien>> GetByLopMonHoc(int maLopMonHoc);
     public Task<SinhVien> AddNew(SinhVienDto sinhVienDto);
     public Task<SinhVien> UpdateProfile(int maSoSinhVien, SinhVienDto sinhVienDto);
+    public Task<SinhVien> UpdateLopQuanLi(int maSoSinhVien, int maLopQuanLi);
     public Task Remove(int maSoSinhVien);
     
     // public Task<SinhVien> UpdateLopMonHoc(int maSoSinhVien, );
