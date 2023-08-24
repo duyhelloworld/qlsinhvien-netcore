@@ -20,7 +20,7 @@ public class KhoaController : ControllerBase
         _service = khoaService;
     }    
 
-    [HttpGet("/")]
+    [HttpGet]
     public async Task<IEnumerable<Khoa>> GetAll() {
         return await _service.GetAll();
     }
