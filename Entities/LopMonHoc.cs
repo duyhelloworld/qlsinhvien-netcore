@@ -19,6 +19,8 @@ namespace qlsinhvien.Entities
         [ForeignKey("MaMonHoc")]
         public MonHoc MonHoc { get; set; }
 
+        public int MaMonHoc {get; set; }
+
         [Required]
         [ForeignKey("MaGiangVien")]
         [DeleteBehavior(DeleteBehavior.NoAction)]

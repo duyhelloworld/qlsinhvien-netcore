@@ -167,4 +167,20 @@ public class DiemSinhVienService : IDiemSinhVienService
         _context.SaveChanges();
         return diem;
     }
+    public async Task DeleteByLopMonHoc(int maLopMonHoc)
+    {
+        var lop = await _context.LopMonHocs.FindAsync(maLopMonHoc);
+        if(lop == null)
+        {
+            throw new HttpException(404, $"Không tồn tại lớp môn học có mã {maLopMonHoc}");
+        }
+        var diem = from d in _context.DiemSinhViens
+                    where d.MaLopMonHoc == maLopMonHoc
+                    select d;
+        foreach (var item in diem)
+        {
+            _context.DiemSinhViens.Remove(item);
+        }
+        await _context.SaveChangesAsync();
+    }
 }

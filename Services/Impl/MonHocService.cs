@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using qlsinhvien.Context;
+using qlsinhvien.Controllers;
 using qlsinhvien.Dto;
 using qlsinhvien.Entities;
 using qlsinhvien.Exceptions;
@@ -9,6 +10,7 @@ namespace qlsinhvien.Services.Impl;
 public class MonHocService : IMonHocService
 {
     private readonly ApplicationContext _context;
+    private readonly ILopMonHocService _service;
 
     public MonHocService(ApplicationContext context)
     {
@@ -65,7 +67,7 @@ public class MonHocService : IMonHocService
         {
             throw new HttpException(404, $"Không tồn tại môn học có mã môn học: {maSoMonHoc}.");
         }
-
+        await _service.RemoveTheoMonHoc(maSoMonHoc);
         _context.MonHocs.Remove(mh);
         await _context.SaveChangesAsync();
     }

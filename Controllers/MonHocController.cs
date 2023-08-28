@@ -33,10 +33,15 @@ namespace qlsinhvien.Controllers
             }
             return Ok(monHoc);
         }
-        [HttpGet("name={name}")]
-        public async Task<IEnumerable<MonHoc>> GetByName([FromQuery] string name)
+        [HttpGet("getname/{name}")]
+        public async Task<IActionResult> GetByName([FromQuery] string name)
         {
-            return await _service.GetByTenMon(name);
+            var monHoc = await _service.GetByTenMon(name);
+            if (monHoc == null)
+            {
+                return NotFound();
+            }
+            return Ok(monHoc);
         }
 
         [HttpPut("{id}")]
