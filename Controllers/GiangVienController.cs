@@ -16,6 +16,7 @@ public class GiangVienController : ControllerBase
     {
         _service = service;
     }
+
     [HttpGet]
     public async Task<IEnumerable<GiangVien>> GetAllAsync()
     {
@@ -38,6 +39,7 @@ public class GiangVienController : ControllerBase
     {
         return await _service.GetByTen(hoTen);
     }
+    
     [HttpGet("hoten")]
     public async Task<IEnumerable<GiangVien>> GetByNameViaQuery([FromQuery] string hoTen)
     {

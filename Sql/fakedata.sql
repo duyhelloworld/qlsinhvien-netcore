@@ -218,3 +218,11 @@ VALUES
   (8, 27, 8.5, 9.0, 9.5, 1, N'Giỏi'),
   (9, 28, 6.0, 6.5, 7.0, 2, N'Tốt'),
   (10, 29, 7.0, 7.5, 8.0, 1, N'Khá');
+
+INSERT INTO [NguoiDung] (TenNguoiDung, MatKhau)
+VALUES  ("nguyentrunghoa", "gv1"),
+        ("dangtruongnam", "gv2"), 
+        ("nguyenvanan", "sv1"), 
+        ("phamthibinh", "sv2"), 
+        ("lethanhcong", "sv3");
+

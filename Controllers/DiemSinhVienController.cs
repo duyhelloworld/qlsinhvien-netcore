@@ -1,6 +1,4 @@
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using qlsinhvien.Context;
 using qlsinhvien.Dto;
 using qlsinhvien.Entities;
 using qlsinhvien.Services;
@@ -16,6 +14,7 @@ namespace qlsinhvien.Controllers
         {
             this._service = _service;
         }
+
         [HttpGet("{masinhvien}")]
         public async Task<IEnumerable<DiemSinhVienDetail>> GetById(int masinhvien)
         {
@@ -40,17 +39,20 @@ namespace qlsinhvien.Controllers
             var diem = await _service.UpdateAsync(masinhvien, diemSinhVien);
             return Ok(diem);
         }
+
         [HttpPut("{malopmonhoc}")]
         public async Task<IActionResult> UpdateDiemSinhVienTheoLopMonHoc(int malopmonhoc, [FromBody] DiemSinhVienDto diemSinhVien)
         {
             var diem = await _service.UpdateTheoLopMonHoc(malopmonhoc, diemSinhVien);
             return Ok(diem);
         }
+
         [HttpDelete("{masinhvien}")]
         public async Task DeleteDiemSinhVien(int masinhvien, DiemSinhVienDto diemSinhVienDto)
         {
             await _service.RemoveAsync(masinhvien, diemSinhVienDto);
         }
+
         [HttpDelete("{malopmonhoc}")]
         public async Task DeleteDiemSinhVienTheoLopMonHoc(int malopmonhoc, DiemSinhVienDto diemSinhVienDto)
         {

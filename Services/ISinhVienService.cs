@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
 using qlsinhvien.Dto;
 using qlsinhvien.Entities;
 
@@ -14,6 +13,4 @@ public interface ISinhVienService
     public Task<SinhVien> UpdateProfile(int maSoSinhVien, SinhVienDto sinhVienDto);
     public Task<SinhVien> UpdateLopQuanLi(int maSoSinhVien, int maLopQuanLi);
     public Task Remove(int maSoSinhVien);
-    
-    // public Task<SinhVien> UpdateLopMonHoc(int maSoSinhVien, );
 }

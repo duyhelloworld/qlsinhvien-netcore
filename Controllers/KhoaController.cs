@@ -1,5 +1,6 @@
 using System.Net;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using qlsinhvien.Context;
@@ -26,6 +27,8 @@ public class KhoaController : ControllerBase
     }
 
     [HttpGet("{makhoa:int:min(1)}")]
+    [Authorize(Roles = "admin")]
+    [Authorize(Roles = "user")]
     public async Task<Khoa?> GetById(int makhoa)
     {
         return await _service.GetById(makhoa); ;
