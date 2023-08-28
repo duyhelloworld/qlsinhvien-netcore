@@ -1,6 +1,4 @@
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using qlsinhvien.Context;
 using qlsinhvien.Dto;
 using qlsinhvien.Entities;
 using qlsinhvien.Services;
@@ -54,7 +52,7 @@ namespace qlsinhvien.Controllers
         {
             await _service.RemoveAsync(masinhvien, diemSinhVienDto);
         }
-        
+
         [HttpDelete("{malopmonhoc}")]
         public async Task DeleteDiemSinhVienTheoLopMonHoc(int malopmonhoc, DiemSinhVienDto diemSinhVienDto)
         {
