@@ -15,6 +15,7 @@ public class MonHocService : IMonHocService
     public MonHocService(ApplicationContext context)
     {
         _context = context;
+        // _service = service;
     }
 
     public async Task<MonHoc> AddNew(MonHocDto monHocDto)
