@@ -20,6 +20,8 @@ builder.Services.AddScoped<IKhoaService, KhoaService>();
 builder.Services.AddScoped<IDiemSinhVienService, DiemSinhVienService>();
 builder.Services.AddScoped<ISinhVienService, SinhVienService>();
 builder.Services.AddScoped<IMonHocService, MonHocService>();
+builder.Services.AddScoped<ITaiKhoanService, TaiKhoanService>();
+
 
 builder.Services.AddDbContext<ApplicationContext>(options =>
 {
