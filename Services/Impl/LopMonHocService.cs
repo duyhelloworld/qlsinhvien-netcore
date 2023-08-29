@@ -1,11 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using qlsinhvien.Context;
-using qlsinhvien.Controllers;
 using qlsinhvien.Dto;
-using qlsinhvien.Entities;
 using qlsinhvien.Exceptions;
-using qlsinhvien.Services;
 
 namespace qlsinhvien.Services.Impl;
 
