@@ -34,7 +34,7 @@ namespace qlsinhvien.Controllers
             return Ok(monHoc);
         }
         [HttpGet("getname/{name}")]
-        public async Task<IActionResult> GetByName([FromQuery] string name)
+        public async Task<IActionResult> GetByName(string name)
         {
             var monHoc = await _service.GetByTenMon(name);
             if (monHoc == null)

@@ -48,16 +48,16 @@ public class LopMonHocService : ILopMonHocService
             throw new HttpException(404, $"Không tồn tại lớp môn học đang dạy môn học có mã {maMonHoc}");
         }
         var Diems = from l in _context.LopMonHocs
-                 join diem in _context.DiemSinhViens on l.MaLopMonHoc equals diem.MaLopMonHoc
-                 where l.MaMonHoc == maMonHoc
-                 select diem.MaLopMonHoc;
+                    join diem in _context.DiemSinhViens on l.MaLopMonHoc equals diem.MaLopMonHoc
+                    where l.MaMonHoc == maMonHoc
+                    select diem.MaLopMonHoc;
         foreach (var item in Diems)
         {
             await _service.DeleteByLopMonHoc(item);
         }
         var maLopMonHocs = from l in _context.LopMonHocs
-                 where l.MaMonHoc == maMonHoc
-                 select l;
+                           where l.MaMonHoc == maMonHoc
+                           select l;
         foreach (var item in maLopMonHocs)
         {
             _context.LopMonHocs.Remove(item);
