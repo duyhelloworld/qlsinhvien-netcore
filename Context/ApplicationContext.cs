@@ -22,7 +22,6 @@ public class ApplicationContext : DbContext
     public DbSet<BoMon> BoMons { get; set; }
     public DbSet<NguoiDung> NguoiDungs { get; set; }
     public DbSet<VaiTro> VaiTros { get; set; }
-    public DbSet<NguoiDungVaiTro> NguoiDungVaiTros { get; set; }
     #endregion
 
     protected override void OnModelCreating(ModelBuilder builder)

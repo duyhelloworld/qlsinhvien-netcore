@@ -2,7 +2,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
 using qlsinhvien.Entities;
-using qlsinhvien.Entities.Security;
+using qlsinhvien.Entities.SecurityModels;
 
 namespace qlsinhvien.Services.Impl;
 
@@ -33,7 +33,7 @@ public class TaiKhoanService : ITaiKhoanService
         {
             return "";
         }
-        // Thuật toán config ở Program.cs
+        // Thuật toán config ở Program.cs ?
         var tokenBytes = await _userManager.CreateSecurityTokenAsync(nguoiDung);
         var token = Convert.ToBase64String(tokenBytes);
         return token;

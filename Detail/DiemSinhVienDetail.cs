@@ -9,6 +9,7 @@ namespace qlsinhvien.Entities
         public string HoTen { get; set; }
         public int MaMonHoc { get; set; }
         public string TenMonHoc { get; set; }
+        // public MonHoc MonHoc { get; set; }
         public float DiemChuyenCan { get; set; }
         public float DiemGiuaKi { get; set; }
         public float DiemCuoiKi { get; set; }

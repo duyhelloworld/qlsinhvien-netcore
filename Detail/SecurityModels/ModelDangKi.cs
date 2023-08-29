@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace qlsinhvien.Entities.Security;
+namespace qlsinhvien.Entities.SecurityModels;
 
 public class ModelDangKi
 {

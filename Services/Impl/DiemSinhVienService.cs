@@ -15,11 +15,6 @@ public class DiemSinhVienService : IDiemSinhVienService
         _context = context;
     }
 
-    // Task<Entities.DiemSinhVien> IDiemSinhVienService.AddNewAsync(DiemSinhVienDto diemSinhVienDto)
-    // {
-    //     throw new NotImplementedException();
-    // }
-
     async Task<IEnumerable<Entities.DiemSinhVien>> IDiemSinhVienService.GetAllAsync()
     {
         return await _context.DiemSinhViens.ToListAsync();
@@ -48,6 +43,14 @@ public class DiemSinhVienService : IDiemSinhVienService
                         DiemGiuaKi = diem.DiemGiuaKi,
                         DiemCuoiKi = diem.DiemCuoiKi
                     };
+                    // select new DiemSinhVien
+                    // {
+                    //     SinhVien = sv,
+                    //     LopMonHoc = lmh,
+                    //     DiemChuyenCan = diem.DiemChuyenCan,
+                    //     DiemGiuaKi = diem.DiemGiuaKi,
+                    //     DiemCuoiKi = diem.DiemCuoiKi
+                    // };
         return await query.ToListAsync();
     }
 

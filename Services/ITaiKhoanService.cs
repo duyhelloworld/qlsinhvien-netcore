@@ -1,4 +1,4 @@
-using qlsinhvien.Entities.Security;
+using qlsinhvien.Entities.SecurityModels;
 
 namespace qlsinhvien.Services;
 
