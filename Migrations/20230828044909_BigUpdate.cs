@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace qlsinhvien.Migrations
 {
     /// <inheritdoc />
-    public partial class RemoveBangTenTiengAnh : Migration
+    public partial class BigUpdate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -38,23 +38,11 @@ namespace qlsinhvien.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "NguoiDung",
-                columns: table => new
-                {
-                    TenNguoiDung = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    MatKhau = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_NguoiDung", x => x.TenNguoiDung);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "VaiTro",
                 columns: table => new
                 {
                     TenVaiTro = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    TenVaiTroCuThe = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    TenDayDu = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -141,23 +129,19 @@ namespace qlsinhvien.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "NguoiDung_VaiTro",
+                name: "NguoiDung",
                 columns: table => new
                 {
-                    TenNguoiDung = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    TenNguoiDung = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    MatKhau = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    MaSo = table.Column<int>(type: "int", nullable: false),
                     TenVaiTro = table.Column<string>(type: "nvarchar(50)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_NguoiDung_VaiTro", x => new { x.TenNguoiDung, x.TenVaiTro });
+                    table.PrimaryKey("PK_NguoiDung", x => x.TenNguoiDung);
                     table.ForeignKey(
-                        name: "FK_NguoiDung_VaiTro_NguoiDung_TenNguoiDung",
-                        column: x => x.TenNguoiDung,
-                        principalTable: "NguoiDung",
-                        principalColumn: "TenNguoiDung",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_NguoiDung_VaiTro_VaiTro_TenVaiTro",
+                        name: "FK_NguoiDung_VaiTro_TenVaiTro",
                         column: x => x.TenVaiTro,
                         principalTable: "VaiTro",
                         principalColumn: "TenVaiTro",
@@ -336,8 +320,8 @@ namespace qlsinhvien.Migrations
                 column: "MaMonTienQuyet");
 
             migrationBuilder.CreateIndex(
-                name: "IX_NguoiDung_VaiTro_TenVaiTro",
-                table: "NguoiDung_VaiTro",
+                name: "IX_NguoiDung_TenVaiTro",
+                table: "NguoiDung",
                 column: "TenVaiTro");
 
             migrationBuilder.CreateIndex(
@@ -368,16 +352,13 @@ namespace qlsinhvien.Migrations
                 name: "DiemSinhVien");
 
             migrationBuilder.DropTable(
-                name: "NguoiDung_VaiTro");
+                name: "NguoiDung");
 
             migrationBuilder.DropTable(
                 name: "LopMonHoc");
 
             migrationBuilder.DropTable(
                 name: "SinhVien");
-
-            migrationBuilder.DropTable(
-                name: "NguoiDung");
 
             migrationBuilder.DropTable(
                 name: "VaiTro");

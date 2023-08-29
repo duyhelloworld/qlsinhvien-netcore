@@ -12,8 +12,8 @@ using qlsinhvien.Context;
 namespace qlsinhvien.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20230828031854_RemoveBangTenTiengAnh")]
-    partial class RemoveBangTenTiengAnh
+    [Migration("20230828044909_BigUpdate")]
+    partial class BigUpdate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -263,29 +263,23 @@ namespace qlsinhvien.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int>("MaSo")
+                        .HasColumnType("int");
+
                     b.Property<string>("MatKhau")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("TenNguoiDung");
-
-                    b.ToTable("NguoiDung");
-                });
-
-            modelBuilder.Entity("qlsinhvien.Entities.NguoiDungVaiTro", b =>
-                {
-                    b.Property<string>("TenNguoiDung")
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<string>("TenVaiTro")
+                        .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("TenNguoiDung", "TenVaiTro");
+                    b.HasKey("TenNguoiDung");
 
                     b.HasIndex("TenVaiTro");
 
-                    b.ToTable("NguoiDung_VaiTro");
+                    b.ToTable("NguoiDung");
                 });
 
             modelBuilder.Entity("qlsinhvien.Entities.SinhVien", b =>
@@ -353,8 +347,7 @@ namespace qlsinhvien.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("TenVaiTroCuThe")
-                        .IsRequired()
+                    b.Property<string>("TenDayDu")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -462,21 +455,13 @@ namespace qlsinhvien.Migrations
                     b.Navigation("MonTienQuyet");
                 });
 
-            modelBuilder.Entity("qlsinhvien.Entities.NguoiDungVaiTro", b =>
+            modelBuilder.Entity("qlsinhvien.Entities.NguoiDung", b =>
                 {
-                    b.HasOne("qlsinhvien.Entities.NguoiDung", "NguoiDung")
-                        .WithMany()
-                        .HasForeignKey("TenNguoiDung")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("qlsinhvien.Entities.VaiTro", "VaiTro")
-                        .WithMany()
+                        .WithMany("NguoiDungs")
                         .HasForeignKey("TenVaiTro")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("NguoiDung");
 
                     b.Navigation("VaiTro");
                 });
@@ -524,6 +509,11 @@ namespace qlsinhvien.Migrations
             modelBuilder.Entity("qlsinhvien.Entities.SinhVien", b =>
                 {
                     b.Navigation("DiemSinhViens");
+                });
+
+            modelBuilder.Entity("qlsinhvien.Entities.VaiTro", b =>
+                {
+                    b.Navigation("NguoiDungs");
                 });
 #pragma warning restore 612, 618
         }
