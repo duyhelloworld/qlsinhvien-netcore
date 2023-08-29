@@ -14,5 +14,7 @@ public class VaiTro : IdentityRole
 
     [StringLength(100)]
     // VD: Adminitrastor
-    public string TenVaiTroCuThe { get; set; } = null!;
+    public string? TenDayDu { get; set; } = null!;
+
+    public ICollection<NguoiDung> NguoiDungs  { get; set; } = new List<NguoiDung>();
 }
