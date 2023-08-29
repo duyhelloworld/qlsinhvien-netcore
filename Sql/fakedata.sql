@@ -219,7 +219,12 @@ VALUES
   (9, 28, 6.0, 6.5, 7.0, 2, N'Tốt'),
   (10, 29, 7.0, 7.5, 8.0, 1, N'Khá');
 
-INSERT INTO [NguoiDung] (TenNguoiDung, MatKhau)
+INSERT INTO [VaiTro] (TenVaiTro, TenDayDu) 
+VALUES ("admin", "Adminitrastor"),
+      ( "sinhvien", "Sinh Vien"),
+      ( "giangvien", "Giang Vien");
+
+INSERT INTO [NguoiDung] (TenNguoiDung, MatKhau, TenVaiTro, MaSo)
 VALUES  ("nguyentrunghoa", "gv1"),
         ("dangtruongnam", "gv2"), 
         ("nguyenvanan", "sv1"), 
