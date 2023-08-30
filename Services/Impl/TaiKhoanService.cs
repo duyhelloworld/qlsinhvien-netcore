@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
+using qlsinhvien.Context;
 using qlsinhvien.Entities;
 using qlsinhvien.Entities.SecurityModels;
 
@@ -8,16 +9,11 @@ namespace qlsinhvien.Services.Impl;
 
 public class TaiKhoanService : ITaiKhoanService
 {
-    private readonly IConfiguration _configuration;
-    private readonly SignInManager<NguoiDung> _signInManager;
-    private readonly UserManager<NguoiDung> _userManager;
+    private readonly ApplicationContext _context;
 
-    public TaiKhoanService(
-        IConfiguration configuration, UserManager<NguoiDung> userManager, SignInManager<NguoiDung> signInManager)
+    public TaiKhoanService(ApplicationContext context)
     {
-        _signInManager = signInManager;
-        _userManager = userManager;
-        _configuration = configuration;
+        _context = context;
     }
 
     public async Task<string> DangKi(ModelDangKi model)
@@ -31,6 +27,7 @@ public class TaiKhoanService : ITaiKhoanService
         var result = await _userManager.CreateAsync(nguoiDung, nguoiDung.MatKhau);
         if (!result.Succeeded)
         {
+            Console.WriteLine(result.Errors.First());
             return "";
         }
         // Thuật toán config ở Program.cs ?

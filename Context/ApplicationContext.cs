@@ -48,23 +48,23 @@ public class ApplicationContext : DbContext
             vaitro.Ignore(vt => vt.NormalizedName);
         });
 
-        builder.Entity<NguoiDung>(nguoiDung =>
-        {
-            nguoiDung.Ignore(nd => nd.Id);
-            nguoiDung.Ignore(nd => nd.PhoneNumber);
-            nguoiDung.Ignore(nd => nd.PasswordHash);
-            nguoiDung.Ignore(nd => nd.UserName);
-            nguoiDung.Ignore(nd => nd.AccessFailedCount);
-            nguoiDung.Ignore(nd => nd.NormalizedUserName);
-            nguoiDung.Ignore(nd => nd.NormalizedEmail);
-            nguoiDung.Ignore(nd => nd.EmailConfirmed);
-            nguoiDung.Ignore(nd => nd.SecurityStamp);
-            nguoiDung.Ignore(nd => nd.ConcurrencyStamp);
-            nguoiDung.Ignore(nd => nd.PhoneNumberConfirmed);
-            nguoiDung.Ignore(nd => nd.TwoFactorEnabled);
-            nguoiDung.Ignore(nd => nd.LockoutEnd);
-            nguoiDung.Ignore(nd => nd.LockoutEnabled);
-        });
+        // builder.Entity<NguoiDung>(nguoiDung =>
+        // {
+        //     nguoiDung.Ignore(nd => nd.Id);
+        //     nguoiDung.Ignore(nd => nd.PhoneNumber);
+        //     nguoiDung.Ignore(nd => nd.PasswordHash);
+        //     nguoiDung.Ignore(nd => nd.UserName);
+        //     nguoiDung.Ignore(nd => nd.AccessFailedCount);
+        //     nguoiDung.Ignore(nd => nd.NormalizedUserName);
+        //     nguoiDung.Ignore(nd => nd.NormalizedEmail);
+        //     nguoiDung.Ignore(nd => nd.EmailConfirmed);
+        //     nguoiDung.Ignore(nd => nd.SecurityStamp);
+        //     nguoiDung.Ignore(nd => nd.ConcurrencyStamp);
+        //     nguoiDung.Ignore(nd => nd.PhoneNumberConfirmed);
+        //     nguoiDung.Ignore(nd => nd.TwoFactorEnabled);
+        //     nguoiDung.Ignore(nd => nd.LockoutEnd);
+        //     nguoiDung.Ignore(nd => nd.LockoutEnabled);
+        // });
 
         // foreach (var entityType in builder.Model.GetEntityTypes())
         // {

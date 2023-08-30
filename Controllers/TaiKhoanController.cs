@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using qlsinhvien.Entities.SecurityModels;
 using qlsinhvien.Services;
@@ -16,12 +17,13 @@ public class TaiKhoanController : ControllerBase
     }
 
     [HttpPost("dangnhap")]
+    // [Authorize(Policy = "", Roles = )]
     public async Task<IActionResult> DangNhap([FromBody] ModelDangNhap model) 
     {
         return Ok(await _service.DangNhap(model));
     }
 
-    [HttpPost("dangnhap")]
+    [HttpPost("dangki")]
     public async Task<IActionResult> DangKi([FromBody] ModelDangKi model)
     {
         return Ok(await _service.DangKi(model));

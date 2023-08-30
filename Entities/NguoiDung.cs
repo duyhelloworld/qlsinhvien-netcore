@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace qlsinhvien.Entities;
 
@@ -27,9 +28,9 @@ public class NguoiDung : IdentityUser
     [StringLength(60)]
     public string? TenHienThi { get; set; }
 
-    [NotMapped]
-    [StringLength(60)]
-    public override string? Email { get ; set; }
+    // [NotMapped]
+    // [StringLength(60)]
+    // public override string? Email { get ; set; }
 
     [NotMapped]
     [StringLength(10)]
