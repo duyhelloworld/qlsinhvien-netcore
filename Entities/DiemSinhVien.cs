@@ -11,11 +11,11 @@ namespace qlsinhvien.Entities
     {
         public int MaLopMonHoc { get; set; }
         [DeleteBehavior(DeleteBehavior.NoAction)]
-        public LopMonHoc LopMonHoc { get; set; }
+        public LopMonHoc LopMonHoc { get; set; } = null!;
 
         public int MaSinhVien { get; set; }
         [DeleteBehavior(DeleteBehavior.NoAction)]
-        public SinhVien SinhVien { get; set; }
+        public SinhVien SinhVien { get; set; } = null!;
 
         public float DiemChuyenCan { get; set; }
 

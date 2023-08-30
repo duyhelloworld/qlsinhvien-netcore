@@ -29,26 +29,8 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
     options.EnableThreadSafetyChecks();
 });
 
-builder.Services.AddIdentity<NguoiDung, VaiTro>(option =>
-{
-    option.User.RequireUniqueEmail = true;
-
-    option.Password.RequireDigit = false;
-    option.Password.RequireNonAlphanumeric = false;
-    option.Password.RequireLowercase = false;
-    option.Password.RequireUppercase = false;
-    option.Password.RequiredUniqueChars = 0;
-    option.Password.RequiredLength = 5;
-
-    option.SignIn.RequireConfirmedAccount = false;
-    option.SignIn.RequireConfirmedEmail = false;
-    option.SignIn.RequireConfirmedPhoneNumber = false;
-
-    option.Lockout.MaxFailedAccessAttempts = 3;
-    option.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(30);
-})
-.AddEntityFrameworkStores<ApplicationContext>()
-.AddDefaultTokenProviders();
+// builder.Services.AddIdentity<NguoiDung, VaiTro>()
+// .AddDefaultTokenProviders();
 
 builder.Services.AddAuthentication(option =>
 {
