@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using qlsinhvien.Atributes;
 using qlsinhvien.Context;
 using qlsinhvien.Dto;
 using qlsinhvien.Entities;
@@ -8,16 +9,17 @@ using qlsinhvien.Services;
 namespace qlsinhvien.Controllers
 {
     [ApiController]
-    [Route("/[controller]")]
+    [Route("[controller]")]
     public class MonHocController : ControllerBase
     {
         private readonly IMonHocService _service;
-    public MonHocController(IMonHocService service)
-    {
-        _service = service;
-    }
+        public MonHocController(IMonHocService service)
+        {
+            _service = service;
+        }
 
         [HttpGet]
+        [PhanQuyen("")]
         public async Task<IEnumerable<MonHoc>> GetAll()
         {
             return await _service.GetAll();
