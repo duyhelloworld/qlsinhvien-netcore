@@ -10,7 +10,7 @@ public class ModelDangKi
 
     public string TenHienThi { get; set; } = null!;
 
-    public string Email { get; set; } = null!;
+    // public string Email { get; set; } = null!;
 
-    public string SoDienThoai { get; set; } = null!;
+    // public string SoDienThoai { get; set; } = null!;
 }
