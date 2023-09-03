@@ -17,22 +17,10 @@ public class NguoiDung
     public int? MaGiangVien { get; set; }
     public int? MaSinhVien { get; set; }
 
-    public int MaVaiTro  { get; set; }
-    [ForeignKey("MaVaiTro")]
+    public string? TenVaiTro  { get; set; }
+    [ForeignKey("TenVaiTro")]
     public VaiTro VaiTro  { get; set; } = null!;
 
-    #region Chưa sử dụng, Đăng nhập chỉ qua tên user 
-    
-    [NotMapped]
     [StringLength(60)]
-    public string? TenHienThi { get; set; }
-
-    [NotMapped]
-    [StringLength(60)]
-    public string? Email { get ; set; }
-
-    [NotMapped]
-    [StringLength(10)]
-    public string? SoDienThoai  {get; set;}
-    #endregion
+    public string? TenHienThi { get; set; } = null!;
 }

@@ -8,11 +8,10 @@ namespace qlsinhvien.Entities;
 public class VaiTro
 {
     [Key]
-    public int MaVaiTro {get; set;}
+    public string TenVaiTro {get; set;} = null!;
 
-    [Required]
     [StringLength(100)]
-    public string TenVaiTro { get; set; } = null!;
+    public string? GhiChu { get; set; } = null!;
 
     public ICollection<NguoiDung> NguoiDungs  { get; set; } = new List<NguoiDung>();
     
