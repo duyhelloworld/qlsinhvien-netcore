@@ -12,10 +12,10 @@ namespace qlsinhvien.Entities
         [Column(TypeName = "date")]
         public DateTime NgayVaoTruong { get; set; }
 
-        [Required]
         public int MaLopQuanLi { get; set; }
         [ForeignKey("MaLopQuanLi")]
-        public LopQuanLi LopQuanLi { get; set; }
+        public LopQuanLi LopQuanLi { get; set; } = null!;
+        
         public ICollection<DiemSinhVien>? DiemSinhViens { get; set; } = new HashSet<DiemSinhVien>();
     }
 }
