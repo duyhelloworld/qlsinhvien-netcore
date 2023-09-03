@@ -6,7 +6,7 @@ using qlsinhvien.Entities;
 namespace qlsinhvien.Controllers
 {
     [ApiController]
-    [Route("/[controller]")]
+    [Route("[controller]")]
     public class LopMonHocController : ControllerBase
     {
         private readonly ApplicationContext appContext;
