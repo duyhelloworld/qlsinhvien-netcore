@@ -38,7 +38,7 @@ public class SinhVienService : ISinhVienService
         var lopQuanLi = await _context.LopQuanLis.FindAsync(maLopQuanLi);
         if (lopQuanLi == null)
         {
-            throw new HttpException(404, $"Lớp quản lí mã số {maLopQuanLi} không tồn tại");
+            throw new ServiceException(404, $"Lớp quản lí mã số {maLopQuanLi} không tồn tại");
         }
         var sinhViens = await (from sv in _context.SinhViens
                                 where sv.MaLopQuanLi == maLopQuanLi
@@ -51,12 +51,13 @@ public class SinhVienService : ISinhVienService
         var lopMonHoc = await _context.LopMonHocs.FindAsync(maLopMonHoc);
         if (lopMonHoc == null)
         {
-            throw new HttpException(404, $"Không tồn tại lớp môn học mã số {maLopMonHoc}");
+            throw new ServiceException(404, $"Không tồn tại lớp môn học mã số {maLopMonHoc}");
         }
         var maSinhViens = from dsv in _context.DiemSinhViens
                 where dsv.MaLopMonHoc == maLopMonHoc
                 select dsv.MaSinhVien;
-        if (maSinhViens.Count() == 0) {
+        if (maSinhViens.Count() == 0) 
+        {
             return Enumerable.Empty<SinhVien>();
         }
         var sinhViens = from sv in _context.SinhViens
@@ -69,7 +70,7 @@ public class SinhVienService : ISinhVienService
     {
         var lopQuanLi = await _context.LopQuanLis.FindAsync(sinhVienDto.MaLopQuanLi);
         if (lopQuanLi == null) {
-            throw new HttpException(404, $"Không tồn tại lớp quản lí mã {sinhVienDto.MaLopQuanLi}");
+            throw new ServiceException(404, $"Không tồn tại lớp quản lí mã {sinhVienDto.MaLopQuanLi}");
         }
         var trungSdtHoacEmail = await _context.SinhViens
             .FirstOrDefaultAsync(sv => sv.SoDienThoai.Equals(sinhVienDto.SoDienThoai)
@@ -85,7 +86,7 @@ public class SinhVienService : ISinhVienService
             {
                 msg = $"Email {sinhVienDto.Email} đã được sử dụng";
             }
-            throw new HttpException(400, msg);
+            throw new ServiceException(400, msg);
         }
 
         var sinhVien = new SinhVien()
@@ -110,13 +111,13 @@ public class SinhVienService : ISinhVienService
         var lopQuanLi = await _context.LopQuanLis.FindAsync(sinhVienDto.MaLopQuanLi);
         if (lopQuanLi == null)
         {
-            throw new HttpException(404, $"Không tồn tại lớp quản lí mã {sinhVienDto.MaLopQuanLi}");
+            throw new ServiceException(404, $"Không tồn tại lớp quản lí mã {sinhVienDto.MaLopQuanLi}");
         }
 
         var sinhVien = await _context.SinhViens.FindAsync(maSoSinhVien);
         if (sinhVien == null)
         {
-            throw new HttpException(404, $"Không tồn tại sinh viên mã số {maSoSinhVien}");
+            throw new ServiceException(404, $"Không tồn tại sinh viên mã số {maSoSinhVien}");
         }
         sinhVien.HoTen = sinhVienDto.HoTen;
         sinhVien.GioiTinh = sinhVienDto.GioiTinh;
@@ -136,13 +137,13 @@ public class SinhVienService : ISinhVienService
             .FirstOrDefaultAsync(sv => sv.MaSinhVien == maSoSinhVien);
         if (sinhVien == null)
         {
-            throw new HttpException(404, $"Sinh viên mã {maSoSinhVien} không tồn tại");
+            throw new ServiceException(404, $"Sinh viên mã {maSoSinhVien} không tồn tại");
         }
         var lopQuanLi = await _context.LopQuanLis
             .FirstOrDefaultAsync(lql => lql.MaLopQuanLi == maLopQuanLi);
         if (lopQuanLi == null)
         {
-            throw new HttpException(404, $"Lớp quản lí mã {maLopQuanLi} không tồn tại");
+            throw new ServiceException(404, $"Lớp quản lí mã {maLopQuanLi} không tồn tại");
         }
         sinhVien.LopQuanLi = lopQuanLi;
         await _context.SaveChangesAsync();
@@ -154,7 +155,7 @@ public class SinhVienService : ISinhVienService
         var sinhVien = await _context.SinhViens.FindAsync(maSoSinhVien);
         if (sinhVien == null)
         {
-            throw new HttpException(404, $"Không tồn tại sinh viên mã số {maSoSinhVien}");
+            throw new ServiceException(404, $"Không tồn tại sinh viên mã số {maSoSinhVien}");
         }
         var diems = from dsv in _context.DiemSinhViens
                     where dsv.MaSinhVien == maSoSinhVien

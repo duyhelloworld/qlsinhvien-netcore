@@ -23,7 +23,7 @@ partial class KhoaService : IKhoaService
     public async Task<Khoa?> GetById(int maKhoa)
     {
         var khoa = await _context.Khoas.FindAsync(maKhoa) 
-            ?? throw new HttpException(404, "Không có khoa mã này");
+            ?? throw new ServiceException(404, "Không có khoa mã này");
         return khoa;
     }
 
@@ -41,7 +41,7 @@ partial class KhoaService : IKhoaService
             .AnyAsync(k => k.TenKhoa.Equals(khoaDto.TenKhoa));
         if (checkTenKhoa)  
         {
-            throw new HttpException(400, "Tên khoa đã tồn tại");
+            throw new ServiceException(400, "Tên khoa đã tồn tại");
         }
         var khoa = new Khoa() 
         {
@@ -76,12 +76,12 @@ partial class KhoaService : IKhoaService
     public async Task<Khoa> Update(int maKhoa, KhoaDto khoaDto)
     {
         var khoa = await _context.Khoas.FindAsync(maKhoa)  
-            ?? throw new HttpException(404, "Không có khoa mã này");
+            ?? throw new ServiceException(404, "Không có khoa mã này");
         var checkTenKhoa = await _context.Khoas
            .AnyAsync(k => k.TenKhoa.Equals(khoaDto.TenKhoa));
         if (checkTenKhoa)
         {
-            throw new HttpException(400, "Tên khoa đã tồn tại");
+            throw new ServiceException(400, "Tên khoa đã tồn tại");
         }
         khoa.TenKhoa = khoaDto.TenKhoa;
         if (khoaDto.MaBoMons != null)
@@ -115,14 +115,14 @@ partial class KhoaService : IKhoaService
             .Include(k => k.BoMons)
             .Include(k => k.LopQuanLis)
             .FirstOrDefaultAsync() 
-            ?? throw new HttpException(404, "Không có khoa mã này");
+            ?? throw new ServiceException(404, "Không có khoa mã này");
         if (khoa.BoMons != null)
         {
             khoa.BoMons.Clear();
         }
         if (khoa.LopQuanLis != null)
         {
-            throw new HttpException(400, @$"Khoa đang có {khoa.LopQuanLis.Count} 
+            throw new ServiceException(400, @$"Khoa đang có {khoa.LopQuanLis.Count} 
                 lớp quản lí. Hãy thay đổi khoa của các lớp đó trước");
         }
         await _context.SaveChangesAsync();

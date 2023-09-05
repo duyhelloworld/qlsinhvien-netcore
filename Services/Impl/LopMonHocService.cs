@@ -45,7 +45,7 @@ public class LopMonHocService : ILopMonHocService
         var lop = await _context.LopMonHocs.FindAsync(maMonHoc);
         if (lop == null)
         {
-            throw new HttpException(404, $"Không tồn tại lớp môn học đang dạy môn học có mã {maMonHoc}");
+            throw new ServiceException(404, $"Không tồn tại lớp môn học đang dạy môn học có mã {maMonHoc}");
         }
         var Diems = from l in _context.LopMonHocs
                     join diem in _context.DiemSinhViens on l.MaLopMonHoc equals diem.MaLopMonHoc
@@ -70,7 +70,7 @@ public class LopMonHocService : ILopMonHocService
         var lop = await _context.LopMonHocs.FindAsync(maLopMonHoc);
         if (lop == null)
         {
-            throw new HttpException(404, $"Không tồn tại lớp môn học có mã {maLopMonHoc}");
+            throw new ServiceException(404, $"Không tồn tại lớp môn học có mã {maLopMonHoc}");
         }
         await _service.DeleteByLopMonHoc(maLopMonHoc);
         _context.LopMonHocs.Remove(lop);

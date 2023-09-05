@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
+using qlsinhvien.Entities;
 using qlsinhvien.Entities.SecurityModels;
 using qlsinhvien.Services;
 
 namespace qlsinhvien.Controllers;
 
-[Route("/")]
 [ApiController]
+[Route("[controller]")]
 public class TaiKhoanController : ControllerBase
 {
     private readonly ITaiKhoanService _service;
@@ -21,9 +22,15 @@ public class TaiKhoanController : ControllerBase
         return Ok(await _service.DangNhap(model));
     }
 
-    [HttpPost("dangnhap")]
-    public async Task<IActionResult> DangKi([FromBody] ModelDangKi model)
+    [HttpPost("dangki")]
+    public async Task DangKi([FromBody] ModelDangKi model)
     {
-        return Ok(await _service.DangKi(model));
+        await _service.TaoTaiKhoanTrong(model);
+    }
+
+    [HttpPost("capquyen")]
+    public async Task CapQuyen([FromBody] ModelCapQuyen modelCapQuyen)
+    {
+        await _service.PhanVaiTro(modelCapQuyen.TenNguoiDung, modelCapQuyen.TenVaiTro);
     }
 }

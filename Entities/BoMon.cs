@@ -11,12 +11,12 @@ namespace qlsinhvien.Entities
 
         [Required]
         [StringLength(80)]
-        public string TenBoMon { get; set; }
+        public string TenBoMon { get; set; } = null!;
 
         public ICollection<MonHoc> MonHocs { get; set; } = new HashSet<MonHoc>();
 
         public ICollection<GiangVien> GiangViens { get; set; } = new HashSet<GiangVien>();
 
-        public ICollection<Khoa> Khoa { get; set; } = new HashSet<Khoa>();
+        public ICollection<Khoa> Khoas { get; set; } = new HashSet<Khoa>();
     }
 }

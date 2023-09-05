@@ -27,8 +27,6 @@ public class KhoaController : ControllerBase
     }
 
     [HttpGet("{makhoa:int:min(1)}")]
-    [Authorize(Roles = "admin")]
-    [Authorize(Roles = "user")]
     public async Task<Khoa?> GetById(int makhoa)
     {
         return await _service.GetById(makhoa); ;

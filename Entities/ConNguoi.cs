@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace qlsinhvien.Entities;
 
-[Index(nameof(Email), IsUnique = true)]
-[Index(nameof(SoDienThoai), IsUnique = true)]
+[Index("Email", IsUnique = true)]
+[Index("SoDienThoai", IsUnique = true)]
 public class ConNguoi
 {
     [Required]

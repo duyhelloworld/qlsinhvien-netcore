@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using qlsinhvien.Context;
 
@@ -11,9 +12,11 @@ using qlsinhvien.Context;
 namespace qlsinhvien.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20230830044430_DropAll")]
+    partial class DropAll
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,12 +45,12 @@ namespace qlsinhvien.Migrations
                     b.Property<int>("QuyensMaQuyen")
                         .HasColumnType("int");
 
-                    b.Property<string>("VaiTrosTenVaiTro")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("VaiTrosMaVaiTro")
+                        .HasColumnType("int");
 
-                    b.HasKey("QuyensMaQuyen", "VaiTrosTenVaiTro");
+                    b.HasKey("QuyensMaQuyen", "VaiTrosMaVaiTro");
 
-                    b.HasIndex("VaiTrosTenVaiTro");
+                    b.HasIndex("VaiTrosMaVaiTro");
 
                     b.ToTable("QuyenVaiTro");
                 });
@@ -281,21 +284,17 @@ namespace qlsinhvien.Migrations
                     b.Property<int?>("MaSinhVien")
                         .HasColumnType("int");
 
+                    b.Property<int>("MaVaiTro")
+                        .HasColumnType("int");
+
                     b.Property<string>("MatKhau")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("TenHienThi")
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
-
-                    b.Property<string>("TenVaiTro")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("TenNguoiDung");
 
-                    b.HasIndex("TenVaiTro");
+                    b.HasIndex("MaVaiTro");
 
                     b.ToTable("NguoiDung");
                 });
@@ -307,9 +306,6 @@ namespace qlsinhvien.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaQuyen"));
-
-                    b.Property<string>("MoTa")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TenQuyen")
                         .IsRequired()
@@ -378,14 +374,18 @@ namespace qlsinhvien.Migrations
 
             modelBuilder.Entity("qlsinhvien.Entities.VaiTro", b =>
                 {
-                    b.Property<string>("TenVaiTro")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("MaVaiTro")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Property<string>("GhiChu")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaVaiTro"));
+
+                    b.Property<string>("TenVaiTro")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.HasKey("TenVaiTro");
+                    b.HasKey("MaVaiTro");
 
                     b.ToTable("VaiTro");
                 });
@@ -415,7 +415,7 @@ namespace qlsinhvien.Migrations
 
                     b.HasOne("qlsinhvien.Entities.VaiTro", null)
                         .WithMany()
-                        .HasForeignKey("VaiTrosTenVaiTro")
+                        .HasForeignKey("VaiTrosMaVaiTro")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -508,7 +508,9 @@ namespace qlsinhvien.Migrations
                 {
                     b.HasOne("qlsinhvien.Entities.VaiTro", "VaiTro")
                         .WithMany("NguoiDungs")
-                        .HasForeignKey("TenVaiTro");
+                        .HasForeignKey("MaVaiTro")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("VaiTro");
                 });

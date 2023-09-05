@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using qlsinhvien.Atributes;
 using qlsinhvien.Context;
-using qlsinhvien.Entities;
 using qlsinhvien.Services;
 using qlsinhvien.Services.Impl;
 
@@ -13,6 +13,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
+// Custom Attributes
+builder.Services.AddSingleton(new PhanQuyen(""));
 
 // Services
 builder.Services.AddScoped<IGiangVienService, GiangVienService>();
@@ -22,34 +25,16 @@ builder.Services.AddScoped<ISinhVienService, SinhVienService>();
 builder.Services.AddScoped<IMonHocService, MonHocService>();
 builder.Services.AddScoped<IBoMonService, BoMonService>();
 builder.Services.AddScoped<ITaiKhoanService, TaiKhoanService>();
-
+builder.Services.AddScoped<IQuyenService, QuyenService>();
 
 builder.Services.AddDbContext<ApplicationContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionStrings"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"));
     options.EnableThreadSafetyChecks();
 });
 
-builder.Services.AddIdentity<NguoiDung, VaiTro>(option =>
-{
-    option.User.RequireUniqueEmail = true;
-
-    option.Password.RequireDigit = false;
-    option.Password.RequireNonAlphanumeric = false;
-    option.Password.RequireLowercase = false;
-    option.Password.RequireUppercase = false;
-    option.Password.RequiredUniqueChars = 0;
-    option.Password.RequiredLength = 5;
-
-    option.SignIn.RequireConfirmedAccount = false;
-    option.SignIn.RequireConfirmedEmail = false;
-    option.SignIn.RequireConfirmedPhoneNumber = false;
-
-    option.Lockout.MaxFailedAccessAttempts = 3;
-    option.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(30);
-})
-.AddEntityFrameworkStores<ApplicationContext>()
-.AddDefaultTokenProviders();
+// builder.Services.AddIdentity<NguoiDung, VaiTro>()
+// .AddDefaultTokenProviders();
 
 builder.Services.AddAuthentication(option =>
 {
@@ -59,26 +44,32 @@ builder.Services.AddAuthentication(option =>
     option.RequireAuthenticatedSignIn = true;
 }).AddJwtBearer(option =>
 {
-    option.SaveToken = true;
+    option.SaveToken = false;
     option.RequireHttpsMetadata = false;
     option.TokenValidationParameters = new TokenValidationParameters()
     {
-        ValidateIssuer = true,
-        ValidateAudience = true,
         ClockSkew = TimeSpan.Zero,
-        // ValidIssuer = builder.Configuration["JWT:Issuer"],
-        // ValidAudiences = builder.Configuration.GetSection("JWT:Audiences").Get<IEnumerable<string>>(),
-        // IssuerSigningKey = new SymmetricSecurityKey(
-            //   Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecretKey"]!)),
+        ValidateLifetime = false,
+        ValidateIssuer = true,
+        ValidateAudience = false,
+        ValidIssuer = builder.Configuration["JWT:Issuer"],
+        IssuerSigningKey = new SymmetricSecurityKey(
+              Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecretKey"]!)),
     };
 });
 
 builder.Services.AddAuthorization();
 
+// builder.Services.AddLogging(config => {
+//     config.AddConsole().AddDebug().AddJsonConsole();
+// });
+
 var app = builder.Build();
 app.MapControllers();
 
-// app.UseAuthentication();
-// app.UseAuthorization();
+app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.Run();

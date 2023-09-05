@@ -27,7 +27,7 @@ VALUES
   (N'Marketing'),
   (N'Dịch thuật, Văn hoá và Lí thuyết tiếng');
 
-INSERT INTO [BoMonKhoa] ([KhoaMaKhoa], [BoMonsMaBoMon])
+INSERT INTO [BoMonKhoa] ([KhoasMaKhoa], [BoMonsMaBoMon])
 VALUES   
   (1, 1),
   (1, 3),
@@ -134,12 +134,6 @@ VALUES
   (N'66KT1', 9, 2),
   (N'69IT2', 10, 1);
 
--- Khi lỗi mất 1 số dòng
--- SET IDENTITY_INSERT [LopQuanLi] ON;
--- INSERT INTO [LopQuanLi] ([MaLopQuanLi], [TenLopQuanLi], [MaGiangVien], [MaKhoa] )
--- VALUES (1, N'66IT4', 2, 2);
--- DBCC CHECKIDENT ('LopQuanLi', RESEED, 1);
-
 INSERT INTO [LopMonHoc] ([TenLopMonHoc], [MaMonHoc], [MaGiangVien])
 VALUES
   (N'68IT3', 3, 1),
@@ -219,10 +213,11 @@ VALUES
   (9, 28, 6.0, 6.5, 7.0, 2, N'Tốt'),
   (10, 29, 7.0, 7.5, 8.0, 1, N'Khá');
 
-INSERT INTO [VaiTro] (TenVaiTro) 
-VALUES ("admin"),
-       ("sinhvien"),
-       ("giangvien");
+  INSERT INTO [VaiTro] ([TenVaiTro], [GhiChu])
+  VALUES 
+        ("admin", "Adminitrastor"),
+        ("sinhvien", "Sinh Viên"),
+        ("giangvien", "Giảng Viên");
 
 INSERT INTO [NguoiDung] (TenNguoiDung, MatKhau, MaVaiTro, MaGiangVien, MaSinhVien, MaProfile)
 VALUES  ("nguyentrunghoa", "gv1"),
@@ -232,3 +227,4 @@ VALUES  ("nguyentrunghoa", "gv1"),
         ("lethanhcong", "sv3");
 INSERT 
 
+-- INSERT INTO [Quyen] ([TenQuyen], ) VALUES()

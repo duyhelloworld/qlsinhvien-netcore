@@ -6,29 +6,29 @@ using qlsinhvien.Services;
 namespace qlsinhvien.Controllers
 {
     [ApiController]
-    [Route("/[controller]")]
+    [Route("[controller]")]
     public class DiemSinhVienController : ControllerBase
     {
         private readonly IDiemSinhVienService _service;
-        public DiemSinhVienController(IDiemSinhVienService _service)
+        public DiemSinhVienController(IDiemSinhVienService service)
         {
-            this._service = _service;
+            _service = service;
         }
 
         [HttpGet("{masinhvien}")]
-        public async Task<IEnumerable<DiemSinhVienDetail>> GetById(int masinhvien)
+        public async Task<IEnumerable<DiemSinhVienModel>> GetById(int masinhvien)
         {
             return await _service.GetByIdAsync(masinhvien);
         }
 
         [HttpGet("malopmonhoc")]
-        public async Task<IEnumerable<DiemSinhVienDetail>> GetByLopMonHoc(int malopmonhoc)
+        public async Task<IEnumerable<DiemSinhVienModel>> GetByLopMonHoc(int malopmonhoc)
         {
             return await _service.GetByLopMonHocAsync(malopmonhoc);
         }
 
         [HttpGet("malopquanli")]
-        public async Task<IEnumerable<DiemSinhVienDetail>> GetByLopQuanLi(int malopquanli)
+        public async Task<IEnumerable<DiemSinhVienModel>> GetByLopQuanLi(int malopquanli)
         {
             return await _service.GetByLopQuanLiAsync(malopquanli);
         }
