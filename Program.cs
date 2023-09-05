@@ -20,6 +20,7 @@ builder.Services.AddScoped<IKhoaService, KhoaService>();
 builder.Services.AddScoped<IDiemSinhVienService, DiemSinhVienService>();
 builder.Services.AddScoped<ISinhVienService, SinhVienService>();
 builder.Services.AddScoped<IMonHocService, MonHocService>();
+builder.Services.AddScoped<IBoMonService, BoMonService>();
 builder.Services.AddScoped<ITaiKhoanService, TaiKhoanService>();
 
 
@@ -65,10 +66,10 @@ builder.Services.AddAuthentication(option =>
         ValidateIssuer = true,
         ValidateAudience = true,
         ClockSkew = TimeSpan.Zero,
-        ValidIssuer = builder.Configuration["JWT:Issuer"],
-        ValidAudiences = builder.Configuration.GetSection("JWT:Audiences").Get<IEnumerable<string>>(),
-        IssuerSigningKey = new SymmetricSecurityKey(
-              Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecretKey"]!)),
+        // ValidIssuer = builder.Configuration["JWT:Issuer"],
+        // ValidAudiences = builder.Configuration.GetSection("JWT:Audiences").Get<IEnumerable<string>>(),
+        // IssuerSigningKey = new SymmetricSecurityKey(
+            //   Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecretKey"]!)),
     };
 });
 
@@ -77,7 +78,7 @@ builder.Services.AddAuthorization();
 var app = builder.Build();
 app.MapControllers();
 
-app.UseAuthentication();
-app.UseAuthorization();
+// app.UseAuthentication();
+// app.UseAuthorization();
 
 app.Run();
