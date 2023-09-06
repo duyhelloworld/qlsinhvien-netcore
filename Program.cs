@@ -23,6 +23,7 @@ builder.Services.AddScoped<IKhoaService, KhoaService>();
 builder.Services.AddScoped<IDiemSinhVienService, DiemSinhVienService>();
 builder.Services.AddScoped<ISinhVienService, SinhVienService>();
 builder.Services.AddScoped<IMonHocService, MonHocService>();
+builder.Services.AddScoped<IBoMonService, BoMonService>();
 builder.Services.AddScoped<ITaiKhoanService, TaiKhoanService>();
 builder.Services.AddScoped<IQuyenService, QuyenService>();
 
