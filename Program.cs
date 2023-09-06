@@ -41,20 +41,6 @@ builder.Services.AddAuthentication(option =>
     option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     option.RequireAuthenticatedSignIn = true;
-}).AddJwtBearer(option =>
-{
-    option.SaveToken = false;
-    option.RequireHttpsMetadata = false;
-    option.TokenValidationParameters = new TokenValidationParameters()
-    {
-        ClockSkew = TimeSpan.Zero,
-        ValidateLifetime = false,
-        ValidateIssuer = true,
-        ValidateAudience = false,
-        ValidIssuer = builder.Configuration["JWT:Issuer"],
-        IssuerSigningKey = new SymmetricSecurityKey(
-              Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecretKey"]!)),
-    };
 });
 
 builder.Services.AddAuthorization();
@@ -65,8 +51,6 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 app.MapControllers();
-
-app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();

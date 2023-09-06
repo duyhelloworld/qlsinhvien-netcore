@@ -1,9 +1,11 @@
 using System.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using qlsinhvien.Atributes;
 using qlsinhvien.Context;
 using qlsinhvien.Dto;
 using qlsinhvien.Entities;
+using qlsinhvien.Services;
 using qlsinhvien.Services.Impl;
 
 namespace qlsinhvien.Controllers
@@ -12,13 +14,14 @@ namespace qlsinhvien.Controllers
     [Route("[controller]")]
     public class SinhVienController : ControllerBase
     {
-        private readonly SinhVienService _service;
+        private readonly ISinhVienService _service;
 
-        public SinhVienController(SinhVienService service) {
+        public SinhVienController(ISinhVienService service) {
             _service = service;
         }
 
         [HttpGet]
+        [PhanQuyen("admin")]
         public async Task<IEnumerable<SinhVien>> GetAll(){
             return await _service.GetAll();
         }

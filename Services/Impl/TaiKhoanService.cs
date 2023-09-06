@@ -88,20 +88,20 @@ public class TaiKhoanService : ITaiKhoanService
             new Claim[]
             {
                 new("manguoidung", maNguoiDung.ToString(), ClaimValueTypes.Integer),
-                new("vaitro", vaiTro, ClaimValueTypes.String)
+                new("vaitro", vaiTro, ClaimValueTypes.String),
+                new(ClaimTypes.Sid, Guid.NewGuid().ToString())
             }
         );
         var key = Encoding.UTF8.GetBytes(_configuration["JWT:SecretKey"]!);
         var tokenDesriptions = new SecurityTokenDescriptor()
-        {
+        {   
             Issuer = _configuration["JWT:Issuer"],
             Subject = claims,
-            Expires = DateTime.UtcNow.AddMinutes(10),
+            Expires = DateTime.UtcNow.AddMinutes(20),
             SigningCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(key),
-                SecurityAlgorithms.HmacSha256
+                SecurityAlgorithms.HmacSha256Signature
             ),
-            NotBefore = DateTime.UtcNow.AddSeconds(5)
         };
         var token = tokenHandler.CreateJwtSecurityToken(tokenDesriptions);
         return tokenHandler.WriteToken(token);

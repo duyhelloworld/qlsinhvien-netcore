@@ -14,12 +14,11 @@ namespace qlsinhvien.Atributes
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
     public class PhanQuyen : Attribute, IAsyncAuthorizationFilter
     {
-        private readonly string[]? TenQuyens;
-        public PhanQuyen(params string[] TenQuyens)
+        private readonly string[] VaiTros;
+        public PhanQuyen(params string[] VaiTros)
         {
-            this.TenQuyens = TenQuyens;
+            this.VaiTros = VaiTros;
         }
-
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
             var config = context.HttpContext.RequestServices.GetService<IConfiguration>()!;
@@ -34,26 +33,32 @@ namespace qlsinhvien.Atributes
             var handler = new JwtSecurityTokenHandler();
             var tokenParameters = new TokenValidationParameters()
             {
-                ClockSkew = TimeSpan.Zero,
+                ValidateIssuerSigningKey = true,
                 ValidateIssuer = true,
-                ValidateAudience = false,
                 ValidIssuer = config["JWT:Issuer"],
+                ValidateAudience = false,
+                ValidateLifetime = false,
+                ValidAlgorithms = new[] { SecurityAlgorithms.HmacSha256Signature },
                 IssuerSigningKey = new SymmetricSecurityKey(
                     Encoding.UTF8.GetBytes(config["JWT:SecretKey"]!)),
-                ValidateLifetime = false
             };
-            var validatedResult = await handler.ValidateTokenAsync(jwtToken, tokenParameters);
-            if (!validatedResult.IsValid)
+
+            var validateResult = await handler.ValidateTokenAsync(jwtToken, tokenParameters);
+
+            if (!validateResult.IsValid)
             {
-                Console.WriteLine(validatedResult.Exception.Message);
+                context.Result = new JsonResult(new 
+                    { message = "Unauthorized",
+                     reason = validateResult.Exception.Message })
+                { StatusCode = StatusCodes.Status500InternalServerError };
+                return;
             }
             else {
-                Console.WriteLine(JsonSerializer.Serialize(validatedResult.ClaimsIdentity.FindAll(c => true)));
+                Console.WriteLine("OK. Cac claim : " + JsonSerializer.Serialize(validateResult.ClaimsIdentity));
             }
 
             // if (validatedResult.IsValid)
             // {
-            // Console.WriteLine("Valid");
             // if (validatedResult.Issuer != config["JWT:Issuer"])
             //     {
             //         context.Result = new StatusCodeResult(StatusCodes.Status401Unauthorized);

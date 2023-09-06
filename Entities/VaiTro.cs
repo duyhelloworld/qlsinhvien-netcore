@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Identity;
 
 namespace qlsinhvien.Entities;
 
@@ -11,7 +10,7 @@ public class VaiTro
     public string TenVaiTro {get; set;} = null!;
 
     [StringLength(100)]
-    public string? GhiChu { get; set; } = null!;
+    public string? GhiChu { get; set; }
 
     public ICollection<NguoiDung> NguoiDungs  { get; set; } = new List<NguoiDung>();
     
