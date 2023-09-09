@@ -14,5 +14,5 @@ public class VaiTro
 
     public ICollection<NguoiDung> NguoiDungs  { get; set; } = new List<NguoiDung>();
     
-    public ICollection<Quyen> Quyens { get; set; } = new List<Quyen>();
+    public ICollection<QuyenVaiTro> QuyenVaiTros { get; set; } = new List<QuyenVaiTro>();
 }
