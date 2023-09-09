@@ -22,6 +22,8 @@ public class ApplicationContext : DbContext
     public DbSet<NguoiDung> NguoiDungs { get; set; }
     public DbSet<Quyen> Quyens { get; set; }
     public DbSet<VaiTro> VaiTros { get; set; }
+    public DbSet<QuyenVaiTro> QuyenVaiTros { get; set; }
+    public DbSet<KhoaBoMon> KhoaBoMons { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
