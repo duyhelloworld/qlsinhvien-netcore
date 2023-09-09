@@ -7,13 +7,10 @@ namespace qlsinhvien.Entities;
 public class Quyen
 {
     [Key]
-    public int MaQuyen  { get; set; }
-
-    [Required]
     public string TenQuyen  { get; set; } = null!;
 
     [MaxLength]
-    public string? MoTa { get; set; } = null!;
+    public string? GhiChu { get; set; } = null!;
 
-    public ICollection<VaiTro> VaiTros { get; set; } = new List<VaiTro>();
+    public ICollection<QuyenVaiTro> VaiTros { get; set; } = new List<QuyenVaiTro>();
 }

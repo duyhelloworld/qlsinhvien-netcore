@@ -4,10 +4,8 @@ namespace qlsinhvien.Entities;
 
 public class QuyenDto
 {
-    [Range(1, 100)]
-    public int MaQuyen { get; set; }
-
+    [MinLength(1)]
     public string TenQuyen { get; set; } = null!;
 
-    public string? MoTa { get; set; }
+    public string? GhiChu { get; set; }
 }
