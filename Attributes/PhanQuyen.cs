@@ -1,31 +1,22 @@
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Protocols;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using qlsinhvien.Context;
+using qlsinhvien.Entities;
 
 namespace qlsinhvien.Atributes
 {
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
     public class PhanQuyen : Attribute, IAsyncAuthorizationFilter
     {
-        private readonly string[] VaiTros;
-        public PhanQuyen(params string[] VaiTros)
+        private readonly string[] TenQuyen;
+        public PhanQuyen(params string[] TenQuyen)
         {
-            this.VaiTros = VaiTros;
-        }
-
-        private DateTime GetExp(JwtSecurityToken jwtToken)
-        {
-            return DateTimeOffset.FromUnixTimeSeconds(long.Parse(jwtToken.Claims.FirstOrDefault(claim => claim.Type == "exp")!.Value)).UtcDateTime;
+            this.TenQuyen = TenQuyen;
         }
         
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
@@ -57,14 +48,30 @@ namespace qlsinhvien.Atributes
                 int.TryParse(jwtSecurityToken.Claims.FirstOrDefault(claim => claim.Type == "manguoidung")!.Value, out int maNguoiDung);
                 var vaiTro = jwtSecurityToken.Claims.FirstOrDefault(claim => claim.Type == "vaitro")!.Value;
                 var dbcontext = context.HttpContext.RequestServices.GetService<ApplicationContext>()!;
-                if (!dbcontext.NguoiDungs.Any(nd => (nd.TenVaiTro == vaiTro) && (nd.MaGiangVien == maNguoiDung || nd.MaSinhVien == maNguoiDung)))
+                var nguoiDung = await dbcontext.NguoiDungs.FirstAsync(nd => (nd.TenVaiTro == vaiTro) && (nd.MaGiangVien == maNguoiDung || nd.MaSinhVien == maNguoiDung));
+                if (nguoiDung is null)
                 {
-                    Console.WriteLine("No user");
                     context.Result = new StatusCodeResult(StatusCodes.Status401Unauthorized);
                     return;
                 }
-                context.Result = null;
-                await Task.CompletedTask;
+                foreach (var tq in TenQuyen)
+                {
+                    var quyenDuocGan = await dbcontext.Quyens.FindAsync(tq);
+                    if (quyenDuocGan is not null)
+                    {
+                        var duocPhep = from qvt in dbcontext.QuyenVaiTros 
+                                where qvt.TenVaiTro == nguoiDung.TenVaiTro 
+                                    && qvt.TenQuyen == quyenDuocGan.TenQuyen
+                                select qvt;
+                        if (duocPhep != null)
+                        {
+                            context.Result = null;
+                            await Task.CompletedTask;
+                            return;
+                        }
+                    }
+                }
+                context.Result = new StatusCodeResult(StatusCodes.Status401Unauthorized);
             }
         }
     }
