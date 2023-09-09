@@ -10,5 +10,4 @@ public interface ITaiKhoanService
 
     public Task<ModelTraVe> DangNhap(ModelDangNhap model);
     public Task DangXuat(string token);
-    public Task DangXuat();
 }
