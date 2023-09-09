@@ -7,7 +7,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Protocols;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
+using qlsinhvien.Context;
 
 namespace qlsinhvien.Atributes
 {
@@ -19,59 +22,50 @@ namespace qlsinhvien.Atributes
         {
             this.VaiTros = VaiTros;
         }
+
+        private DateTime GetExp(JwtSecurityToken jwtToken)
+        {
+            return DateTimeOffset.FromUnixTimeSeconds(long.Parse(jwtToken.Claims.FirstOrDefault(claim => claim.Type == "exp")!.Value)).UtcDateTime;
+        }
+        
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
             var config = context.HttpContext.RequestServices.GetService<IConfiguration>()!;
-            var authorizationMethod = context.HttpContext.Request.Headers["Authorization"].FirstOrDefault();
-            if (string.IsNullOrWhiteSpace(authorizationMethod) || !authorizationMethod.StartsWith("Bearer"))
+            var authInfo = context.HttpContext.Request.Headers["Authorization"].FirstOrDefault();
+            if (string.IsNullOrWhiteSpace(authInfo) || !authInfo.StartsWith("Bearer"))
             {
                 context.Result = new StatusCodeResult(StatusCodes.Status401Unauthorized);
                 return;
             }
-            string jwtToken = authorizationMethod[7..];
-
+            string jwtToken = authInfo[7..];
             var handler = new JwtSecurityTokenHandler();
-            var tokenParameters = new TokenValidationParameters()
+            var validateResult = await handler.ValidateTokenAsync(jwtToken, new TokenValidationParameters()
             {
-                ValidateIssuerSigningKey = true,
                 ValidateIssuer = true,
-                ValidIssuer = config["JWT:Issuer"],
+                ValidIssuer = config["JWT:Issuer"]!,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWT:SecretKey"]!)),
                 ValidateAudience = false,
-                ValidateLifetime = false,
-                ValidAlgorithms = new[] { SecurityAlgorithms.HmacSha256Signature },
-                IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(config["JWT:SecretKey"]!)),
-            };
-
-            var validateResult = await handler.ValidateTokenAsync(jwtToken, tokenParameters);
-
-            if (!validateResult.IsValid)
+                ValidateLifetime = false
+            });
+            if (validateResult.Exception is not null)
             {
-                context.Result = new JsonResult(new 
-                    { message = "Unauthorized",
-                     reason = validateResult.Exception.Message })
-                { StatusCode = StatusCodes.Status500InternalServerError };
-                return;
+                throw validateResult.Exception;
             }
-            else {
-                Console.WriteLine("OK. Cac claim : " + JsonSerializer.Serialize(validateResult.ClaimsIdentity));
+            if (validateResult.SecurityToken is JwtSecurityToken jwtSecurityToken)
+            {
+                int.TryParse(jwtSecurityToken.Claims.FirstOrDefault(claim => claim.Type == "manguoidung")!.Value, out int maNguoiDung);
+                var vaiTro = jwtSecurityToken.Claims.FirstOrDefault(claim => claim.Type == "vaitro")!.Value;
+                var dbcontext = context.HttpContext.RequestServices.GetService<ApplicationContext>()!;
+                if (!dbcontext.NguoiDungs.Any(nd => (nd.TenVaiTro == vaiTro) && (nd.MaGiangVien == maNguoiDung || nd.MaSinhVien == maNguoiDung)))
+                {
+                    Console.WriteLine("No user");
+                    context.Result = new StatusCodeResult(StatusCodes.Status401Unauthorized);
+                    return;
+                }
+                context.Result = null;
+                await Task.CompletedTask;
             }
-
-            // if (validatedResult.IsValid)
-            // {
-            // if (validatedResult.Issuer != config["JWT:Issuer"])
-            //     {
-            //         context.Result = new StatusCodeResult(StatusCodes.Status401Unauthorized);
-            //         return;
-            //     }
-            //     var maNguoiDung = validatedResult.Claims.FirstOrDefault(c => c.Key == "manguoidung").Value;
-            //     var vaiTro = validatedResult.Claims.FirstOrDefault(c => c.Key == "vaitro").Value;
-            //     if (maNguoiDung != null && vaiTro != null && vaiTro.GetType() == typeof(int))
-            //     {
-            //         // Allowed
-            //         context.Result = null; 
-            //     }
-            // }
         }
     }
 }
