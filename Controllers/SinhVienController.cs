@@ -21,7 +21,7 @@ namespace qlsinhvien.Controllers
         }
 
         [HttpGet]
-        [PhanQuyen("admin")]
+        [PhanQuyen(TenQuyen: "xemtatca-sinhvien")]
         public async Task<IEnumerable<SinhVien>> GetAll(){
             return await _service.GetAll();
         }
