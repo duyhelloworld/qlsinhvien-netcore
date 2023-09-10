@@ -235,5 +235,5 @@ INSERT INTO [Quyen_VaiTro] ([TenVaiTro], [TenQuyen])
 VALUES  ('admin', 'xemtatca-sinhvien' ),
         ('admin', 'xemtatca-giangvien' ), 
         ('admin', 'xemtatca-khoa' ), 
-        ('admin', 'xemtheoma-sinhvien' ), 
+        ('admin', 'xemtheoma-sinhvien'), 
         ('user1', 'xemtheoma-khoa');
