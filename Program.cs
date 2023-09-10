@@ -3,6 +3,8 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Protocols;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using qlsinhvien.Atributes;
 using qlsinhvien.Context;
@@ -33,9 +35,6 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
     options.EnableThreadSafetyChecks();
 });
 
-// builder.Services.AddIdentity<NguoiDung, VaiTro>()
-// .AddDefaultTokenProviders();
-
 builder.Services.AddAuthentication(option =>
 {
     option.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -45,10 +44,6 @@ builder.Services.AddAuthentication(option =>
 });
 
 builder.Services.AddAuthorization();
-
-// builder.Services.AddLogging(config => {
-//     config.AddConsole().AddDebug().AddJsonConsole();
-// });
 
 var app = builder.Build();
 app.MapControllers();

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using qlsinhvien.Atributes;
 using qlsinhvien.Entities;
 using qlsinhvien.Services;
 
@@ -14,8 +15,8 @@ namespace qlsinhvien.Controllers
             _service = service;
         }
 
-        // [PhanQuyen("xemtatcabomon")]
-        // [HttpGet("")]
+        [HttpGet]
+        [PhanQuyen("xemtatcabomon")]
         public async Task<IEnumerable<BoMon>> GetAll()
         {
             return await _service.GetAllAsync();

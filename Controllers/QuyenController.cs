@@ -20,10 +20,10 @@ public class QuyenController : ControllerBase
         return Ok(await _service.LayTatCa());
     }
 
-    [HttpGet("{MaQuyen:int:min(1)}")]
-    public async Task<IActionResult> GetByIdAsync(int MaQuyen)
+    [HttpGet("{ TenQuyen:alpha:minlength(1)}")]
+    public async Task<IActionResult> GetByIdAsync(string TenQuyen)
     {
-        var ketQua = await _service.LayTheoId(MaQuyen);
+        var ketQua = await _service.LayTheoTen(TenQuyen);
         return ketQua == null ? NotFound() : Ok(ketQua);
     }
 }

@@ -21,12 +21,13 @@ namespace qlsinhvien.Controllers
         }
 
         [HttpGet]
-        [PhanQuyen("admin")]
+        [PhanQuyen(TenQuyen: "xemtatca-sinhvien")]
         public async Task<IEnumerable<SinhVien>> GetAll(){
             return await _service.GetAll();
         }
 
         [HttpGet("{maSoSinhVien}")]
+        [PhanQuyen(TenQuyen: "xemtheoma-sinhvien")]
         public async Task<ActionResult<SinhVien>> GetById(int maSoSinhVien)
         {
             var kq = await _service.GetById(maSoSinhVien);

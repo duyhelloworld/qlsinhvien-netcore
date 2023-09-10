@@ -18,9 +18,9 @@ public class QuyenService : IQuyenService
         return await _context.Quyens.ToListAsync();
     }
 
-    public async Task<Quyen?> LayTheoId(int MaQuyen)
+    public async Task<Quyen?> LayTheoTen(string TenQuyen)
     {
-        return await _context.Quyens.FindAsync(MaQuyen);
+        return await _context.Quyens.FindAsync(TenQuyen);
     }
 
     public async Task ThemQuyen(QuyenDto quyenDto)
@@ -29,7 +29,7 @@ public class QuyenService : IQuyenService
         await Task.CompletedTask;
     }
 
-    public Task XoaQuyen(int MaQuyen)
+    public Task XoaQuyen(string TenQuyen)
     {
         throw new NotImplementedException();
     }

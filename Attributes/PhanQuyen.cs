@@ -1,77 +1,78 @@
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using qlsinhvien.Context;
+using qlsinhvien.Entities;
 
 namespace qlsinhvien.Atributes
 {
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
     public class PhanQuyen : Attribute, IAsyncAuthorizationFilter
     {
-        private readonly string[] VaiTros;
-        public PhanQuyen(params string[] VaiTros)
+        private readonly string[] TenQuyen;
+        public PhanQuyen(params string[] TenQuyen)
         {
-            this.VaiTros = VaiTros;
+            this.TenQuyen = TenQuyen;
         }
+        
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
             var config = context.HttpContext.RequestServices.GetService<IConfiguration>()!;
-            var authorizationMethod = context.HttpContext.Request.Headers["Authorization"].FirstOrDefault();
-            if (string.IsNullOrWhiteSpace(authorizationMethod) || !authorizationMethod.StartsWith("Bearer"))
+            var authInfo = context.HttpContext.Request.Headers["Authorization"].FirstOrDefault();
+            if (string.IsNullOrWhiteSpace(authInfo) || !authInfo.StartsWith("Bearer"))
             {
                 context.Result = new StatusCodeResult(StatusCodes.Status401Unauthorized);
                 return;
             }
-            string jwtToken = authorizationMethod[7..];
-
+            string jwtToken = authInfo[7..];
             var handler = new JwtSecurityTokenHandler();
-            var tokenParameters = new TokenValidationParameters()
+            var validateResult = await handler.ValidateTokenAsync(jwtToken, new TokenValidationParameters()
             {
-                ValidateIssuerSigningKey = true,
                 ValidateIssuer = true,
-                ValidIssuer = config["JWT:Issuer"],
+                ValidIssuer = config["JWT:Issuer"]!,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWT:SecretKey"]!)),
                 ValidateAudience = false,
-                ValidateLifetime = false,
-                ValidAlgorithms = new[] { SecurityAlgorithms.HmacSha512Signature },
-                IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(config["JWT:SecretKey"]!)),
-            };
-
-            var validateResult = await handler.ValidateTokenAsync(jwtToken, tokenParameters);
-
-            if (!validateResult.IsValid)
+                ValidateLifetime = false
+            });
+            if (validateResult.Exception is not null)
             {
-                context.Result = new JsonResult(new 
-                    { message = "Unauthorized",
-                     reason = validateResult.Exception.Message })
-                { StatusCode = StatusCodes.Status500InternalServerError };
-                return;
+                throw validateResult.Exception;
             }
-            else {
-                Console.WriteLine("OK. Cac claim : " + JsonSerializer.Serialize(validateResult.ClaimsIdentity));
+            if (validateResult.SecurityToken is JwtSecurityToken jwtSecurityToken)
+            {
+                int.TryParse(jwtSecurityToken.Claims.FirstOrDefault(claim => claim.Type == "manguoidung")!.Value, out int maNguoiDung);
+                var vaiTro = jwtSecurityToken.Claims.FirstOrDefault(claim => claim.Type == "vaitro")!.Value;
+                var dbcontext = context.HttpContext.RequestServices.GetService<ApplicationContext>()!;
+                var nguoiDung = await dbcontext.NguoiDungs.FirstAsync(nd => (nd.TenVaiTro == vaiTro) && (nd.MaGiangVien == maNguoiDung || nd.MaSinhVien == maNguoiDung));
+                if (nguoiDung is null)
+                {
+                    context.Result = new StatusCodeResult(StatusCodes.Status401Unauthorized);
+                    return;
+                }
+                foreach (var tq in TenQuyen)
+                {
+                    var quyenDuocGan = await dbcontext.Quyens.FindAsync(tq);
+                    if (quyenDuocGan is not null)
+                    {
+                        var duocPhep = from qvt in dbcontext.QuyenVaiTros 
+                                where qvt.TenVaiTro == nguoiDung.TenVaiTro 
+                                    && qvt.TenQuyen == quyenDuocGan.TenQuyen
+                                select qvt;
+                        if (duocPhep != null)
+                        {
+                            context.Result = null;
+                            await Task.CompletedTask;
+                            return;
+                        }
+                    }
+                }
+                context.Result = new StatusCodeResult(StatusCodes.Status401Unauthorized);
             }
-
-            // if (validatedResult.IsValid)
-            // {
-            // if (validatedResult.Issuer != config["JWT:Issuer"])
-            //     {
-            //         context.Result = new StatusCodeResult(StatusCodes.Status401Unauthorized);
-            //         return;
-            //     }
-            //     var maNguoiDung = validatedResult.Claims.FirstOrDefault(c => c.Key == "manguoidung").Value;
-            //     var vaiTro = validatedResult.Claims.FirstOrDefault(c => c.Key == "vaitro").Value;
-            //     if (maNguoiDung != null && vaiTro != null && vaiTro.GetType() == typeof(int))
-            //     {
-            //         // Allowed
-            //         context.Result = null; 
-            //     }
-            // }
         }
     }
 }

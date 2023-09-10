@@ -27,7 +27,7 @@ VALUES
   (N'Marketing'),
   (N'Dịch thuật, Văn hoá và Lí thuyết tiếng');
 
-INSERT INTO [BoMonKhoa] ([KhoasMaKhoa], [BoMonsMaBoMon])
+INSERT INTO [Khoa_BoMon] ([MaKhoa], [MaBoMon])
 VALUES   
   (1, 1),
   (1, 3),
@@ -213,18 +213,27 @@ VALUES
   (9, 28, 6.0, 6.5, 7.0, 2, N'Tốt'),
   (10, 29, 7.0, 7.5, 8.0, 1, N'Khá');
 
-  INSERT INTO [VaiTro] ([TenVaiTro], [GhiChu])
-  VALUES 
-        ("admin", "Adminitrastor"),
-        ("sinhvien", "Sinh Viên"),
-        ("giangvien", "Giảng Viên");
+INSERT INTO [VaiTro] ([TenVaiTro], [GhiChu])
+VALUES ('Sadmin', 'Super Admininstrator'),
+      ('admin', N'Adminitrastor'),
+      ('sinhvien', N'Sinh Viên'),
+      ('giangvien', N'Giảng Viên');
 
-INSERT INTO [NguoiDung] (TenNguoiDung, MatKhau, MaVaiTro, MaGiangVien, MaSinhVien, MaProfile)
-VALUES  ("nguyentrunghoa", "gv1"),
-        ("dangtruongnam", "gv2"), 
-        ("nguyenvanan", "sv1"), 
-        ("phamthibinh", "sv2"), 
-        ("lethanhcong", "sv3");
-INSERT 
+INSERT INTO [NguoiDung] ([TenNguoiDung], [MatKhau], [TenVaiTro], [MaGiangVien], [MaSinhVien])
+VALUES  ('admin', 'admin', 'admin', 1, NULL),
+        ('Sadmin', 'admin', 'Sadmin', 1, NULL),
+        ('user1', 'admin', 'sinhvien', NULL, 1),
+        ('user2', 'admin', 'sinhvien', NULL, 1);
+INSERT INTO [Quyen] ([TenQuyen], [GhiChu]) 
+VALUES  ('xemtatca-sinhvien', N'Xem tất cả thông tin của mọi sinh viên'),
+        ('xemtatca-giangvien', N'Xem tất cả thông tin của mọi giảng viên'  ), 
+        ('xemtatca-khoa', N'Xem tất cả thông tin của mọi khoa' ), 
+        ('xemtheoma-sinhvien', N'Xem thông tin của 1 sinh viên theo mã số' ), 
+        ('xemtheoma-giangvien', N'Xem thông tin của 1 giảng viên theo mã số' ); 
 
--- INSERT INTO [Quyen] ([TenQuyen], ) VALUES()
+INSERT INTO [Quyen_VaiTro] ([TenVaiTro], [TenQuyen])
+VALUES  ('admin', 'xemtatca-sinhvien' ),
+        ('admin', 'xemtatca-giangvien' ), 
+        ('admin', 'xemtatca-khoa' ), 
+        ('admin', 'xemtheoma-sinhvien'), 
+        ('user1', 'xemtheoma-khoa');

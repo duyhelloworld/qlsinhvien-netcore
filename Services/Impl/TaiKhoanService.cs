@@ -73,7 +73,6 @@ public class TaiKhoanService : ITaiKhoanService
         {
             throw new ServiceException(400, "Tài khoản chưa được cấp quyền");
         }
-
     }
 
     public Task DangXuat(string token)
@@ -84,24 +83,20 @@ public class TaiKhoanService : ITaiKhoanService
     private string GetToken(int maNguoiDung, string vaiTro) 
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var claims = new ClaimsIdentity(
-            new Claim[]
-            {
-                new("manguoidung", maNguoiDung.ToString(), ClaimValueTypes.Integer),
-                new("vaitro", vaiTro, ClaimValueTypes.String),
-                new("kid", Guid.NewGuid().ToString())
-            }
-        );
         var key = Encoding.UTF8.GetBytes(_configuration["JWT:SecretKey"]!);
         var tokenDesriptions = new SecurityTokenDescriptor()
         {   
             Issuer = _configuration["JWT:Issuer"],
-            Subject = claims,
-            Expires = DateTime.UtcNow.AddMinutes(20),
+            Subject = new ClaimsIdentity( new Claim[]
+            {
+                new("manguoidung", maNguoiDung.ToString(), ClaimValueTypes.Integer),
+                new("vaitro", vaiTro, ClaimValueTypes.String),
+            }),
+            Expires = DateTime.UtcNow.AddDays(10),
             SigningCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(key),
-                SecurityAlgorithms.HmacSha512Signature
-            ),
+                SecurityAlgorithms.HmacSha256Signature
+            )
         };
         var token = tokenHandler.CreateJwtSecurityToken(tokenDesriptions);
         return tokenHandler.WriteToken(token);
@@ -118,10 +113,5 @@ public class TaiKhoanService : ITaiKhoanService
             nguoiDung.TenVaiTro = vaiTro.TenVaiTro;
             await _context.SaveChangesAsync();             
         }
-    }
-
-    public Task DangXuat()
-    {
-        throw new NotImplementedException();
     }
 }
