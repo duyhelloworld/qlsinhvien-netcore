@@ -89,7 +89,7 @@ public class TaiKhoanService : ITaiKhoanService
             {
                 new("manguoidung", maNguoiDung.ToString(), ClaimValueTypes.Integer),
                 new("vaitro", vaiTro, ClaimValueTypes.String),
-                new(ClaimTypes.Sid, Guid.NewGuid().ToString())
+                new("kid", Guid.NewGuid().ToString())
             }
         );
         var key = Encoding.UTF8.GetBytes(_configuration["JWT:SecretKey"]!);
@@ -100,7 +100,7 @@ public class TaiKhoanService : ITaiKhoanService
             Expires = DateTime.UtcNow.AddMinutes(20),
             SigningCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(key),
-                SecurityAlgorithms.HmacSha256Signature
+                SecurityAlgorithms.HmacSha512Signature
             ),
         };
         var token = tokenHandler.CreateJwtSecurityToken(tokenDesriptions);

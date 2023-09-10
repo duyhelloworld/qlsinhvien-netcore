@@ -41,7 +41,7 @@ builder.Services.AddAuthentication(option =>
     option.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
     option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    option.RequireAuthenticatedSignIn = true;
+    option.RequireAuthenticatedSignIn = false;
 });
 
 builder.Services.AddAuthorization();

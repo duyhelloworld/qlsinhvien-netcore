@@ -38,7 +38,7 @@ namespace qlsinhvien.Atributes
                 ValidIssuer = config["JWT:Issuer"],
                 ValidateAudience = false,
                 ValidateLifetime = false,
-                ValidAlgorithms = new[] { SecurityAlgorithms.HmacSha256Signature },
+                ValidAlgorithms = new[] { SecurityAlgorithms.HmacSha512Signature },
                 IssuerSigningKey = new SymmetricSecurityKey(
                     Encoding.UTF8.GetBytes(config["JWT:SecretKey"]!)),
             };
