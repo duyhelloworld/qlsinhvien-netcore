@@ -27,6 +27,7 @@ namespace qlsinhvien.Controllers
         }
 
         [HttpGet("{maSoSinhVien}")]
+        [PhanQuyen(TenQuyen: "xemtheoma-sinhvien")]
         public async Task<ActionResult<SinhVien>> GetById(int maSoSinhVien)
         {
             var kq = await _service.GetById(maSoSinhVien);
