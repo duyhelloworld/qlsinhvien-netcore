@@ -2,17 +2,18 @@ namespace qlsinhvien.Exceptions;
 
 public class ServiceException : Exception
 {
-    public int StatusCode { get; set; }
-    public IEnumerable<string>? Solutions { get; set; }
+    public int MaHttp { get; set; }
+    public IEnumerable<string>? DeXuatGiaiQuyet { get; set; }
+    public string? NguyenNhan { get; set; }
 
-    public ServiceException(int statusCode, string message) : base(message)
+    public ServiceException(int maHttp, string NguyenNhan) : base(NguyenNhan)
     {
-        StatusCode = statusCode;
+        MaHttp = maHttp;
     }
 
-    public ServiceException(int statusCode, string message, params string[] solutions) : base(message)
+    public ServiceException(int maHttp, string NguyenNhan, params string[] deXuatGiaiQuyet) : base(NguyenNhan)
     {
-        StatusCode = statusCode;
-        Solutions = solutions;
+        MaHttp = maHttp;
+        DeXuatGiaiQuyet = deXuatGiaiQuyet;
     }
 }

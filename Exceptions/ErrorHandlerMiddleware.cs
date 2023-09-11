@@ -21,8 +21,8 @@ public class ErrorHandlerMiddleware : IMiddleware
             };
             if (e is ServiceException httpE)
             {
-                errorResult.StatusCode = httpE.StatusCode;
-                errorResult.ExceptionMessage = httpE.Message;
+                errorResult.StatusCode = httpE.MaHttp;
+                errorResult.Reason = httpE.NguyenNhan;
             }
             var response = context.Response;
             if (!response.HasStarted)
