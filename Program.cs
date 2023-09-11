@@ -1,5 +1,6 @@
 using System.Text;
 using System.Text.Json.Serialization;
+using EnumStringValues;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using qlsinhvien.Atributes;
 using qlsinhvien.Context;
+using qlsinhvien.Entities;
 using qlsinhvien.Services;
 using qlsinhvien.Services.Impl;
 
@@ -17,7 +19,7 @@ builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 // Custom Attributes
-builder.Services.AddSingleton(new PhanQuyen(""));
+builder.Services.AddSingleton(new PhanQuyen(EQuyen.XemTatCa_BOMON));
 
 // Services
 builder.Services.AddScoped<IGiangVienService, GiangVienService>();
@@ -35,20 +37,18 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
     options.EnableThreadSafetyChecks();
 });
 
-builder.Services.AddAuthentication(option =>
-{
-    option.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-    option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    option.RequireAuthenticatedSignIn = true;
-});
+EnumExtensions.Behaviour.UseCaching = true;
 
-builder.Services.AddAuthorization();
+// builder.Services.AddAuthentication(option =>
+// {
+//     option.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+//     option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+//     option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+//     option.RequireAuthenticatedSignIn = true;
+// });
+
 
 var app = builder.Build();
 app.MapControllers();
-
-app.UseAuthentication();
-app.UseAuthorization();
 
 app.Run();
