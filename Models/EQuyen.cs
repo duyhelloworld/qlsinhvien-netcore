@@ -37,5 +37,7 @@ public enum EQuyen
     [StringValue("xemtheoma-monhoc")]
     XemTheoMa_MONHOC,
     [StringValue("xemtheoma-lopquanli")]
-    XemTheoMa_LOPQUANLI
+    XemTheoMa_LOPQUANLI,
+    [StringValue("xembanthan-sinhvien")]
+    XemBanThan_SINHVIEN
 }
