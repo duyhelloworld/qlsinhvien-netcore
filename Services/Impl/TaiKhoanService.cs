@@ -42,9 +42,9 @@ public class TaiKhoanService : ITaiKhoanService
 
     public async Task<ModelTraVe> DangNhap(ModelDangNhap model)
     {
-        var nguoiDung = _context.NguoiDungs
+        var nguoiDung = await _context.NguoiDungs
                     .Where(nd => nd.TenNguoiDung == model.TenNguoiDung && nd.MatKhau == model.MatKhau)
-                    .FirstOrDefault();
+                    .FirstOrDefaultAsync();
         if (nguoiDung == null)
         {
             return new ModelTraVe() 
@@ -92,7 +92,7 @@ public class TaiKhoanService : ITaiKhoanService
                 new("manguoidung", maNguoiDung.ToString(), ClaimValueTypes.Integer),
                 new("vaitro", vaiTro, ClaimValueTypes.String),
             }),
-            Expires = DateTime.UtcNow.AddDays(10),
+            Expires = DateTime.UtcNow.AddDays(_configuration.GetValue<int>("JWT:ExpireDays")),
             SigningCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(key),
                 SecurityAlgorithms.HmacSha256Signature
