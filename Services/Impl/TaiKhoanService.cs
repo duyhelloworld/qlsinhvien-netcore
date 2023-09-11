@@ -75,9 +75,50 @@ public class TaiKhoanService : ITaiKhoanService
         }
     }
 
-    public Task DangXuat(string token)
+    public async Task DangXuat(string token)
     {
-        return Task.Delay(10);
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var validateResult = await tokenHandler.ValidateTokenAsync(token, new TokenValidationParameters()
+        {
+            ValidateIssuer = true,
+            ValidIssuer = _configuration["JWT:Issuer"]!,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(_configuration["JWT:SecretKey"]!)),
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            RequireSignedTokens = true,
+            RequireExpirationTime = true,
+            RequireAudience = false,
+        });
+        if (validateResult.Exception is not null)
+        {
+            throw validateResult.Exception;   
+        }
+        if (validateResult.SecurityToken is JwtSecurityToken jwtSecurityToken)
+        {
+            try
+            {
+                var tenVaiTro = jwtSecurityToken.Claims.FirstOrDefault(claim => claim.Type == "vaitro")!.Value;
+                var maNguoiDung = int.Parse(jwtSecurityToken.Claims.FirstOrDefault(claim => claim.Type == "manguoidung")!.Value);
+                var nguoiDung = await _context.NguoiDungs.FirstAsync(nd => (nd.TenVaiTro == tenVaiTro) && (nd.MaGiangVien == maNguoiDung || nd.MaSinhVien == maNguoiDung));
+                if (nguoiDung is not null)
+                {
+                    // jwtSecurityToken.ValidTo = DateTime.UtcNow;
+                    var tokenHetHan = new TokenHetHan() 
+                    {
+                        MaToken = jwtSecurityToken.Claims.FirstOrDefault(claim => claim.Type == "id")!.Value,
+                        NgayHetHan = jwtSecurityToken.ValidTo
+                    };
+                    await _context.TokenHetHans.AddAsync(tokenHetHan);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch (Exception e)
+            {
+                await Task.FromException(e);
+            }
+        }
     }
 
     private string GetToken(int maNguoiDung, string vaiTro) 
@@ -91,6 +132,7 @@ public class TaiKhoanService : ITaiKhoanService
             {
                 new("manguoidung", maNguoiDung.ToString(), ClaimValueTypes.Integer),
                 new("vaitro", vaiTro, ClaimValueTypes.String),
+                new("id", Guid.NewGuid().ToString())
             }),
             Expires = DateTime.UtcNow.AddDays(_configuration.GetValue<int>("JWT:ExpireDays")),
             SigningCredentials = new SigningCredentials(
