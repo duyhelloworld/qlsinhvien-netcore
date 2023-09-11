@@ -29,8 +29,8 @@ public class TaiKhoanController : ControllerBase
         await _service.TaoTaiKhoanTrong(model);
     }
 
-    [HttpPost("capquyen")]
-    [PhanQuyen(EQuyen.CapQuyen_TAIKHOAN)]
+    [HttpPut("capquyen")]
+    [PhanQuyen(EQuyen.SuaThongTin_Quyen)]
     public async Task CapQuyen([FromBody] ModelCapQuyen modelCapQuyen)
     {
         await _service.PhanVaiTro(modelCapQuyen.TenNguoiDung, modelCapQuyen.TenVaiTro);
@@ -38,7 +38,13 @@ public class TaiKhoanController : ControllerBase
 
     [HttpGet("dangxuat")]
     public async Task DangXuat()
-    {
-        await _service.DangXuat(HttpContext.Request.Headers["Authorization"]!.FirstOrDefault()!.Replace("Bearer ", ""));
+    {   
+        var xacThuc = HttpContext.Request.Headers["Authorization"]!.FirstOrDefault();
+        if (xacThuc != null && xacThuc.StartsWith("Bearer "))
+        {
+            xacThuc = xacThuc.Replace("Bearer ", "");
+            await _service.DangXuat(xacThuc);
+        }
+        HttpContext.Response.StatusCode = 405;
     }
 }
