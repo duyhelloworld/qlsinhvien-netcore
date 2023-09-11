@@ -217,7 +217,8 @@ INSERT INTO [VaiTro] ([TenVaiTro], [GhiChu])
 VALUES ('superadmin', 'Super Admininstrator'),
       ('admin', N'Adminitrastor'),
       ('sinhvien', N'Sinh Viên'),
-      ('giangvien', N'Giảng Viên');
+      ('giangvien', N'Giảng Viên'),
+      ('andanh', N'Ẩn danh');
 
 INSERT INTO [NguoiDung] ([TenNguoiDung], [MatKhau], [TenVaiTro], [MaGiangVien], [MaSinhVien])
 VALUES  ('admin', 'admin', 'admin', 1, NULL),
@@ -250,7 +251,6 @@ VALUES
         ('xemtheoma-quyen', N'Xem thông tin 1 quyền theo tên'), 
         ('xembanthan-sinhvien', N'Xem thông tin của tài khoản đăng nhập(sinh viên)'),
         ('xemtheoma-giangvien-monhoc', N'Xem thông tin của giảng viên theo mã môn học'),
-        
         ('xembanthan-giangvien', N'Xem thông tin của tài khoản đăng nhập(giảng viên)'),
         ('them-sinhvien', N'Thêm 1 sinh viên bất kì (chưa ở lớp nào cả)'),
         ('capnhat-sinhvien-lopquanli', N'Cập nhật sinh viên vào 1 lớp quản lí đã có'),
@@ -258,7 +258,8 @@ VALUES
         ('capnhat-giangvien-lopquanli', N'Cập nhật giảng viên vào 1 lớp quản lí đã có'),
         ('capnhat-giangvien-lopmonhoc', N'Cập nhật giảng viên vào 1 lớp môn học đã có'),
         ('them-nguoidung-sinhvien', N'Thêm 1 tài khoản cho 1 sinh viên'),
-        ('them-nguoidung-giangvien', N'Thêm 1 tài khoản cho 1 giảng viên'), 
+        ('them-nguoidung-giangvien', N'Thêm 1 tài khoản cho 1 giảng viên'),
+        ('capquyen-taikhoan', N'Cấp quyền cho 1 tài khoản');
 
 
 
