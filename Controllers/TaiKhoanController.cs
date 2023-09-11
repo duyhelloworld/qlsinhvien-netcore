@@ -29,6 +29,7 @@ public class TaiKhoanController : ControllerBase
     }
 
     [HttpPost("capquyen")]
+    // [PhanQuyen(EQuyen.XemTatCa_TAIKHOAN)]
     public async Task CapQuyen([FromBody] ModelCapQuyen modelCapQuyen)
     {
         await _service.PhanVaiTro(modelCapQuyen.TenNguoiDung, modelCapQuyen.TenVaiTro);

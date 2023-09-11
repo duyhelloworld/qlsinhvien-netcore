@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
+using qlsinhvien.Atributes;
 using qlsinhvien.Dto;
 using qlsinhvien.Entities;
 using qlsinhvien.Services;
@@ -18,12 +18,14 @@ public class GiangVienController : ControllerBase
     }
 
     [HttpGet]
+    [PhanQuyen(EQuyen.XemTatCa_GIANGVIEN)]
     public async Task<IEnumerable<GiangVien>> GetAllAsync()
     {
         return await _service.GetAll();
     }
 
     [HttpGet("{magiangvien:int:min(1)}")]
+    [PhanQuyen(EQuyen.XemTheoMa_GIANGVIEN)]
     public async Task<IActionResult> GetByIdAsync(int magiangvien)
     {
         var giangVien = await _service.GetById(magiangvien);
@@ -70,6 +72,7 @@ public class GiangVienController : ControllerBase
         var ketQua = await _service.GetLopMonHoc(maGiangVien);
         return Ok(ketQua);        
     }
+    
     [HttpGet("lopmonhoc/{malopmonhoc:int:min(1)}")]
     public async Task<IActionResult> GetByLopMonHoc(int maLopMonHoc)
     {

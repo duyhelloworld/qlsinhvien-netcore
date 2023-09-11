@@ -3,6 +3,7 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using qlsinhvien.Atributes;
 using qlsinhvien.Context;
 using qlsinhvien.Dto;
 using qlsinhvien.Entities;
@@ -22,11 +23,13 @@ public class KhoaController : ControllerBase
     }    
 
     [HttpGet("/")]
+    [PhanQuyen(EQuyen.XemTatCa_KHOA)]
     public async Task<IEnumerable<Khoa>> GetAll() {
         return await _service.GetAll();
     }
 
     [HttpGet("{makhoa:int:min(1)}")]
+    [PhanQuyen(EQuyen.XemTheoMa_KHOA)]
     public async Task<Khoa?> GetById(int makhoa)
     {
         return await _service.GetById(makhoa); ;

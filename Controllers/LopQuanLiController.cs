@@ -1,6 +1,6 @@
-using System.Collections;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using qlsinhvien.Atributes;
 using qlsinhvien.Context;
 using qlsinhvien.Entities;
 
@@ -18,6 +18,7 @@ namespace qlsinhvien.Controllers
         }
 
         [HttpGet("all")]
+        [PhanQuyen(EQuyen.XemTatCa_LOPQUANLI)]
         public ActionResult GetAll() {
             var ketQua = lopQuanLiDbContext.LopQuanLis
                             .Include(l => l.Khoa)
@@ -28,7 +29,7 @@ namespace qlsinhvien.Controllers
                                 lql.TenLopQuanLi,
                                 GiangVien = new
                                 {
-                                    lql.GiangVien.MaGiangVien,
+                                    lql.GiangVien!.MaGiangVien,
                                     lql.GiangVien.HoTen,
                                     lql.GiangVien.SoDienThoai,
                                     lql.GiangVien.Email,

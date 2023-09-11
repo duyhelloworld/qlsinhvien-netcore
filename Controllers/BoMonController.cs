@@ -16,7 +16,7 @@ namespace qlsinhvien.Controllers
         }
 
         [HttpGet]
-        [PhanQuyen("xemtatcabomon")]
+        [PhanQuyen(EQuyen.XemTatCa_BOMON)]
         public async Task<IEnumerable<BoMon>> GetAll()
         {
             return await _service.GetAllAsync();
