@@ -80,7 +80,7 @@ public class GiangVienController : ControllerBase
         return Ok(ketQua);
     }
 
-    [HttpPost("")]
+    [HttpPost]
     public async Task<IActionResult> AddGiangVien([FromBody] GiangVienDto giangVienDto)
     {
         var ketQua = await _service.AddNew(giangVienDto);
