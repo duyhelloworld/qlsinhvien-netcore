@@ -96,7 +96,7 @@ public class TaiKhoanService : ITaiKhoanService
             SigningCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(key),
                 SecurityAlgorithms.HmacSha256Signature
-            )
+            ),
         };
         var token = tokenHandler.CreateJwtSecurityToken(tokenDesriptions);
         return tokenHandler.WriteToken(token);
