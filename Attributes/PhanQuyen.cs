@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Text.Json;
+using EnumStringValues;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
@@ -60,7 +61,7 @@ namespace qlsinhvien.Atributes
                 }
                 foreach (var tq in TenQuyen)
                 {
-                    var quyen = await dbcontext.Quyens.FindAsync(tq);
+                    var quyen = await dbcontext.Quyens.FindAsync(tq.GetStringValue());
                     if (quyen is not null)
                     {
                         var duocPhep = from qvt in dbcontext.QuyenVaiTros 
