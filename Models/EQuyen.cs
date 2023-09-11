@@ -115,6 +115,8 @@ namespace qlsinhvien.Entities
         XemTheoBoMon_GiangVien,
         [StringValue("xemlopmonhoc-giangvien")]
         XemLopMonHoc_GiangVien,
+        [StringValue("xembanthan-giangvien")]
+        XemBanThan_GiangVien,
         [StringValue("themmoi-giangvien")]
         ThemMoi_GiangVien,
         [StringValue("themmoilopmonhoc-giangvien")]
