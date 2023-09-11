@@ -14,6 +14,7 @@ namespace qlsinhvien.Controllers
         {
             this.appContext = appContext;
         }
+        
         [HttpGet("{maLopMonHoc}")]
         public ActionResult GetById(int maLopMonHoc)
         {
