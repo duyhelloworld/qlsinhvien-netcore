@@ -21,6 +21,7 @@ namespace qlsinhvien.Controllers
             var lmh = appContext.LopMonHocs.Find(maLopMonHoc);
             return lmh == null ? NotFound() : Ok(lmh);
         }
+        
         [HttpGet("idGiangVien={magiangvien}")]
         public ActionResult GetByGiangVien(int magiangvien)
         {
