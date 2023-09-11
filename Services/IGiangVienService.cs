@@ -21,5 +21,4 @@ public interface IGiangVienService
     public Task Remove(int maGiangVien);
     public Task RemoveLopQuanLiHienTai(int maLopQuanLi);
     public Task RemoveAllLopMonHoc(int maGiangVien);
-
 }
