@@ -13,15 +13,14 @@ namespace qlsinhvien.Atributes
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
     public class PhanQuyen : Attribute, IAsyncAuthorizationFilter
     {
-        private readonly string[] TenQuyen;
-        public PhanQuyen(params string[] TenQuyen)
+        private readonly EQuyen[] TenQuyen;
+        public PhanQuyen(params EQuyen[] TenQuyen)
         {
             this.TenQuyen = TenQuyen;
         }
         
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
-            var config = context.HttpContext.RequestServices.GetService<IConfiguration>()!;
             var authInfo = context.HttpContext.Request.Headers["Authorization"].FirstOrDefault();
             if (string.IsNullOrWhiteSpace(authInfo) || !authInfo.StartsWith("Bearer"))
             {
@@ -30,14 +29,19 @@ namespace qlsinhvien.Atributes
             }
             string jwtToken = authInfo[7..];
             var handler = new JwtSecurityTokenHandler();
+            var config = context.HttpContext.RequestServices.GetService<IConfiguration>()!;
             var validateResult = await handler.ValidateTokenAsync(jwtToken, new TokenValidationParameters()
             {
                 ValidateIssuer = true,
                 ValidIssuer = config["JWT:Issuer"]!,
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWT:SecretKey"]!)),
+                IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(config["JWT:SecretKey"]!)),
                 ValidateAudience = false,
-                ValidateLifetime = false
+                ValidateLifetime = true,
+                RequireSignedTokens = true,
+                RequireExpirationTime = true,
+                RequireAudience = false,
             });
             if (validateResult.Exception is not null)
             {
@@ -56,19 +60,25 @@ namespace qlsinhvien.Atributes
                 }
                 foreach (var tq in TenQuyen)
                 {
-                    var quyenDuocGan = await dbcontext.Quyens.FindAsync(tq);
-                    if (quyenDuocGan is not null)
+                    var quyen = await dbcontext.Quyens.FindAsync(tq);
+                    if (quyen is not null)
                     {
                         var duocPhep = from qvt in dbcontext.QuyenVaiTros 
                                 where qvt.TenVaiTro == nguoiDung.TenVaiTro 
-                                    && qvt.TenQuyen == quyenDuocGan.TenQuyen
-                                select qvt;
+                                    && qvt.TenQuyen == quyen.TenQuyen
+                                select qvt;                        
                         if (duocPhep != null)
                         {
                             context.Result = null;
                             await Task.CompletedTask;
                             return;
                         }
+
+                        /*
+                        var duocPhep = await dbcontext.QuyenVaiTros.AnyAsync(qvt => qvt.TenVaiTro == nguoiDung.TenVaiTro
+                                    && qvt.TenQuyen == quyen.TenQuyen);
+                        if (duocPhep) {...}
+                        */
                     }
                 }
                 context.Result = new StatusCodeResult(StatusCodes.Status401Unauthorized);
