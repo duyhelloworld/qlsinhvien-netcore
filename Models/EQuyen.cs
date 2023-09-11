@@ -48,7 +48,7 @@ namespace qlsinhvien.Entities
         [StringValue("xemtheolopquanli-sinhvien")]
         XemTheoLopQuanLi_SinhVien,
         [StringValue("xemtheolopmonhoc-sinhvien")]
-        XemTheoLopMonHoc_Sinhvien,
+        XemTheoLopMonHoc_SinhVien,
         [StringValue("themmoi-sinhvien")]
         ThemMoi_SinhVien,
         [StringValue("themmoi-quyen")]
@@ -62,7 +62,7 @@ namespace qlsinhvien.Entities
         [StringValue("themmoi-monhoc")]
         ThemMoi_MonHoc,
         [StringValue("suathongtintheoma-sinhvien")]
-        SuaThongTinTheoMa_Sinhvien,
+        SuaThongTinTheoMa_SinhVien,
         [StringValue("xembanthan-sinhvien")]
         XemBanThan_SinhVien,
         [StringValue("xoa-sinhvien")]
@@ -144,6 +144,12 @@ namespace qlsinhvien.Entities
         [StringValue("xoadiem-diemsinhvien")]
         XoaDiemSinhVien_DiemSinhVien,
         [StringValue("xoa-diemsinhvien")]
-        Xoa_DiemSinhVien
+        Xoa_DiemSinhVien,
+        [StringValue("themmoi-bomon")]
+        ThemMoi_BoMon,
+        [StringValue("suathongtin-bomon")]
+        SuaThongTin_BoMon,
+        [StringValue("xoa-bomon")]
+        Xoa_BoMon
     }
 }
