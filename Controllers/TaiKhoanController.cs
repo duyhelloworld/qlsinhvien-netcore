@@ -36,8 +36,7 @@ public class TaiKhoanController : ControllerBase
         await _service.PhanVaiTro(modelCapQuyen.TenNguoiDung, modelCapQuyen.TenVaiTro);
     }
 
-    [HttpGet]
-    [PhanQuyen]
+    [HttpGet("dangxuat")]
     public async Task DangXuat()
     {
         await _service.DangXuat(HttpContext.Request.Headers["Authorization"]!.FirstOrDefault()!.Replace("Bearer ", ""));
