@@ -1,4 +1,4 @@
--- Active: 1691726147014@@127.0.0.1@1433@qlsinhvien
+-- Active: 1694403141445@@127.0.0.1@1433@qlsinhvien
 INSERT INTO [Khoa] ([TenKhoa])
 VALUES
   (N'Khoa Công Nghệ Thông Tin'),
@@ -214,18 +214,19 @@ VALUES
   (10, 29, 7.0, 7.5, 8.0, 1, N'Khá');
 
 INSERT INTO [VaiTro] ([TenVaiTro], [GhiChu])
-VALUES ('Sadmin', 'Super Admininstrator'),
+VALUES ('superadmin', 'Super Admininstrator'),
       ('admin', N'Adminitrastor'),
       ('sinhvien', N'Sinh Viên'),
       ('giangvien', N'Giảng Viên');
 
 INSERT INTO [NguoiDung] ([TenNguoiDung], [MatKhau], [TenVaiTro], [MaGiangVien], [MaSinhVien])
 VALUES  ('admin', 'admin', 'admin', 1, NULL),
-        ('Sadmin', 'admin', 'Sadmin', 1, NULL),
+        ('superadmin', 'admin', 'superadmin', 1, NULL),
         ('user1', 'admin', 'sinhvien', NULL, 1),
         ('user2', 'admin', 'sinhvien', NULL, 1);
 INSERT INTO [Quyen] ([TenQuyen], [GhiChu]) 
-VALUES  ('xemtatca-bomon', N'Xem tất cả thông tin của mọi bộ môn'), 
+VALUES  
+        ('xemtatca-bomon', N'Xem tất cả thông tin của mọi bộ môn'), 
         ('xemtatca-quyen', N'Xem tất cả thông tin của mọi quyền'), 
         ('xemtatca-nguoidung', N'Xem tất cả thông tin của mọi người dùng'), 
         ('xemtatca-lopquanli', N'Xem tất cả thông tin của mọi lớp quản lí'),
@@ -235,26 +236,45 @@ VALUES  ('xemtatca-bomon', N'Xem tất cả thông tin của mọi bộ môn'),
         ('xemtatca-vaitro', N'Xem tất cả thông tin của mọi vai trò'),
         ('xemtatca-sinhvien', N'Xem tất cả thông tin của mọi sinh viên'),
         ('xemtatca-giangvien', N'Xem tất cả thông tin của mọi giảng viên'),
-        ('xemtatca-khoa', N'Xem tất cả thông tin của mọi khoa' ),
+        ('xemtatca-khoa', N'Xem tất cả thông tin của mọi khoa'),
         ('xemtheoma-khoa', N'Xem thông tin của 1 khoa theo mã số'),
         ('xemtheoma-lopquanli', N'Xem thông tin của 1 lớp quản lí theo mã số'), 
         ('xemtheoma-lopmonhoc', N'Xem thông tin của 1 lớp môn học theo mã số'), 
         ('xemtheoma-nguoidung', N'Xem thông tin của 1 người dùng theo mã số'), 
         ('xemtheoma-quyen', N'Xem thông tin của 1 quyền theo mã số'),
         ('xemtheoma-sinhvien', N'Xem thông tin của 1 sinh viên theo mã số' ), 
-        ('xemtheoma-giangvien', N'Xem thông tin của 1 giảng viên theo mã số' ); 
+        ('xemtheoma-giangvien', N'Xem thông tin của 1 giảng viên theo mã số'), 
+        ('xemtheoma-diemsinhvien', N'Xem thông tin điểm theo mã số'),
+        ('xemtheoma-bomon', N'Xem thông tin 1 khoa theo mã số'),
+        ('xemtheoma-monhoc', N'Xem thông tin 1 môn học theo mã số'),
+        ('xemtheoma-quyen', N'Xem thông tin 1 quyền theo tên'), 
+        ('xembanthan-sinhvien', N'Xem thông tin của tài khoản đăng nhập(sinh viên)'),
+        ('xemtheoma-giangvien-monhoc', N'Xem thông tin của giảng viên theo mã môn học'),
+        
+        ('xembanthan-giangvien', N'Xem thông tin của tài khoản đăng nhập(giảng viên)'),
+        ('them-sinhvien', N'Thêm 1 sinh viên bất kì (chưa ở lớp nào cả)'),
+        ('capnhat-sinhvien-lopquanli', N'Cập nhật sinh viên vào 1 lớp quản lí đã có'),
+        ('capnhat-sinhvien-lopmonhoc', N'Cập nhật sinh viên vào 1 lớp môn học đã có'),
+        ('capnhat-giangvien-lopquanli', N'Cập nhật giảng viên vào 1 lớp quản lí đã có'),
+        ('capnhat-giangvien-lopmonhoc', N'Cập nhật giảng viên vào 1 lớp môn học đã có'),
+        ('them-nguoidung-sinhvien', N'Thêm 1 tài khoản cho 1 sinh viên'),
+        ('them-nguoidung-giangvien', N'Thêm 1 tài khoản cho 1 giảng viên'), 
+
+
+
 
 INSERT INTO [Quyen_VaiTro] ([TenVaiTro], [TenQuyen])
-VALUES  ('Sadmin', 'xemtatca-sinhvien'),
-        ('Sadmin', 'xemtatca-giangvien'), 
-        ('Sadmin', 'xemtatca-khoa'), 
-        ('Sadmin', 'xemtatca-lopmonhoc' ), 
-        ('Sadmin', 'xemtatca-lopquanli'),
-        ('Sadmin', 'xemtatca-monhoc'),
-        ('Sadmin', 'xemtatca-bomon'),
-        ('Sadmin', 'xemtatca-diemsinhvien'),
-        ('Sadmin', 'xemtatca-vaitro'), 
-        ('Sadmin', 'xemtheoma-sinhvien'),
+VALUES  
+        ('superadmin', 'xemtatca-sinhvien'),
+        ('superadmin', 'xemtatca-giangvien'),
+        ('superadmin', 'xemtatca-khoa'),
+        ('superadmin', 'xemtatca-lopmonhoc'),
+        ('superadmin', 'xemtatca-lopquanli'),
+        ('superadmin', 'xemtatca-monhoc')
+        ('superadmin', 'xemtatca-bomon'),
+        ('superadmin', 'xemtatca-diemsinhvien'),
+        ('superadmin', 'xemtatca-vaitro'),
+        ('superadmin', 'xemtheoma-sinhvien'),
         ('admin', 'xemtatca-sinhvien' ),
         ('admin', 'xemtatca-giangvien' ), 
         ('admin', 'xemtatca-khoa' ), 
@@ -265,9 +285,9 @@ VALUES  ('Sadmin', 'xemtatca-sinhvien'),
         ('admin', 'xemtatca-diemsinhvien'),
         ('admin', 'xemtatca-vaitro'), 
         ('admin', 'xemtheoma-sinhvien'), 
-        ('user1', 'xemtheoma-khoa'),
-        ('user1', 'xemtheoma-diemsinhvien');
-        -- ('user1', 'xemtheoma-khoa'),
-        -- ('user1', 'xemtheoma-khoa'), 
-        -- ('user1', 'xemtheoma-khoa'), 
-        -- ('user1', 'xemtheoma-khoa');
+        ('sinhvien', 'xembanthan-sinhvien');
+        -- ('sinhvien', 'xemtheoma-khoa');
+        -- ('sinhvien', 'xemtheoma-diemsinhvien'),
+        -- ('sinhvien', 'xemtheoma-khoa'), 
+        -- ('sinhvien', 'xemtheoma-khoa'), 
+        -- ('sinhvien', 'xemtheoma-khoa');
