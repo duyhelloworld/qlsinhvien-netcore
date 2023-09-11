@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Text.Json;
+using EnumStringValues;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,8 @@ namespace qlsinhvien.Atributes
     public class PhanQuyen : Attribute, IAsyncAuthorizationFilter
     {
         private readonly EQuyen[] TenQuyen;
+        public int MaNguoiDung  { get; private set; }
+        public string TenVaiTro { get; private set; }
         public PhanQuyen(params EQuyen[] TenQuyen)
         {
             this.TenQuyen = TenQuyen;
@@ -50,36 +53,25 @@ namespace qlsinhvien.Atributes
             if (validateResult.SecurityToken is JwtSecurityToken jwtSecurityToken)
             {
                 int.TryParse(jwtSecurityToken.Claims.FirstOrDefault(claim => claim.Type == "manguoidung")!.Value, out int maNguoiDung);
-                var vaiTro = jwtSecurityToken.Claims.FirstOrDefault(claim => claim.Type == "vaitro")!.Value;
+                var tenVaiTro = jwtSecurityToken.Claims.FirstOrDefault(claim => claim.Type == "vaitro")!.Value;
                 var dbcontext = context.HttpContext.RequestServices.GetService<ApplicationContext>()!;
-                var nguoiDung = await dbcontext.NguoiDungs.FirstAsync(nd => (nd.TenVaiTro == vaiTro) && (nd.MaGiangVien == maNguoiDung || nd.MaSinhVien == maNguoiDung));
+                var nguoiDung = await dbcontext.NguoiDungs.FirstAsync(nd => (nd.TenVaiTro == tenVaiTro) && (nd.MaGiangVien == maNguoiDung || nd.MaSinhVien == maNguoiDung));
                 if (nguoiDung is null)
                 {
                     context.Result = new StatusCodeResult(StatusCodes.Status401Unauthorized);
                     return;
                 }
-                foreach (var tq in TenQuyen)
+                var duocPhep = from qvt in dbcontext.QuyenVaiTros 
+                        where qvt.TenVaiTro == nguoiDung.TenVaiTro 
+                            && qvt.TenQuyen == TenQuyen.First().GetStringValue()
+                        select qvt;                        
+                if (duocPhep != null)
                 {
-                    var quyen = await dbcontext.Quyens.FindAsync(tq);
-                    if (quyen is not null)
-                    {
-                        var duocPhep = from qvt in dbcontext.QuyenVaiTros 
-                                where qvt.TenVaiTro == nguoiDung.TenVaiTro 
-                                    && qvt.TenQuyen == quyen.TenQuyen
-                                select qvt;                        
-                        if (duocPhep != null)
-                        {
-                            context.Result = null;
-                            await Task.CompletedTask;
-                            return;
-                        }
-
-                        /*
-                        var duocPhep = await dbcontext.QuyenVaiTros.AnyAsync(qvt => qvt.TenVaiTro == nguoiDung.TenVaiTro
-                                    && qvt.TenQuyen == quyen.TenQuyen);
-                        if (duocPhep) {...}
-                        */
-                    }
+                    MaNguoiDung = maNguoiDung;
+                    TenVaiTro = tenVaiTro;
+                    context.HttpContext.Items.Add("PhanQuyen", this);
+                    context.Result = null;
+                    return;
                 }
                 context.Result = new StatusCodeResult(StatusCodes.Status401Unauthorized);
             }

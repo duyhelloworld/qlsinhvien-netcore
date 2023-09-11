@@ -1,12 +1,8 @@
-using System.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using qlsinhvien.Atributes;
-using qlsinhvien.Context;
 using qlsinhvien.Dto;
 using qlsinhvien.Entities;
 using qlsinhvien.Services;
-using qlsinhvien.Services.Impl;
 
 namespace qlsinhvien.Controllers
 {
@@ -20,10 +16,20 @@ namespace qlsinhvien.Controllers
             _service = service;
         }
 
-        [HttpGet]
-        [PhanQuyen(TenQuyen: EQuyen.XemTatCa_SINHVIEN)]
-        public async Task<IEnumerable<SinhVien>> GetAll(){
+        [HttpGet("tatca")]
+        [PhanQuyen(EQuyen.XemTatCa_SINHVIEN)]
+        public async Task<IEnumerable<SinhVien>> GetAll()
+        {
             return await _service.GetAll();
+        }
+
+        [HttpGet]
+        [PhanQuyen(EQuyen.XemBanThan_SINHVIEN)]
+        public async Task<ActionResult<SinhVien>> GetSelf()
+        {
+            var phanQuyen = (HttpContext.Items["PhanQuyen"] as PhanQuyen)!;
+            var kq = await _service.GetById(phanQuyen.MaNguoiDung);
+            return kq == null ? NotFound() : Ok(kq);
         }
 
         [HttpGet("{maSoSinhVien}")]
