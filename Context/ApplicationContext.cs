@@ -24,6 +24,7 @@ public class ApplicationContext : DbContext
     public DbSet<VaiTro> VaiTros { get; set; }
     public DbSet<QuyenVaiTro> QuyenVaiTros { get; set; }
     public DbSet<KhoaBoMon> KhoaBoMons { get; set; }
+    public DbSet<TokenHetHan> TokenHetHans { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

@@ -5,6 +5,6 @@ namespace qlsinhvien.Entities;
 public class TokenHetHan
 {
     [Key]
-    public int MaToken { get; set; }
-    public DateTime NgayHetHan { get; set; }   
+    public string MaToken { get; set; } = null!;
+    public DateTime NgayHetHan { get; set; }  
 }
