@@ -16,7 +16,7 @@ namespace qlsinhvien.Atributes
     {
         private readonly EQuyen[] TenQuyen;
         public int MaNguoiDung  { get; private set; }
-        public string TenVaiTro { get; private set; }
+        public string TenVaiTro { get; private set; } = null!;
         public PhanQuyen(params EQuyen[] TenQuyen)
         {
             this.TenQuyen = TenQuyen;
@@ -61,17 +61,19 @@ namespace qlsinhvien.Atributes
                     context.Result = new StatusCodeResult(StatusCodes.Status401Unauthorized);
                     return;
                 }
-                var duocPhep = from qvt in dbcontext.QuyenVaiTros 
-                        where qvt.TenVaiTro == nguoiDung.TenVaiTro 
-                            && qvt.TenQuyen == TenQuyen.First().GetStringValue()
-                        select qvt;                        
-                if (duocPhep != null)
+                foreach (var quyen in TenQuyen)
                 {
-                    MaNguoiDung = maNguoiDung;
-                    TenVaiTro = tenVaiTro;
-                    context.HttpContext.Items.Add("PhanQuyen", this);
-                    context.Result = null;
-                    return;
+                    var duocPhep = await dbcontext.QuyenVaiTros.AnyAsync(qvt => 
+                                    qvt.TenVaiTro == nguoiDung.TenVaiTro &&
+                                    qvt.TenQuyen == quyen.GetStringValue());
+                    if (duocPhep)
+                    {
+                        MaNguoiDung = maNguoiDung;
+                        TenVaiTro = tenVaiTro;
+                        context.HttpContext.Items.Add("PhanQuyen", this);
+                        context.Result = null;
+                        return;
+                    }
                 }
                 context.Result = new StatusCodeResult(StatusCodes.Status401Unauthorized);
             }
