@@ -295,7 +295,8 @@ VALUES
         ('suatheomasinhvien-diemsinhvien', N'Sửa điểm của sinh viên theo mã sinh viên'),
         ('suatheolopmonhoc-diemsinhvien', N'Sửa điểm của các sinh viên trong lớp môn học'),
         ('xoadiem-diemsinhvien', 'Xóa điểm số của sinh viên trong lớp môn học'), 
-        ('xoa-diemsinhvien', N'Xóa điểm (xóa cả môn học) của sinh viên trong lớp môn học');
+        ('xoa-diemsinhvien', N'Xóa điểm (xóa cả môn học) của sinh viên trong lớp môn học'),
+        ('xembanthan-sinhvien', N'Xem thông tin của bản thân sinh viên đó');
 
 INSERT INTO [Quyen_VaiTro] ([TenVaiTro], [TenQuyen])
 VALUES  

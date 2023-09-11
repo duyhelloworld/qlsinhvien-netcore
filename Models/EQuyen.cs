@@ -63,6 +63,8 @@ namespace qlsinhvien.Entities
         ThemMoi_MonHoc,
         [StringValue("suathongtintheoma-sinhvien")]
         SuaThongTinTheoMa_Sinhvien,
+        [StringValue("xembanthan-sinhvien")]
+        XemBanThan_SinhVien,
         [StringValue("xoa-sinhvien")]
         Xoa_SinhVien,
         [StringValue("suathongtintheolopquanli-sinhvien")]
