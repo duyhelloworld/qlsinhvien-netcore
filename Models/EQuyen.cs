@@ -39,5 +39,23 @@ public enum EQuyen
     [StringValue("xemtheoma-lopquanli")]
     XemTheoMa_LOPQUANLI,
     [StringValue("xembanthan-sinhvien")]
-    XemBanThan_SINHVIEN
+    XemBanThan_SINHVIEN,
+    [StringValue("xembanthan-giangvien")]
+    XemBanThan_GIANGVIEN,
+    [StringValue("capquyen-taikhoan")]
+    CapQuyen_TAIKHOAN,
+    [StringValue("them-sinhvien")]
+    Them_SINHVIEN,
+    [StringValue("capnhat-sinhvien-lopquanli")]
+    CapNhat_SINHVIEN_LOPQUANLI,
+    [StringValue("capnhat-sinhvien-lopmonhoc")]
+    CapNhat_SINHVIEN_LOPMONHOC,
+    [StringValue("capnhat-giangvien-lopquanli")]
+    CapNhat_GIANGVIEN_LOPQUANLI,
+    [StringValue("capnhat-giangvien-lopmonhoc")]
+    CapNhat_GIANGVIEN_LOPMONHOC,
+    [StringValue("them-nguoidung-sinhvien")]
+    Them_NGUOIDUNG_SINHVIEN,
+    [StringValue("them-nguoidung-giangvien")]
+    Them_NGUOIDUNG_GIANGVIEN
 }
