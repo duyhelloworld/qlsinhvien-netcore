@@ -214,18 +214,20 @@ VALUES
   (10, 29, 7.0, 7.5, 8.0, 1, N'Khá');
 
 INSERT INTO [VaiTro] ([TenVaiTro], [GhiChu])
-VALUES ('Sadmin', 'Super Admininstrator'),
+VALUES ('superadmin', 'Super Admininstrator'),
       ('admin', N'Adminitrastor'),
       ('sinhvien', N'Sinh Viên'),
-      ('giangvien', N'Giảng Viên');
+      ('giangvien', N'Giảng Viên'),
+      ('andanh', N'Ẩn danh');
 
 INSERT INTO [NguoiDung] ([TenNguoiDung], [MatKhau], [TenVaiTro], [MaGiangVien], [MaSinhVien])
 VALUES  ('admin', 'admin', 'admin', 1, NULL),
-        ('Sadmin', 'admin', 'Sadmin', 1, NULL),
+        ('superadmin', 'admin', 'superadmin', 1, NULL),
         ('user1', 'admin', 'sinhvien', NULL, 1),
         ('user2', 'admin', 'sinhvien', NULL, 1);
 INSERT INTO [Quyen] ([TenQuyen], [GhiChu]) 
-VALUES  ('xemtatca-bomon', N'Xem tất cả thông tin của mọi bộ môn'), 
+VALUES  
+        ('xemtatca-bomon', N'Xem tất cả thông tin của mọi bộ môn'), 
         ('xemtatca-quyen', N'Xem tất cả thông tin của mọi quyền'), 
         ('xemtatca-nguoidung', N'Xem tất cả thông tin của mọi người dùng'), 
         ('xemtatca-lopquanli', N'Xem tất cả thông tin của mọi lớp quản lí'),
@@ -235,7 +237,7 @@ VALUES  ('xemtatca-bomon', N'Xem tất cả thông tin của mọi bộ môn'),
         ('xemtatca-vaitro', N'Xem tất cả thông tin của mọi vai trò'),
         ('xemtatca-sinhvien', N'Xem tất cả thông tin của mọi sinh viên'),
         ('xemtatca-giangvien', N'Xem tất cả thông tin của mọi giảng viên'),
-        ('xemtatca-khoa', N'Xem tất cả thông tin của mọi khoa' ),
+        ('xemtatca-khoa', N'Xem tất cả thông tin của mọi khoa'),
         ('xemtheoma-khoa', N'Xem thông tin của 1 khoa theo mã số'),
         ('xemtheoma-lopquanli', N'Xem thông tin của 1 lớp quản lí theo mã số'), 
         ('xemtheoma-lopmonhoc', N'Xem thông tin của 1 lớp môn học theo mã số'), 
@@ -296,16 +298,17 @@ VALUES  ('xemtatca-bomon', N'Xem tất cả thông tin của mọi bộ môn'),
         ('xoa-diemsinhvien', N'Xóa điểm (xóa cả môn học) của sinh viên trong lớp môn học');
 
 INSERT INTO [Quyen_VaiTro] ([TenVaiTro], [TenQuyen])
-VALUES  ('Sadmin', 'xemtatca-sinhvien'),
-        ('Sadmin', 'xemtatca-giangvien'), 
-        ('Sadmin', 'xemtatca-khoa'), 
-        ('Sadmin', 'xemtatca-lopmonhoc' ), 
-        ('Sadmin', 'xemtatca-lopquanli'),
-        ('Sadmin', 'xemtatca-monhoc'),
-        ('Sadmin', 'xemtatca-bomon'),
-        ('Sadmin', 'xemtatca-diemsinhvien'),
-        ('Sadmin', 'xemtatca-vaitro'), 
-        ('Sadmin', 'xemtheoma-sinhvien'),
+VALUES  
+        ('superadmin', 'xemtatca-sinhvien'),
+        ('superadmin', 'xemtatca-giangvien'),
+        ('superadmin', 'xemtatca-khoa'),
+        ('superadmin', 'xemtatca-lopmonhoc'),
+        ('superadmin', 'xemtatca-lopquanli'),
+        ('superadmin', 'xemtatca-monhoc')
+        ('superadmin', 'xemtatca-bomon'),
+        ('superadmin', 'xemtatca-diemsinhvien'),
+        ('superadmin', 'xemtatca-vaitro'),
+        ('superadmin', 'xemtheoma-sinhvien'),
         ('admin', 'xemtatca-sinhvien' ),
         ('admin', 'xemtatca-giangvien' ), 
         ('admin', 'xemtatca-khoa' ), 
@@ -316,9 +319,9 @@ VALUES  ('Sadmin', 'xemtatca-sinhvien'),
         ('admin', 'xemtatca-diemsinhvien'),
         ('admin', 'xemtatca-vaitro'), 
         ('admin', 'xemtheoma-sinhvien'), 
-        ('user1', 'xemtheoma-khoa'),
-        ('user1', 'xemtheoma-diemsinhvien');
-        -- ('user1', 'xemtheoma-khoa'),
-        -- ('user1', 'xemtheoma-khoa'), 
-        -- ('user1', 'xemtheoma-khoa'), 
-        -- ('user1', 'xemtheoma-khoa');
+        ('sinhvien', 'xembanthan-sinhvien');
+        -- ('sinhvien', 'xemtheoma-khoa');
+        -- ('sinhvien', 'xemtheoma-diemsinhvien'),
+        -- ('sinhvien', 'xemtheoma-khoa'), 
+        -- ('sinhvien', 'xemtheoma-khoa'), 
+        -- ('sinhvien', 'xemtheoma-khoa');

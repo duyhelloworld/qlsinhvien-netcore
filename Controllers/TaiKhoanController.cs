@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using qlsinhvien.Atributes;
 using qlsinhvien.Entities;
 using qlsinhvien.Entities.SecurityModels;
 using qlsinhvien.Services;
@@ -29,9 +30,17 @@ public class TaiKhoanController : ControllerBase
     }
 
     [HttpPost("capquyen")]
-    // [PhanQuyen(EQuyen.XemTatCa_TAIKHOAN)]
+    [PhanQuyen(EQuyen.CapQuyen_TAIKHOAN)]
     public async Task CapQuyen([FromBody] ModelCapQuyen modelCapQuyen)
     {
         await _service.PhanVaiTro(modelCapQuyen.TenNguoiDung, modelCapQuyen.TenVaiTro);
+    }
+
+    [HttpGet]
+    [PhanQuyen()]
+    public async Task DangXuat()
+    {
+        // await _service.DangXuat();
+        await Task.CompletedTask;
     }
 }

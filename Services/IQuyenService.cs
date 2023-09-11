@@ -9,5 +9,4 @@ public interface IQuyenService
     public Task ThemQuyen(QuyenDto quyenDto);
     public Task CapNhatQuyen(string TenQuyen, QuyenDto quyenDto);
     public Task XoaQuyen(string TenQuyen);
-
 }
