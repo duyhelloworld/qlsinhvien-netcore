@@ -247,6 +247,7 @@ VALUES
         ('xemtheoma-giangvien', N'Xem thông tin của 1 giảng viên theo mã số' ),
         ('xemtheoma-monhoc', N'Xem thông tin của môn học theo mã môn học'),
         ('xoatheoma-lopmonhoc', N'Xóa lớp môn học theo mã lớp'),
+        ('xoatheoma-bomon', N'Xóa bộ môn theo mã bộ môn'),
         ('xemtheoten-sinhvien', N'Xem thông tin của sinh viên theo tên'),
         ('xemtheolopquanli-sinhvien', N'Xem thông tin của tất cả sinh viên theo lớp quản lí'),
         ('xemtheolopmonhoc-sinhvien', N'Xem thông tin của tất cả sinh viên theo lớp môn học'),
@@ -296,7 +297,10 @@ VALUES
         ('suatheolopmonhoc-diemsinhvien', N'Sửa điểm của các sinh viên trong lớp môn học'),
         ('xoadiem-diemsinhvien', 'Xóa điểm số của sinh viên trong lớp môn học'), 
         ('xoa-diemsinhvien', N'Xóa điểm (xóa cả môn học) của sinh viên trong lớp môn học'),
-        ('xembanthan-sinhvien', N'Xem thông tin của bản thân sinh viên đó');
+        ('xembanthan-sinhvien', N'Xem thông tin của bản thân sinh viên đó'),
+        ('themmoi-bomon', N'Thêm bộ môn mới'),
+        ('suathongtin-bomon', N'Sửa thông tin bộ môn'), 
+        ('xoa-bomon', N' Xoá bộ môn');
 
 INSERT INTO [Quyen_VaiTro] ([TenVaiTro], [TenQuyen])
 VALUES  
