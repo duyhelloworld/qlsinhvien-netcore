@@ -17,14 +17,14 @@ namespace qlsinhvien.Controllers
         }
 
         [HttpGet("tatca")]
-        [PhanQuyen(EQuyen.XemTatCa_SINHVIEN)]
+        [PhanQuyen(EQuyen.XemTatCa_SinhVien)]
         public async Task<IEnumerable<SinhVien>> GetAll()
         {
             return await _service.GetAll();
         }
 
         [HttpGet]
-        [PhanQuyen(EQuyen.XemBanThan_SINHVIEN)]
+        [PhanQuyen(EQuyen.XemBanThan_SinhVien)]
         public async Task<ActionResult<SinhVien>> GetSelf()
         {
             var phanQuyen = (HttpContext.Items["PhanQuyen"] as PhanQuyen)!;
@@ -33,7 +33,7 @@ namespace qlsinhvien.Controllers
         }
 
         [HttpGet("{maSoSinhVien}")]
-        [PhanQuyen(TenQuyen: EQuyen.XemTheoMa_SINHVIEN)]
+        [PhanQuyen(TenQuyen: EQuyen.XemTheoMa_SinhVien)]
         public async Task<ActionResult<SinhVien>> GetById(int maSoSinhVien)
         {
             var kq = await _service.GetById(maSoSinhVien);
