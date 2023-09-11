@@ -37,9 +37,15 @@ namespace qlsinhvien.Atributes
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWT:SecretKey"]!)),
                 ValidateAudience = false,
-                ValidateLifetime = false
-            });
-            if (validateResult.Exception is not null)
+                ValidateLifetime = false,
+                ValidAlgorithms = new[] { SecurityAlgorithms.HmacSha256Signature },
+                IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(config["JWT:SecretKey"]!)),
+            };
+
+            var validateResult = await handler.ValidateTokenAsync(jwtToken, tokenParameters);
+
+            if (!validateResult.IsValid)
             {
                 throw validateResult.Exception;
             }

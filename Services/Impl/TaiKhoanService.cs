@@ -83,6 +83,14 @@ public class TaiKhoanService : ITaiKhoanService
     private string GetToken(int maNguoiDung, string vaiTro) 
     {
         var tokenHandler = new JwtSecurityTokenHandler();
+        var claims = new ClaimsIdentity(
+            new Claim[]
+            {
+                new("manguoidung", maNguoiDung.ToString(), ClaimValueTypes.Integer),
+                new("vaitro", vaiTro, ClaimValueTypes.String),
+                new(ClaimTypes.Sid, Guid.NewGuid().ToString())
+            }
+        );
         var key = Encoding.UTF8.GetBytes(_configuration["JWT:SecretKey"]!);
         var tokenDesriptions = new SecurityTokenDescriptor()
         {   
@@ -96,7 +104,7 @@ public class TaiKhoanService : ITaiKhoanService
             SigningCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(key),
                 SecurityAlgorithms.HmacSha256Signature
-            )
+            ),
         };
         var token = tokenHandler.CreateJwtSecurityToken(tokenDesriptions);
         return tokenHandler.WriteToken(token);
