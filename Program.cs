@@ -19,7 +19,7 @@ builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 // Custom Attributes
-builder.Services.AddSingleton(new PhanQuyen(EQuyen.XemTatCa_BOMON));
+builder.Services.AddSingleton(new PhanQuyen(EQuyen.KhongCoQuyen));
 
 // Services
 builder.Services.AddScoped<IGiangVienService, GiangVienService>();
@@ -30,6 +30,7 @@ builder.Services.AddScoped<IMonHocService, MonHocService>();
 builder.Services.AddScoped<IBoMonService, BoMonService>();
 builder.Services.AddScoped<ITaiKhoanService, TaiKhoanService>();
 builder.Services.AddScoped<IQuyenService, QuyenService>();
+builder.Services.AddScoped<INguoiDungService, NguoiDungService>();
 
 builder.Services.AddDbContext<ApplicationContext>(options =>
 {

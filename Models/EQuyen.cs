@@ -1,10 +1,11 @@
-using System;
 using EnumStringValues;
 
 namespace qlsinhvien.Entities
 {
     public enum EQuyen
     {
+        [StringValue("khongcoquyen")]
+        KhongCoQuyen,
         [StringValue("xemtatca-bomon")]
         XemTatCa_BoMon,
         [StringValue("xemtatca-khoa")]
@@ -152,6 +153,28 @@ namespace qlsinhvien.Entities
         [StringValue("suathongtin-bomon")]
         SuaThongTin_BoMon,
         [StringValue("xoa-bomon")]
-        Xoa_BoMon
+        Xoa_BoMon,
+        [StringValue("xemtatcachuaphanquyen-nguoidung")]
+        XemTatCaChuaPhanQuyen_NguoiDung,
+        [StringValue("xemtatcadaphanquyen-nguoidung")]
+        XemTatCaDaPhanQuyen_NguoiDung,
+        [StringValue("xemtatcatheovaitro-nguoidung")]
+        XemTatCaTheoVaiTro_NguoiDung,
+        [StringValue("xemtheotenhienthi-nguoidung")]
+        XemTheoTenHienThi_NguoiDung,
+        [StringValue("xemtheoten-nguoidung")]
+        XemTheoTen_NguoiDung,
+        [StringValue("xemtheovaitro-nguoidung")]
+        XemTheoVaiTro_NguoiDung,
+        [StringValue("themmoi-nguoidung")]
+        ThemMoi_NguoiDung,
+        [StringValue("phanquyen-nguoidung")]
+        PhanQuyen_NguoiDung,
+        [StringValue("suathongtin-nguoidung")]
+        SuaThongTin_NguoiDung,
+        [StringValue("huyphanquyen-nguoidung")]
+        HuyPhanQuyen_NguoiDung,
+        [StringValue("xoa-nguoidung")]
+        Xoa_NguoiDung,
     }
 }
