@@ -19,6 +19,6 @@ namespace qlsinhvien.Entities
 
         [Required]
         [ForeignKey("MaKhoa")]
-        public Khoa Khoa { get; set; }
+        public Khoa Khoa { get; set; } = null!;
     }
 }

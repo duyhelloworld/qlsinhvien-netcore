@@ -17,14 +17,14 @@ namespace qlsinhvien.Entities
         [Required]
         [DeleteBehavior(DeleteBehavior.NoAction)]
         [ForeignKey("MaMonHoc")]
-        public MonHoc MonHoc { get; set; }
+        public MonHoc MonHoc { get; set; } = null!;
 
         public int MaMonHoc {get; set; }
 
         [Required]
         [ForeignKey("MaGiangVien")]
         [DeleteBehavior(DeleteBehavior.NoAction)]
-        public GiangVien GiangVien { get; set; }
+        public GiangVien GiangVien { get; set; } = null!;
 
         public ICollection<DiemSinhVien>? DiemSinhViens { get; set; } = new HashSet<DiemSinhVien>();
     }
