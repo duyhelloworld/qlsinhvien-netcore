@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace qlsinhvien.Migrations
 {
     /// <inheritdoc />
-    public partial class taobang : Migration
+    public partial class Test : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -47,6 +47,18 @@ namespace qlsinhvien.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Quyen", x => x.TenQuyen);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TokenHetHan",
+                columns: table => new
+                {
+                    MaToken = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    HetHanKhi = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TokenHetHan", x => x.MaToken);
                 });
 
             migrationBuilder.CreateTable(
@@ -114,30 +126,6 @@ namespace qlsinhvien.Migrations
                         column: x => x.MaMonTienQuyet,
                         principalTable: "MonHoc",
                         principalColumn: "MaMonHoc");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "BoMonKhoa",
-                columns: table => new
-                {
-                    BoMonsMaBoMon = table.Column<int>(type: "int", nullable: false),
-                    KhoasMaKhoa = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BoMonKhoa", x => new { x.BoMonsMaBoMon, x.KhoasMaKhoa });
-                    table.ForeignKey(
-                        name: "FK_BoMonKhoa_BoMon_BoMonsMaBoMon",
-                        column: x => x.BoMonsMaBoMon,
-                        principalTable: "BoMon",
-                        principalColumn: "MaBoMon",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_BoMonKhoa_Khoa_KhoasMaKhoa",
-                        column: x => x.KhoasMaKhoa,
-                        principalTable: "Khoa",
-                        principalColumn: "MaKhoa",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -315,11 +303,6 @@ namespace qlsinhvien.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_BoMonKhoa_KhoasMaKhoa",
-                table: "BoMonKhoa",
-                column: "KhoasMaKhoa");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_DiemSinhVien_MaSinhVien",
                 table: "DiemSinhVien",
                 column: "MaSinhVien");
@@ -416,9 +399,6 @@ namespace qlsinhvien.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BoMonKhoa");
-
-            migrationBuilder.DropTable(
                 name: "DiemSinhVien");
 
             migrationBuilder.DropTable(
@@ -429,6 +409,9 @@ namespace qlsinhvien.Migrations
 
             migrationBuilder.DropTable(
                 name: "Quyen_VaiTro");
+
+            migrationBuilder.DropTable(
+                name: "TokenHetHan");
 
             migrationBuilder.DropTable(
                 name: "LopMonHoc");
