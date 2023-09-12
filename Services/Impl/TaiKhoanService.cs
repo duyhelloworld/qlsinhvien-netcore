@@ -104,11 +104,10 @@ public class TaiKhoanService : ITaiKhoanService
                 var nguoiDung = await _context.NguoiDungs.FirstAsync(nd => (nd.TenVaiTro == tenVaiTro) && (nd.MaGiangVien == maNguoiDung || nd.MaSinhVien == maNguoiDung));
                 if (nguoiDung is not null)
                 {
-                    // jwtSecurityToken.ValidTo = DateTime.UtcNow;
                     var tokenHetHan = new TokenHetHan() 
                     {
                         MaToken = jwtSecurityToken.Claims.FirstOrDefault(claim => claim.Type == "id")!.Value,
-                        NgayHetHan = jwtSecurityToken.ValidTo
+                        HetHanKhi = jwtSecurityToken.ValidTo
                     };
                     await _context.TokenHetHans.AddAsync(tokenHetHan);
                     await _context.SaveChangesAsync();
@@ -144,16 +143,5 @@ public class TaiKhoanService : ITaiKhoanService
         return tokenHandler.WriteToken(token);
     }
 
-    public async Task PhanVaiTro(string TenNguoiDung, string TenVaiTro)
-    {
-        var nguoiDung = await _context.NguoiDungs.FindAsync(TenNguoiDung) 
-            ?? throw new ServiceException(404, "Người dùng không tồn tại");
-        if (nguoiDung.TenVaiTro == null || string.IsNullOrEmpty(nguoiDung.TenVaiTro))
-        {
-            var vaiTro = await _context.VaiTros.FindAsync(TenVaiTro)
-                ?? throw new ServiceException(404, "Vai trò không hợp lệ");
-            nguoiDung.TenVaiTro = vaiTro.TenVaiTro;
-            await _context.SaveChangesAsync();             
-        }
-    }
+    
 }

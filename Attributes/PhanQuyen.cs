@@ -1,6 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using System.Text.Json;
 using EnumStringValues;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -8,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using qlsinhvien.Context;
 using qlsinhvien.Entities;
+using qlsinhvien.Entities.SecurityModels;
 
 namespace qlsinhvien.Atributes
 {
@@ -59,6 +59,13 @@ namespace qlsinhvien.Atributes
                 if (nguoiDung is null)
                 {
                     context.Result = new StatusCodeResult(StatusCodes.Status401Unauthorized);
+                    return;
+                }
+                string tokenid = jwtSecurityToken.Claims.FirstOrDefault(claim => claim.Type == "id")!.Value;
+                var daDangXuat = await dbcontext.TokenHetHans.AnyAsync(dx => dx.MaToken == tokenid); 
+                if (daDangXuat)
+                {
+                    context.Result = new ObjectResult(new ModelTraVe() {ThanhCong = false, Data = "Phiên đăng nhập đã hết hạn"});
                     return;
                 }
                 foreach (var quyen in TenQuyen)
