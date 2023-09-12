@@ -54,7 +54,7 @@ public class BoMonService : IBoMonService
         }
         if (boMonDto.MaKhoas != null)
         {
-            var khoas = await _context.Khoas.Where(k => boMonDto.MaKhoas.Contains(k.MaKhoa))
+            var khoas = await _context.KhoaBoMons.Where(kbm => boMonDto.MaKhoas.Contains(kbm.MaKhoa))
                 .ToListAsync();
             if (khoas.Count != 0)
             {
@@ -91,7 +91,7 @@ public class BoMonService : IBoMonService
         }
         if (boMonDto.MaKhoas != null)
         {
-            var khoas = await _context.Khoas.Where(k => boMonDto.MaKhoas.Contains(k.MaKhoa))
+            var khoas = await _context.KhoaBoMons.Where(kbm => boMonDto.MaKhoas.Contains(kbm.MaKhoa))
                 .ToListAsync();
             if (khoas.Count != 0)
             {

@@ -50,8 +50,8 @@ partial class KhoaService : IKhoaService
         };
         if (khoaDto.MaBoMons != null)
         {
-            var boMons = await _context.BoMons
-                .Where(bm => khoaDto.MaBoMons.Contains(bm.MaBoMon))
+            var boMons = await _context.KhoaBoMons
+                .Where(kbm => khoaDto.MaBoMons.Contains(kbm.MaBoMon))
                 .ToListAsync();
             if (boMons != null)
             {
@@ -86,8 +86,8 @@ partial class KhoaService : IKhoaService
         khoa.TenKhoa = khoaDto.TenKhoa;
         if (khoaDto.MaBoMons != null)
         {
-            var boMons = await _context.BoMons
-                .Where(bm => khoaDto.MaBoMons.Contains(bm.MaBoMon))
+            var boMons = await _context.KhoaBoMons
+                .Where(kbm => khoaDto.MaBoMons.Contains(kbm.MaBoMon))
                 .ToListAsync();
             if (boMons != null && boMons.Count > 0)
             {

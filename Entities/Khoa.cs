@@ -16,5 +16,5 @@ public class Khoa
 
     public ICollection<LopQuanLi> LopQuanLis { get; set; } = new HashSet<LopQuanLi>();
 
-    public ICollection<BoMon> BoMons { get; set; } = new HashSet<BoMon>();
+    public ICollection<KhoaBoMon> BoMons { get; set; } = new HashSet<KhoaBoMon>();
 }
