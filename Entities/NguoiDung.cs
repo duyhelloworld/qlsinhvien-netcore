@@ -23,4 +23,7 @@ public class NguoiDung
 
     [StringLength(60)]
     public string? TenHienThi { get; set; } = null!;
+
+    // [RegularExpression("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}$")]
+    // public string? Email { get; set; } = null!;
 }
