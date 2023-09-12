@@ -17,8 +17,8 @@ namespace qlsinhvien.Controllers
             this.lopQuanLiDbContext = lopQuanLiDbContext;
         }
 
-        [HttpGet("all")]
-        [PhanQuyen(EQuyen.XemTatCa_LOPQUANLI)]
+        [HttpGet("tatca")]
+        [PhanQuyen(EQuyen.XemTatCa_LopQuanLi)]
         public ActionResult GetAll() {
             var ketQua = lopQuanLiDbContext.LopQuanLis
                             .Include(l => l.Khoa)
@@ -51,14 +51,14 @@ namespace qlsinhvien.Controllers
                 // join khoa in lopQuanLiDbContext.Khoas
                     // on lql.MaKhoa equals khoa.MaKhoa
                 join giangvien in lopQuanLiDbContext.GiangViens
-                    on lql.GiangVien.MaGiangVien equals giangvien.MaGiangVien
+                    on lql.GiangVien!.MaGiangVien equals giangvien.MaGiangVien
                 where lql.TenLopQuanLi.Contains(tenLopQuanLi)
                 select new {
                     lql.MaLopQuanLi,
                     lql.TenLopQuanLi,
                     GiangVien = new
                     {
-                        lql.GiangVien.MaGiangVien,
+                        lql.GiangVien!.MaGiangVien,
                         lql.GiangVien.HoTen,
                         lql.GiangVien.SoDienThoai,
                         lql.GiangVien.Email,
@@ -128,7 +128,7 @@ namespace qlsinhvien.Controllers
             {
                 return NotFound($"{nameof(Khoa)} {lopQuanLi.Khoa.MaKhoa}");
             }
-            if (lopQuanLi.GiangVien.MaGiangVien != 0)
+            if (lopQuanLi.GiangVien!.MaGiangVien != 0)
             {
                 var giangVien = lopQuanLiDbContext.GiangViens.Find(lopQuanLi.GiangVien.MaGiangVien);
                 if (giangVien == null)
