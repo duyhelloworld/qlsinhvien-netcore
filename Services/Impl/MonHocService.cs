@@ -10,9 +10,11 @@ namespace qlsinhvien.Services.Impl;
 public class MonHocService : IMonHocService
 {
     private readonly ApplicationContext _context;
-    private readonly ILopMonHocService _service;
+    // private readonly ILopMonHocService _service;
 
-    public MonHocService(ApplicationContext context)
+    public MonHocService(ApplicationContext context
+    // , ILopMonHocService service
+    )
     {
         _context = context;
         // _service = service;
@@ -48,8 +50,7 @@ public class MonHocService : IMonHocService
 
     public async Task<MonHoc?> GetById(int maSoMonHoc)
     {
-        var mh = await _context.MonHocs.FindAsync(maSoMonHoc);
-        return mh;
+        return await _context.MonHocs.FindAsync(maSoMonHoc);
     }
 
     public async Task<IEnumerable<MonHoc>> GetByTenMon(string tenMonHoc)
@@ -68,7 +69,7 @@ public class MonHocService : IMonHocService
         {
             throw new ServiceException(404, $"Không tồn tại môn học có mã môn học: {maSoMonHoc}.");
         }
-        await _service.RemoveTheoMonHoc(maSoMonHoc);
+        // await _service.RemoveTheoMonHoc(maSoMonHoc);
         _context.MonHocs.Remove(mh);
         await _context.SaveChangesAsync();
     }
