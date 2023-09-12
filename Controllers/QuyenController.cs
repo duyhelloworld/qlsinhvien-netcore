@@ -22,7 +22,7 @@ public class QuyenController : ControllerBase
         return Ok(await _service.LayTatCa());
     }
 
-    [HttpGet("{ TenQuyen:alpha:minlength(1)}")]
+    [HttpGet("{TenQuyen:alpha:minlength(1)}")]
     [PhanQuyen(EQuyen.XemTheoTen_Quyen)]
     public async Task<IActionResult> GetByIdAsync(string TenQuyen)
     {
