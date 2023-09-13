@@ -1,6 +1,3 @@
-using System.Runtime.InteropServices.ComTypes;
-using System.Security.Cryptography.Xml;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using qlsinhvien.Context;
 using qlsinhvien.Dto;
