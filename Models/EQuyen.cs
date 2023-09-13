@@ -143,6 +143,8 @@ namespace qlsinhvien.Entities
         SuaTheoLopMonHoc_DiemSinhVien,
         [StringValue("xoadiem-diemsinhvien")]
         XoaDiemSinhVien_DiemSinhVien,
+        [StringValue("xemtheogiangvien-lopmonhoc")]
+        XemTheoGiangVien_LopMonHoc,
         [StringValue("xoa-diemsinhvien")]
         Xoa_DiemSinhVien
     }
