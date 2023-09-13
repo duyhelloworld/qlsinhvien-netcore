@@ -2,7 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using qlsinhvien.Atributes;
 using qlsinhvien.Context;
+using qlsinhvien.Dto;
 using qlsinhvien.Entities;
+using qlsinhvien.Services;
 
 namespace qlsinhvien.Controllers
 {
@@ -10,183 +12,60 @@ namespace qlsinhvien.Controllers
     [Route("[controller]")]
     public class LopQuanLiController : ControllerBase
     {
-        private readonly ApplicationContext lopQuanLiDbContext;
+        private readonly ILopQuanLiService _service;
 
-        public LopQuanLiController(ApplicationContext lopQuanLiDbContext)
+        public LopQuanLiController(ILopQuanLiService service)
         {
-            this.lopQuanLiDbContext = lopQuanLiDbContext;
+            _service = service;
         }
 
         [HttpGet("tatca")]
         [PhanQuyen(EQuyen.XemTatCa_LopQuanLi)]
-        public ActionResult GetAll() {
-            var ketQua = lopQuanLiDbContext.LopQuanLis
-                            .Include(l => l.Khoa)
-                            .Include(l => l.GiangVien)
-                            .Select(lql => new
-                            {
-                                lql.MaLopQuanLi,
-                                lql.TenLopQuanLi,
-                                GiangVien = new
-                                {
-                                    lql.GiangVien!.MaGiangVien,
-                                    lql.GiangVien.HoTen,
-                                    lql.GiangVien.SoDienThoai,
-                                    lql.GiangVien.Email,
-                                    lql.GiangVien.BoMon.TenBoMon
-                                },
-                                Khoa = new
-                                {
-                                    lql.Khoa.MaKhoa,
-                                    lql.Khoa.TenKhoa
-                                }
-                            });
-            return Ok(ketQua);
+        public async Task<IEnumerable<LopQuanLi>> GetAll() 
+        {
+            return await _service.GetAll();
         }
 
-        [HttpGet]
-        public ActionResult GetByName([FromQuery] string tenLopQuanLi)
+        [HttpGet("tenlopquanli")]
+        public async Task<IEnumerable<LopQuanLi>> GetByName(string tenLopQuanLi)
         {
-            var ketQua = from lql in lopQuanLiDbContext.LopQuanLis
-                // join khoa in lopQuanLiDbContext.Khoas
-                    // on lql.MaKhoa equals khoa.MaKhoa
-                join giangvien in lopQuanLiDbContext.GiangViens
-                    on lql.GiangVien!.MaGiangVien equals giangvien.MaGiangVien
-                where lql.TenLopQuanLi.Contains(tenLopQuanLi)
-                select new {
-                    lql.MaLopQuanLi,
-                    lql.TenLopQuanLi,
-                    GiangVien = new
-                    {
-                        lql.GiangVien!.MaGiangVien,
-                        lql.GiangVien.HoTen,
-                        lql.GiangVien.SoDienThoai,
-                        lql.GiangVien.Email,
-                        lql.GiangVien.BoMon.TenBoMon,
-                    },
-                    Khoa = new
-                    {
-                        lql.Khoa.MaKhoa,
-                        lql.Khoa.TenKhoa
-                    }
-                };
-            return ketQua.Count() == 0 ? NotFound() : Ok(ketQua);
+            return await _service.GetByTen(tenLopQuanLi);
         }
 
-        [HttpGet("{malop}")]
-        public ActionResult<LopQuanLi> GetById(int malop)
+        [HttpGet("{malopquanli}")]
+        public async Task<LopQuanLi> GetById(int maLopQuanLi)
         {
-            var ketQua = lopQuanLiDbContext.LopQuanLis
-                .Find(malop);
-            return ketQua == null ? NotFound() : Ok(
-                                new {
-                                    ketQua.MaLopQuanLi,
-                                    ketQua.TenLopQuanLi,
-                                    ketQua.GiangVien,
-                                    Khoa = new
-                                    {
-                                        ketQua.Khoa.MaKhoa,
-                                        ketQua.Khoa
-                                    }});
+            return await _service.GetById(maLopQuanLi);
         }
 
         [HttpGet("siso")]
-        public ActionResult GetAllWithSiSo()
+        public async Task<LopQuanLi> GetAllWithSiSo()
         {
-            // Lấy khoa, giảng viên
-            var joinedResult = lopQuanLiDbContext.LopQuanLis
-                                .Include(l => l.Khoa)
-                                .Include(l => l.GiangVien)
-                                .ToList();
-            // Lấy sĩ số
-            var groupByResult = from l in joinedResult
-                                join s in lopQuanLiDbContext.SinhViens
-                                    on l.MaLopQuanLi equals s.LopQuanLi.MaLopQuanLi
-                                group l by l.MaLopQuanLi into grouped
-                                let lql = grouped.FirstOrDefault()
-                                select new 
-                                {
-                                    lql.MaLopQuanLi,
-                                    lql.TenLopQuanLi,
-                                    lql.GiangVien,
-                                    lql.Khoa,
-                                    SiSo = grouped.Count()
-                                };
-            return groupByResult == null ? NotFound() : Ok(groupByResult);
+            return await _service.GetWithSiSo();
         }
 
         [HttpPost]
-        public ActionResult AddLopQL([FromBody] LopQuanLi lopQuanLi)
+        public async Task<LopQuanLi> AddLopQL(LopQuanLiDto lopQuanLiDto)
         {
-            // Bắt buộc khi thêm phải có : tên lớp, mã khoa
-            if (lopQuanLi.MaLopQuanLi != 0 || lopQuanLi.Khoa.MaKhoa == 0)
-            {
-                return BadRequest("Thiếu mã khoa; mã lql phải = 0");
-            }
-            var khoa = lopQuanLiDbContext.Khoas.Find(lopQuanLi.Khoa.MaKhoa);
-            if (khoa == null)
-            {
-                return NotFound($"{nameof(Khoa)} {lopQuanLi.Khoa.MaKhoa}");
-            }
-            if (lopQuanLi.GiangVien!.MaGiangVien != 0)
-            {
-                var giangVien = lopQuanLiDbContext.GiangViens.Find(lopQuanLi.GiangVien.MaGiangVien);
-                if (giangVien == null)
-                {
-                    return NotFound($"{nameof(GiangVien)} {lopQuanLi.GiangVien.MaGiangVien}");
-                }
-                // giảng viên khoa này phải chủ nhiệm lớp thuộc khoa đó
-                // if (giangVien.BoMon. != lopQuanLi.Khoa.MaKhoa)
-                // {
-                    // return BadRequest("Not match");
-                // }
-            }
-            lopQuanLiDbContext.LopQuanLis.Add(lopQuanLi);
-            lopQuanLiDbContext.SaveChanges();
-            return Created(nameof(GetById), lopQuanLi);
+            return await _service.AddNew(lopQuanLiDto);
         }
 
         [HttpPut]
-        public ActionResult UpdateLopQL([FromBody] LopQuanLi lopQuanLi) {
-            if (lopQuanLi.MaLopQuanLi != 0) {
-                return BadRequest();
-            }
-            var inDb = lopQuanLiDbContext.LopQuanLis.Find(lopQuanLi.MaLopQuanLi);
-            if (inDb == null) {
-                return NotFound();                
-            }
-            inDb.TenLopQuanLi = lopQuanLi.TenLopQuanLi;
-            // inDb.MaKhoa = lopQuanLi.MaKhoa;
-            // inDb.MaGiangVien = lopQuanLi.MaGiangVien;
-            lopQuanLiDbContext.SaveChanges();
-            return Ok(inDb);
+        public async Task<LopQuanLi> UpdateLopQL(int maLopQuanLi, LopQuanLiDto lopQuanLiDto) 
+        {
+            return await _service.Update(maLopQuanLi, lopQuanLiDto);   
         }
 
-        [HttpDelete("{malop}")]
-        public ActionResult RemoveLopQL(int malop) {
-            var inDb = lopQuanLiDbContext.LopQuanLis.Find(malop);
-            if (inDb == null) {
-                return NotFound();
-            }   
-            lopQuanLiDbContext.LopQuanLis.Remove(inDb);
-            lopQuanLiDbContext.SaveChanges();
-            return Ok();
+        [HttpDelete("{malopquanli}")]
+        public async Task RemoveLopQL(int maLopQuanLi) 
+        {
+            await _service.Remove(maLopQuanLi);
         }
 
         [HttpDelete]
-        public ActionResult RemoveLopQLByRange([FromBody] List<int> malops)
+        public async Task<LopQuanLi> RemoveLopQLByRange(ICollection<int> maLopQuanLis)
         {
-            var lopQuanLis = new List<LopQuanLi>();
-            foreach (var malop in malops)
-            {
-                var inDb = lopQuanLiDbContext.LopQuanLis.Find(malop);
-                if (inDb != null) {
-                    lopQuanLis.Add(inDb);
-                }
-            }
-            lopQuanLiDbContext.LopQuanLis.RemoveRange(lopQuanLis);
-            lopQuanLiDbContext.SaveChanges();
-            return Ok();
+            return await _service.RemoveRange(maLopQuanLis);
         }
     }
 }

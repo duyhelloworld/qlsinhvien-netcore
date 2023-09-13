@@ -11,5 +11,6 @@ public class LopQuanLiDto
     public string TenLopQuanLi { get; set; } = null!;
 
     public int MaKhoa { get; set; }
+    public int MaGiangVien { get; set; }
     public GiangVien? GiangVien { get; set; }
 }
