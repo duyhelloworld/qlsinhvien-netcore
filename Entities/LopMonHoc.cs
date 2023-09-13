@@ -19,13 +19,22 @@ namespace qlsinhvien.Entities
         [ForeignKey("MaMonHoc")]
         public MonHoc MonHoc { get; set; }
 
-        public int MaMonHoc {get; set; }
+        public int MaMonHoc { get; set; }
 
         [Required]
         [ForeignKey("MaGiangVien")]
+        public int MaGiangVien { get; set; }
+
+        [Required]
         [DeleteBehavior(DeleteBehavior.NoAction)]
         public GiangVien GiangVien { get; set; }
 
         public ICollection<DiemSinhVien>? DiemSinhViens { get; set; } = new HashSet<DiemSinhVien>();
     }
+    // public class LopMonHocWithSoLuongSinhVien
+    // {
+    //     public LopMonHoc LopMonHoc { get; set; }
+    //     public int SoLuongSinhVien { get; set; }
+    // }
+
 }
