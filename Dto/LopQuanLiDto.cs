@@ -8,8 +8,8 @@ public class LopQuanLiDto
     [JsonRequired]
     public int MaLopQuanLi { get; set; }
 
-    public string TenLopQuanLi { get; set; }
+    public string TenLopQuanLi { get; set; } = null!;
 
     public int MaKhoa { get; set; }
-    public GiangVien? giangVien{ get; set; }
+    public GiangVien? GiangVien { get; set; }
 }

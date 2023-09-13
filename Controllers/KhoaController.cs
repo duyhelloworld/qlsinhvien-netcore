@@ -22,20 +22,20 @@ public class KhoaController : ControllerBase
         _service = khoaService;
     }    
 
-    [HttpGet("/")]
-    [PhanQuyen(EQuyen.XemTatCa_KHOA)]
+    [HttpGet("tatca")]
+    [PhanQuyen(EQuyen.XemTatCa_Khoa)]
     public async Task<IEnumerable<Khoa>> GetAll() {
         return await _service.GetAll();
     }
 
     [HttpGet("{makhoa:int:min(1)}")]
-    [PhanQuyen(EQuyen.XemTheoMa_KHOA)]
+    [PhanQuyen(EQuyen.XemTheoMa_Khoa)]
     public async Task<Khoa?> GetById(int makhoa)
     {
         return await _service.GetById(makhoa); ;
     }
 
-    [HttpGet("tim")]
+    [HttpGet("")]
     public async Task<IEnumerable<Khoa>> GetByName([FromQuery] string tenkhoa)
     {
         return await _service.GetByTen(tenkhoa);

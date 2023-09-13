@@ -27,7 +27,7 @@ namespace qlsinhvien.Entities
         public MonHoc? MonTienQuyet { get; set; }
 
         [ForeignKey("MaBoMon")]
-        public BoMon BoMon { get; set; }
+        public BoMon BoMon { get; set; } = null!;
 
         public ICollection<LopMonHoc> LopMonHocs { get; set; } = new HashSet<LopMonHoc>();
     }

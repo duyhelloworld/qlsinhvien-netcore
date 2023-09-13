@@ -17,6 +17,6 @@ namespace qlsinhvien.Entities
 
         public ICollection<GiangVien> GiangViens { get; set; } = new HashSet<GiangVien>();
 
-        public ICollection<Khoa> Khoas { get; set; } = new HashSet<Khoa>();
+        public ICollection<KhoaBoMon> Khoas { get; set; } = new HashSet<KhoaBoMon>();
     }
 }

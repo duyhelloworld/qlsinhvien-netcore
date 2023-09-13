@@ -19,14 +19,14 @@ namespace qlsinhvien.Controllers
         }
 
         [HttpGet]
-        [PhanQuyen(EQuyen.XemTatCa_MONHOC)]
+        [PhanQuyen(EQuyen.XemTatCa_MonHoc)]
         public async Task<IEnumerable<MonHoc>> GetAll()
         {
             return await _service.GetAll();
         }
 
         [HttpGet("{id}")]
-        [PhanQuyen(EQuyen.XemTheoMa_MONHOC)]
+        [PhanQuyen(EQuyen.XemTheoMa_MonHoc)]
         public async Task<IActionResult> GetById(int id)
         {
             var monHoc = await _service.GetById(id);

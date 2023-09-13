@@ -92,11 +92,15 @@ public class GiangVienService : IGiangVienService
         {
             throw new ServiceException(404, $"Không có giảng viên nào mang mã số {maGiangVien}!");
         }
-        await _context.GiangViens.Entry(giangVien).Collection(gv => gv.LopMonHocs).LoadAsync();
-        foreach (var lml in giangVien.LopMonHocs)
-        {
-            lml.GiangVien = null;
-        }
+        var lmh = await _context.LopMonHocs
+            .Where(lmh => lmh.GiangVien.MaGiangVien == maGiangVien)
+            .ToListAsync();
+        giangVien.LopMonHocs = lmh;
+
+        // foreach (var lml in giangVien.LopMonHocs)
+        // {
+        //     lml.GiangVien = null;
+        // }
         return giangVien.LopMonHocs;
     }
 

@@ -11,7 +11,7 @@ public class GiangVien : ConNguoi
     public int MaGiangVien { get; set; }
     
     [ForeignKey("MaBoMon")]
-    public BoMon BoMon { get; set; }
+    public BoMon BoMon { get; set; } = null!;
 
     public LopQuanLi? LopQuanLi { get; set; }
 

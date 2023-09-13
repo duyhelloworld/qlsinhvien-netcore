@@ -1,10 +1,11 @@
-using System;
 using EnumStringValues;
 
 namespace qlsinhvien.Entities
 {
     public enum EQuyen
     {
+        [StringValue("khongcoquyen")]
+        KhongCoQuyen,
         [StringValue("xemtatca-bomon")]
         XemTatCa_BoMon,
         [StringValue("xemtatca-khoa")]
@@ -48,7 +49,7 @@ namespace qlsinhvien.Entities
         [StringValue("xemtheolopquanli-sinhvien")]
         XemTheoLopQuanLi_SinhVien,
         [StringValue("xemtheolopmonhoc-sinhvien")]
-        XemTheoLopMonHoc_Sinhvien,
+        XemTheoLopMonHoc_SinhVien,
         [StringValue("themmoi-sinhvien")]
         ThemMoi_SinhVien,
         [StringValue("themmoi-quyen")]
@@ -62,7 +63,7 @@ namespace qlsinhvien.Entities
         [StringValue("themmoi-monhoc")]
         ThemMoi_MonHoc,
         [StringValue("suathongtintheoma-sinhvien")]
-        SuaThongTinTheoMa_Sinhvien,
+        SuaThongTinTheoMa_SinhVien,
         [StringValue("xembanthan-sinhvien")]
         XemBanThan_SinhVien,
         [StringValue("xoa-sinhvien")]
@@ -115,6 +116,8 @@ namespace qlsinhvien.Entities
         XemTheoBoMon_GiangVien,
         [StringValue("xemlopmonhoc-giangvien")]
         XemLopMonHoc_GiangVien,
+        [StringValue("xembanthan-giangvien")]
+        XemBanThan_GiangVien,
         [StringValue("themmoi-giangvien")]
         ThemMoi_GiangVien,
         [StringValue("themmoilopmonhoc-giangvien")]
@@ -146,6 +149,34 @@ namespace qlsinhvien.Entities
         [StringValue("xemtheogiangvien-lopmonhoc")]
         XemTheoGiangVien_LopMonHoc,
         [StringValue("xoa-diemsinhvien")]
-        Xoa_DiemSinhVien
+        Xoa_DiemSinhVien,
+        [StringValue("themmoi-bomon")]
+        ThemMoi_BoMon,
+        [StringValue("suathongtin-bomon")]
+        SuaThongTin_BoMon,
+        [StringValue("xoa-bomon")]
+        Xoa_BoMon,
+        [StringValue("xemtatcachuaphanquyen-nguoidung")]
+        XemTatCaChuaPhanQuyen_NguoiDung,
+        [StringValue("xemtatcadaphanquyen-nguoidung")]
+        XemTatCaDaPhanQuyen_NguoiDung,
+        [StringValue("xemtatcatheovaitro-nguoidung")]
+        XemTatCaTheoVaiTro_NguoiDung,
+        [StringValue("xemtheotenhienthi-nguoidung")]
+        XemTheoTenHienThi_NguoiDung,
+        [StringValue("xemtheoten-nguoidung")]
+        XemTheoTen_NguoiDung,
+        [StringValue("xemtheovaitro-nguoidung")]
+        XemTheoVaiTro_NguoiDung,
+        [StringValue("themmoi-nguoidung")]
+        ThemMoi_NguoiDung,
+        [StringValue("phanquyen-nguoidung")]
+        PhanQuyen_NguoiDung,
+        [StringValue("suathongtin-nguoidung")]
+        SuaThongTin_NguoiDung,
+        [StringValue("huyphanquyen-nguoidung")]
+        HuyPhanQuyen_NguoiDung,
+        [StringValue("xoa-nguoidung")]
+        Xoa_NguoiDung,
     }
 }

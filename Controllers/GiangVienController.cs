@@ -18,14 +18,14 @@ public class GiangVienController : ControllerBase
     }
 
     [HttpGet]
-    [PhanQuyen(EQuyen.XemTatCa_GIANGVIEN)]
+    [PhanQuyen(EQuyen.XemTatCa_GiangVien)]
     public async Task<IEnumerable<GiangVien>> GetAllAsync()
     {
         return await _service.GetAll();
     }
 
     [HttpGet("{magiangvien:int:min(1)}")]
-    [PhanQuyen(EQuyen.XemTheoMa_GIANGVIEN)]
+    [PhanQuyen(EQuyen.XemTheoMa_GiangVien)]
     public async Task<IActionResult> GetByIdAsync(int magiangvien)
     {
         var giangVien = await _service.GetById(magiangvien);
@@ -36,13 +36,28 @@ public class GiangVienController : ControllerBase
         return Ok(giangVien);
     }
 
+    [HttpGet]
+    [PhanQuyen(EQuyen.XemBanThan_GiangVien)]
+    public async Task<IActionResult> GetMySelf()
+    {
+        var phanQuyen = (HttpContext.Items["PhanQuyen"] as PhanQuyen)!;
+        var giangVien = await _service.GetById(phanQuyen.MaNguoiDung);
+        if (giangVien == null)
+        {
+            return BadRequest();
+        }
+        return Ok(giangVien);
+    }
+
     [HttpGet("hoten/{hoten:length(1, 40)}")]
+    [PhanQuyen(EQuyen.XemTheoTen_GiangVien)]
     public async Task<IEnumerable<GiangVien>> GetByNameViaRoute(string hoTen)
     {
         return await _service.GetByTen(hoTen);
     }
     
     [HttpGet("hoten")]
+    [PhanQuyen(EQuyen.XemTheoTen_GiangVien)]
     public async Task<IEnumerable<GiangVien>> GetByNameViaQuery([FromQuery] string hoTen)
     {
         if (hoTen.Length < 1 || hoTen.Length > 40)
@@ -53,6 +68,7 @@ public class GiangVienController : ControllerBase
     }
 
     [HttpGet("bomon/{maBoMon:int:min(1)}")]
+    [PhanQuyen(EQuyen.XemTheoBoMon_GiangVien)]
     public async Task<IActionResult> GetByBoMonAsync(int maBoMon)
     {
         var giangViens = await _service.GetByBoMon(maBoMon);
@@ -60,6 +76,7 @@ public class GiangVienController : ControllerBase
     }
 
     [HttpGet("lopquanli/{maLopQuanLi:int:min(1)}")]
+    [PhanQuyen(EQuyen.XemTheoLopQuanLi_GiangVien)]
     public async Task<IActionResult> GetByLopQuanLiAsync(int maLopQuanLi)
     {
         var giangViens = await _service.GetByLopQuanLi(maLopQuanLi);
@@ -67,6 +84,7 @@ public class GiangVienController : ControllerBase
     }
 
     [HttpGet("{magiangvien:int:min(1)}/lopmonhoc")]
+    [PhanQuyen(EQuyen.XemLopMonHoc_GiangVien)]
     public async Task<IActionResult> GetLopMonHocs(int maGiangVien)
     {
         var ketQua = await _service.GetLopMonHoc(maGiangVien);
@@ -74,13 +92,19 @@ public class GiangVienController : ControllerBase
     }
     
     [HttpGet("lopmonhoc/{malopmonhoc:int:min(1)}")]
+    [PhanQuyen(EQuyen.XemTheoLopMonHoc_GiangVien)]
     public async Task<IActionResult> GetByLopMonHoc(int maLopMonHoc)
     {
         var ketQua = await _service.GetByLopMonHoc(maLopMonHoc);
+        if (ketQua == null) 
+        {
+            return NotFound();
+        }
         return Ok(ketQua);
     }
 
     [HttpPost]
+    [PhanQuyen(EQuyen.ThemMoi_GiangVien)]
     public async Task<IActionResult> AddGiangVien([FromBody] GiangVienDto giangVienDto)
     {
         var ketQua = await _service.AddNew(giangVienDto);
@@ -88,13 +112,15 @@ public class GiangVienController : ControllerBase
     }
 
     [HttpPost("{magiangvien:int:min(1)}/lopmonhoc")]
-    public async Task<IActionResult> UpdateLopMonHocs_GiangVien(int magiangvien, [FromBody] ICollection<int> maLopMonHocs)
+    [PhanQuyen(EQuyen.ThemMoiLopMonHoc_GiangVien)]
+    public async Task<IActionResult> ThemLopMonHocs_GiangVien(int magiangvien, [FromBody] ICollection<int> maLopMonHocs)
     {
         var ketQua = await _service.AddNewLopMonHoc(magiangvien, maLopMonHocs);
         return Ok(ketQua);
     }
 
     [HttpPut("{magiangvien:int:min(1)}")]
+    [PhanQuyen(EQuyen.SuaProfile_GiangVien)]
     public async Task<IActionResult> UpdateThongTinGiangVien(int magiangvien, [FromBody] GiangVienDto giangVienDto)
     {
         var ketQua = await _service.UpdateProfile(magiangvien, giangVienDto);
@@ -102,6 +128,7 @@ public class GiangVienController : ControllerBase
     }
 
     [HttpPut("{magiangvien:int:min(1)}/lopquanli/{malopquanli:int:min(1)}")]
+    [PhanQuyen(EQuyen.SuaLopQuanLi_GiangVien)]
     public async Task<IActionResult> UpdateLopQuanLi_GiangVien( int magiangvien,  int maLopQuanLi)
     {
         var ketQua = await _service.UpdateLopQuanLi_GiangVien(magiangvien, maLopQuanLi);
@@ -109,6 +136,7 @@ public class GiangVienController : ControllerBase
     }
 
     [HttpPut("{magiangvien:int:min(1)}/bomon/{mabomon:int:min(1)}")]
+    [PhanQuyen(EQuyen.SuaBoMon_GiangVien)]
     public async Task<IActionResult> UpdateBoMon_GiangVien( int magiangvien,  int maBoMon)
     {
         var ketQua = await _service.UpdateBoMon_GiangVien(magiangvien, maBoMon);
@@ -116,6 +144,7 @@ public class GiangVienController : ControllerBase
     }
 
     [HttpDelete("{magiangvien:int:min(1)}")]
+    [PhanQuyen(EQuyen.Xoa_GiangVien)]
     public async Task DeleteGiangVien(int magiangvien)
     {
         await _service.Remove(magiangvien);

@@ -1,10 +1,12 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace qlsinhvien.Entities;
 
+[Table("TokenHetHan")]
 public class TokenHetHan
 {
     [Key]
-    public int MaToken { get; set; }
-    public DateTime NgayHetHan { get; set; }   
+    public string MaToken { get; set; } = null!;
+    public DateTime HetHanKhi { get; set; } = DateTime.Now;
 }
