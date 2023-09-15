@@ -38,7 +38,7 @@ partial class KhoaService : IKhoaService
     public async Task<Khoa> AddNew(KhoaDto khoaDto)
     {
         var checkTenKhoa = await _context.Khoas
-            .AnyAsync(k => k.TenKhoa.Equals(khoaDto.TenKhoa));
+            .AnyAsync(k => k.TenKhoa == khoaDto.TenKhoa);
         if (checkTenKhoa)  
         {
             throw new ServiceException(400, "Tên khoa đã tồn tại");
