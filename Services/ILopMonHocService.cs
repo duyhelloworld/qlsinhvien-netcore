@@ -14,4 +14,5 @@ public interface ILopMonHocService
     public Task<LopMonHoc> UpdateAsync(int maLopMonHoc, LopMonHocDto lopMonHocDto);
     public Task RemoveAsync(int maLopMonHoc);
     public Task RemoveTheoMonHoc(int maMonHoc);
+    public Task<IEnumerable<LopMonHoc>> GetByGiangVienAsync(int magiangvien);
 }

@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using qlsinhvien.Context;
 using qlsinhvien.Dto;
@@ -51,18 +50,29 @@ public class LopMonHocService : ILopMonHocService
         return await _context.LopMonHocs.FindAsync(maLopMonHoc);
     }
 
-    public Task<IEnumerable<LopMonHoc>> GetByTenAsync(string tenLopMonHoc)
+    public async Task<IEnumerable<LopMonHoc>> GetByTenAsync(string tenLopMonHoc)
     {
-        throw new NotImplementedException();
+        return await _context.LopMonHocs
+            .Where(lop => lop.TenLopMonHoc.Contains(tenLopMonHoc))
+            .OrderBy(lop => lop.TenLopMonHoc)
+            .ToListAsync();
     }
 
-    public Task<IEnumerable<LopMonHoc>> GetWithSiSoAsync()
+    public async Task<IEnumerable<LopMonHoc>> GetWithSiSoAsync()
     {
+        // var query = from lopMonHoc in _context.LopMonHocs
+        //             join diemSinhVien in _context.DiemSinhViens on lopMonHoc.MaLopMonHoc equals diemSinhVien.MaLopMonHoc into diemGroup
+        //             select new LopMonHocWithSoLuongSinhVien
+        //             {
+        //                 LopMonHoc = lopMonHoc,
+        //                 SoLuongSinhVien = diemGroup.Count()
+        //             };
+        // return await query.ToListAsync();
         throw new NotImplementedException();
     }
     public async Task RemoveTheoMonHoc(int maMonHoc)
     {
-        var lop = await _context.LopMonHocs.FindAsync(maMonHoc) 
+        var lop = await _context.LopMonHocs.FindAsync(maMonHoc)
             ?? throw new ServiceException(404, $"Không tồn tại lớp môn học đang dạy môn học có mã {maMonHoc}");
         var Diems = from l in _context.LopMonHocs
                     join diem in _context.DiemSinhViens on l.MaLopMonHoc equals diem.MaLopMonHoc
@@ -94,8 +104,27 @@ public class LopMonHocService : ILopMonHocService
         await _context.SaveChangesAsync();
     }
 
-    public Task<LopMonHoc> UpdateAsync(int maLopMonHoc, LopMonHocDto lopMonHocDto)
+    public async Task<LopMonHoc> UpdateAsync(int maLopMonHoc, LopMonHocDto lopMonHocDto)
     {
-        throw new NotImplementedException();
+        var lop = await _context.LopMonHocs.FindAsync(maLopMonHoc);
+        if(lop == null)
+        {
+            throw new ServiceException(404, $"Không tồn tại lớp môn học có mã {maLopMonHoc}");
+        }
+        lop.TenLopMonHoc = lopMonHocDto.TenLopMonHoc;
+        lop.MaMonHoc = lopMonHocDto.MaMonHoc;
+        lop.MaGiangVien = lopMonHocDto.MaGiangVien;
+        _context.SaveChanges();
+        return lop;
+    }
+    public async Task<IEnumerable<LopMonHoc>> GetByGiangVienAsync(int magiangvien)
+    {
+        var gv = await _context.GiangViens.FindAsync(magiangvien)
+        ?? throw new ServiceException(404, $"Không tồn tại giảng viên có mã {magiangvien}");
+        var lop = from l in _context.LopMonHocs
+                  join magv in _context.GiangViens on l.MaGiangVien equals magv.MaGiangVien
+                  where magv.MaGiangVien == magiangvien
+                  select l;
+        return await lop.ToListAsync();
     }
 }

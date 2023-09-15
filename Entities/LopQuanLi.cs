@@ -14,11 +14,18 @@ namespace qlsinhvien.Entities
         [StringLength(20)]
         public required string TenLopQuanLi { get; set; }
 
+        [Required]
         [ForeignKey("MaGiangVien")]
+        public int MaGiangVien { get; set; }
+
+        [Required]
         public GiangVien? GiangVien { get; set; }
 
         [Required]
         [ForeignKey("MaKhoa")]
+        public int MaKhoa { get; set; }
+
+        [Required]
         public Khoa Khoa { get; set; } = null!;
     }
 }
