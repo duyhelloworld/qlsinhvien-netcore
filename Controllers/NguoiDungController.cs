@@ -75,7 +75,7 @@ public class NguoiDungController : ControllerBase
         await _service.PhanQuyen(modelCapQuyen);
     }
 
-    [HttpPost("themvaphanquyen")]
+    [HttpPost]
     [PhanQuyen(EQuyen.ThemMoi_NguoiDung, EQuyen.PhanQuyen_NguoiDung)]
     public async Task ThemVaPhanQuyenAsync([FromBody] NguoiDungDtoDangKi nguoiDungDtoDki)
     {
