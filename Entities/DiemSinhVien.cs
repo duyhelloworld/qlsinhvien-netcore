@@ -15,11 +15,11 @@ namespace qlsinhvien.Entities
         [DeleteBehavior(DeleteBehavior.NoAction)]
         public SinhVien SinhVien { get; set; } = null!;
 
-        public float DiemChuyenCan { get; set; }
+        public float? DiemChuyenCan { get; set; }
 
-        public float DiemGiuaKi { get; set; }
+        public float? DiemGiuaKi { get; set; }
 
-        public float DiemCuoiKi { get; set; }
+        public float? DiemCuoiKi { get; set; }
 
         [Column(TypeName = "tinyint")]
         public int HocKi { get; set; }
