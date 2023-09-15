@@ -13,5 +13,4 @@ public interface ILopQuanLiService
     public Task<LopQuanLi> AddNew(LopQuanLiDto lopQuanLiDto);
     public Task<LopQuanLi> Update(int maLopQuanLi, LopQuanLiDto lopQuanLiDto);
     public Task Remove(int maLopQuanLi);
-    public Task<LopQuanLi> RemoveRange(ICollection<int> maLopQuanLis);
 }
