@@ -9,12 +9,10 @@ namespace qlsinhvien.Services.Impl;
 public class LopMonHocService : ILopMonHocService
 {
     private readonly ApplicationContext _context;
-    private readonly IDiemSinhVienService _service;
 
     public LopMonHocService(ApplicationContext context, IDiemSinhVienService service)
     {
         _context = context;
-        _service = service;
     }
 
     public async Task<LopMonHoc> AddNewAsync(LopMonHocDto lopMonHocDto)
@@ -113,7 +111,7 @@ public class LopMonHocService : ILopMonHocService
         }
         lop.TenLopMonHoc = lopMonHocDto.TenLopMonHoc;
         lop.MaMonHoc = lopMonHocDto.MaMonHoc;
-        lop.MaGiangVien = lopMonHocDto.MaGiangVien;
+        lop.GiangVien.MaGiangVien = lopMonHocDto.MaGiangVien;
         _context.SaveChanges();
         return lop;
     }
@@ -122,7 +120,7 @@ public class LopMonHocService : ILopMonHocService
         var gv = await _context.GiangViens.FindAsync(magiangvien)
         ?? throw new ServiceException(404, $"Không tồn tại giảng viên có mã {magiangvien}");
         var lop = from l in _context.LopMonHocs
-                  join magv in _context.GiangViens on l.MaGiangVien equals magv.MaGiangVien
+                  join magv in _context.GiangViens on l.GiangVien.MaGiangVien equals magv.MaGiangVien
                   where magv.MaGiangVien == magiangvien
                   select l;
         return await lop.ToListAsync();
