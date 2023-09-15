@@ -42,6 +42,8 @@ public class NguoiDungDto
                 nguoiDung.MaSinhVien = nd.MaSo;
                 return nguoiDung;
             case "giangvien":
+            case "admin":
+            case "superadmin":
                 nguoiDung.MaGiangVien = nd.MaSo;
                 return nguoiDung;
             default:
