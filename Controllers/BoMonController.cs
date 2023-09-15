@@ -41,11 +41,32 @@ namespace qlsinhvien.Controllers
             return await _service.Add(boMonDto); 
         }
 
-        [HttpPut("{mabomon:int:min(1)}")]
-        [PhanQuyen(EQuyen.SuaThongTin_BoMon)]
-        public async Task<BoMon> Update(int mabomon, [FromBody] BoMonDto boMonDto)
+        [HttpPut("{mabomon:int:min(1)}/ten")]
+        [PhanQuyen(EQuyen.SuaTen_BoMon)]
+        public async Task<BoMon> UpdateTen(int mabomon, [FromQuery] string TenBoMon)
         {
-            return await _service.Update(mabomon, boMonDto);
+            return await _service.UpdateTen(mabomon, TenBoMon);
+        }
+        
+        [HttpPut("{mabomon:int:min(1)}/khoa")]
+        [PhanQuyen(EQuyen.SuaKhoa_BoMon)]
+        public async Task<BoMon> UpdateKhoa(int mabomon, [FromBody] IEnumerable<int> MaKhoas)
+        {
+            return await _service.UpdateKhoa(mabomon, MaKhoas);
+        }
+
+        [HttpPut("{mabomon:int:min(1)}/giangvien")]
+        [PhanQuyen(EQuyen.SuaGiangVien_BoMon)]
+        public async Task<BoMon> UpdateGiangVien(int mabomon, [FromBody] IEnumerable<int> MaGiangViens)
+        {
+            return await _service.UpdateGiangVien(mabomon, MaGiangViens);
+        }
+
+        [HttpPut("{mabomon:int:min(1)}/monhoc")]
+        [PhanQuyen(EQuyen.SuaMonHoc_BoMon)]
+        public async Task<BoMon> UpdateMonHoc(int mabomon, [FromBody] IEnumerable<int> MaMonHocs)
+        {
+            return await _service.UpdateMonHoc(mabomon, MaMonHocs);
         }
 
         [HttpDelete("{mabomon:int:min(1)}")]
