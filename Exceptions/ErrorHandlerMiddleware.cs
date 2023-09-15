@@ -1,4 +1,3 @@
-
 using System.Text.Json;
 using qlsinhvien.Exceptions;
 
@@ -14,23 +13,21 @@ public class ErrorHandlerMiddleware : IMiddleware
         }
         catch (Exception e)
         {
-            var errorResult = new ErrorResult ()
-            {
-                ErrorId = Guid.NewGuid().ToString(),
-                StatusCode = StatusCodes.Status503ServiceUnavailable,
-            };
             if (e is ServiceException httpE)
             {
-                errorResult.StatusCode = httpE.MaHttp;
-                errorResult.Reason = httpE.NguyenNhan;
+                var response = context.Response;
+                if (!response.HasStarted)
+                {
+                    response.ContentType = "application/json";
+                    response.StatusCode = httpE.MaHttp;
+                    await response.WriteAsync(JsonSerializer.Serialize(new {
+                        httpE.NguyenNhan,
+                        httpE.DeXuatGiaiQuyet,
+                        httpE.DataCanSua,
+                    }));
+                }
             }
-            var response = context.Response;
-            if (!response.HasStarted)
-            {
-                response.ContentType = "application/json";
-                response.StatusCode = errorResult.StatusCode;
-                await response.WriteAsync(JsonSerializer.Serialize(errorResult));
-            }
+            throw;
         }   
     }
 }
