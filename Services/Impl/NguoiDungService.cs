@@ -57,6 +57,22 @@ public class NguoiDungService : INguoiDungService
                 .Select(nd => NguoiDungDto.Convert(nd)).ToListAsync();
     }
 
+    public async Task<IEnumerable<NguoiDungDto>> GetByQuyen(string TenQuyen)
+    {
+        var quyen = await _context.Quyens.FindAsync(TenQuyen)
+            ?? throw new ServiceException(404, "Quyền không tồn tại");
+        var quyenVaitros =  await _context.QuyenVaiTros.Where(qvt => qvt.TenQuyen == TenQuyen).ToListAsync();
+        if (quyenVaitros.Count == 0)
+        {
+            throw new ServiceException(404, "Quyền này chưa được phân quyền cho vai trò nào");
+        }
+        return await _context.NguoiDungs
+            .Where(nd => nd.TenVaiTro != null 
+                && quyenVaitros.Any(qvt => qvt.TenVaiTro == nd.TenVaiTro))
+            .Select(nd => NguoiDungDto.Convert(nd))
+            .ToListAsync();
+    }
+
     public async Task<IEnumerable<NguoiDungDetail>> GetAllGroupByVaiTro()
     {
         var ketQua = from nd in _context.NguoiDungs

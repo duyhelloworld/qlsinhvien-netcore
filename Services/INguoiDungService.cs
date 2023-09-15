@@ -12,6 +12,7 @@ public interface INguoiDungService
     public Task<IEnumerable<NguoiDungDto>> GetByTenNguoiDung(string TenNguoiDung);
     public Task<IEnumerable<NguoiDungDto>> GetByTenHienThi(string TenHienThi);
     public Task<IEnumerable<NguoiDungDto>> GetByVaiTro(string TenVaiTro);
+    public Task<IEnumerable<NguoiDungDto>> GetByQuyen(string TenQuyen);
     public Task Them(NguoiDungDtoDangKi nguoiDungDtoDki);
     public Task PhanQuyen(ModelCapQuyen modelCapQuyen);
     public Task ThemVaPhanQuyen(NguoiDungDtoDangKi nguoiDungDtoDki);
