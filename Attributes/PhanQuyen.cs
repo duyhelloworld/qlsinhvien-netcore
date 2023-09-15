@@ -14,7 +14,7 @@ namespace qlsinhvien.Atributes
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
     public class PhanQuyen : Attribute, IAsyncAuthorizationFilter
     {
-        private readonly EQuyen[] TenQuyen;
+        public readonly EQuyen[] TenQuyen;
         public int MaNguoiDung  { get; private set; }
         public string TenVaiTro { get; private set; } = null!;
         public PhanQuyen(params EQuyen[] TenQuyen)
