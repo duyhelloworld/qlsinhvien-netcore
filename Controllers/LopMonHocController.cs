@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using qlsinhvien.Context;
 using qlsinhvien.Dto;
 using qlsinhvien.Entities;
-using qlsinhvien.Services;
 
 namespace qlsinhvien.Controllers
 {
@@ -10,51 +9,37 @@ namespace qlsinhvien.Controllers
     [Route("[controller]")]
     public class LopMonHocController : ControllerBase
     {
-        private readonly ILopMonHocService _service;
-        public LopMonHocController(ILopMonHocService service)
+        private readonly ApplicationContext appContext;
+        public LopMonHocController(ApplicationContext appContext)
         {
-            _service = service;
+            this.appContext = appContext;
         }
         
         [HttpGet("{maLopMonHoc}")]
-        public async Task<LopMonHoc> GetById(int maLopMonHoc)
+        public ActionResult GetById(int maLopMonHoc)
         {
-            return await _service.GetByIdAsync(maLopMonHoc);
+            var lmh = appContext.LopMonHocs.Find(maLopMonHoc);
+            return lmh == null ? NotFound() : Ok(lmh);
         }
-        [HttpGet("{magiangvien}")]
-        public async Task<IEnumerable<LopMonHoc>> GetByGiangVien(int magiangvien)
+        
+        [HttpGet("idGiangVien={magiangvien}")]
+        public ActionResult GetByGiangVien(int magiangvien)
         {
-            return await _service.GetByGiangVienAsync(magiangvien);
+            var lmh = appContext.LopMonHocs.Where(lmh => lmh.GiangVien.MaGiangVien == magiangvien).ToList();
+            return lmh == null ? NotFound() : Ok(lmh);
         }
-        [HttpGet("tatca")]
-        public async Task<IEnumerable<LopMonHoc>> GetAll()
-        {
-            return await _service.GetAllAsync();
-        }
-        [HttpPost]
-        public async Task<LopMonHoc> AddNew(LopMonHocDto lopMonHocDto)
-        {
-            return await _service.AddNewAsync(lopMonHocDto);
-        }
-        [HttpGet("{tenlopmonhoc}")]
-        public async Task<IEnumerable<LopMonHoc>> GetByTen(string tenLopMonHoc)
-        {
-            return await _service.GetByTenAsync(tenLopMonHoc);
-        }
-        [HttpDelete("{mamonhoc}")]
-        public async Task RemoveTheoMonHoc(int maMonHoc)
-        {
-            await _service.RemoveTheoMonHoc(maMonHoc);
-        }
-        [HttpDelete("{malopmonhoc}")]
-        public async Task Remove(int maLopMonHoc)
-        {
-            await _service.RemoveAsync(maLopMonHoc);
-        }
-        [HttpPut]
-        public async Task<LopMonHoc> UpdateLopMonHoc(int maLopMonHoc, LopMonHocDto lopMonHocDto)
-        {
-            return await _service.UpdateAsync(maLopMonHoc, lopMonHocDto);
-        }
+        // [HttpPut("{malopmonhoc}")]
+        // public ActionResult UpdateLopMonHoc(int malopmonhoc)
+        // {
+        //     var lmh = appContext.LopMonHocs.Find(malopmonhoc);
+        //     if (lmh == null)
+        //     {
+        //         return NotFound();
+        //     }
+        //     else 
+        //     {
+        //         lmh.TenLopMonHoc = LopMonHocDto.;
+        //     }
+        // }
     }
 }
