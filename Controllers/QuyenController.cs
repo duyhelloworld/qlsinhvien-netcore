@@ -30,13 +30,13 @@ public class QuyenController : ControllerBase
         return ketQua == null ? NotFound() : Ok(ketQua);
     }
 
-    [HttpPost]
-    [PhanQuyen(EQuyen.ThemMoi_Quyen)]
-    public async Task<IActionResult> ThemAsync([FromBody] QuyenDto quyenDto)
-    {
-        await _service.ThemQuyen(quyenDto);
-        return Ok();
-    }
+    // [HttpPost]
+    // [PhanQuyen(EQuyen.ThemMoi_Quyen)]
+    // public async Task<IActionResult> ThemAsync([FromBody] QuyenDto quyenDto)
+    // {
+    //     await _service.ThemQuyen(quyenDto);
+    //     return Ok();
+    // }
 
     [HttpPut("{TenQuyen:alpha:minlength(1)}")]
     [PhanQuyen(EQuyen.SuaThongTin_Quyen)]
@@ -46,11 +46,11 @@ public class QuyenController : ControllerBase
         return Ok();
     }
 
-    [HttpDelete("{TenQuyen:alpha:minlength(1)}")]
-    [PhanQuyen(EQuyen.Xoa_Quyen)]
-    public async Task<IActionResult> XoaAsync(string TenQuyen)
-    {
-        await _service.XoaQuyen(TenQuyen);
-        return Ok();
-    }
+    // [HttpDelete("{TenQuyen:alpha:minlength(1)}")]
+    // [PhanQuyen(EQuyen.Xoa_Quyen)]
+    // public async Task<IActionResult> XoaAsync(string TenQuyen)
+    // {
+    //     await _service.XoaQuyen(TenQuyen);
+    //     return Ok();
+    // }
 }
