@@ -1,4 +1,4 @@
--- Active: 1694491165304@@127.0.0.1@1433@qlsinhvien
+-- Active: 1694616378845@@127.0.0.1@1433@qlsinhvien
 INSERT INTO [Khoa] ([TenKhoa])
 VALUES
   (N'Khoa Công Nghệ Thông Tin'),
@@ -191,7 +191,7 @@ VALUES
   (7, 6, 8.0, 9.0, 9.5, 2, N'Giỏi'),
   (8, 7, 7.0, 7.5, 8.0, 1, N'Tốt'),
   (9, 8, 8.5, 9.0, 9.0, 2, N'Khá'),
-  (10, 9, 5.5, 6.0, 6.5, 1, N'Yếu'),
+  (10, 9, NULL, NULL, NULL, 1, N'Yếu'),
   (1, 20, 8.0, 8.5, 9.0, 2, N'Giỏi'),
   (2, 11, 6.0, 7.0, 7.5, 1, N'Khá'),
   (3, 12, 8.0, 8.5, 8.0, 2, N'Tốt'),
@@ -211,7 +211,7 @@ VALUES
   (7, 26, 7.5, 8.0, 8.0, 2, N'Khá'),
   (8, 27, 8.5, 9.0, 9.5, 1, N'Giỏi'),
   (9, 28, 6.0, 6.5, 7.0, 2, N'Tốt'),
-  (10, 29, 7.0, 7.5, 8.0, 1, N'Khá');
+  (10, 29, 7.0, 7.5, NULL, 1, N'Khá');
 
 INSERT INTO [VaiTro] ([TenVaiTro], [GhiChu])
 VALUES ('superadmin', N'Super Adminitrastor'),
@@ -225,6 +225,7 @@ VALUES  ('admin', '3333', 'admin', 1, NULL),
         ('superadmin', '4444', 'superadmin', 1, NULL),
         ('giangvien1', '2222', 'giangvien', 1, NULL),
         ('sinhvien1', '1111', 'sinhvien', NULL, 1);
+        
 INSERT INTO [Quyen] ([TenQuyen], [GhiChu]) 
 VALUES  
         ('khongcoquyen', N'Không có quyền'),
@@ -296,12 +297,16 @@ VALUES
         ('xemtheoma-diemsinhvien', N'Xem tất cả điểm của sinh viên theo mã sinh viên'),
         ('xemtheolopquanli-diemsinhvien', N'Xem tất cả điểm của sinh viên theo lớp quản lí'), 
         ('xemtheolopmonhoc-diemsinhvien', N'Xem tất cả điểm của các sinh viên trong lớp môn học'),
-        ('suatheomasinhvien-diemsinhvien', N'Sửa điểm của sinh viên theo mã sinh viên'),
-        ('suatheolopmonhoc-diemsinhvien', N'Sửa điểm của các sinh viên trong lớp môn học'),
-        ('xoadiem-diemsinhvien', 'Xóa điểm số của sinh viên trong lớp môn học'), 
-        ('xoa-diemsinhvien', N'Xóa điểm (xóa cả môn học) của sinh viên trong lớp môn học'),
+        ('themmoi-diemsinhvien', N'Thêm mới 1 điểm sinh viên'),
+        ('suadiemvaghichu-diemsinhvien', N'Sửa điểm và ghi chú theo mã sinh viên'),
+        ('xoadiem-diemsinhvien', N'Xoá tất cả điểm của 1 sinh viên'),
+        ('xoakhoilopmonhoc-diemsinhvien', N'Xoá 1 sinh viên khỏi 1 lớp môn học'), 
+        ('xoalopmonhoc-diemsinhvien', N'Xoá điểm sinh viên theo lớp môn học'),
         ('themmoi-bomon', N'Thêm bộ môn mới'),
-        ('suathongtin-bomon', N'Sửa thông tin bộ môn'),
+        ('suaten-bomon', N'Sửa tên bộ môn'),
+        ('suakhoa-bomon', N'Sửa khoa bộ môn'), 
+        ('suagiangvien-bomon', N'Sửa giảng viên trong bộ môn'),
+        ('suamonhoc-bomon', N'Sửa môn học của bộ môn'),
         ('xoa-bomon', N' Xoá bộ môn'),
         ('xemtatcachuaphanquyen-nguoidung', N'Xem tất cả người dùng chưa phân quyền'),
         ('xemtatcadaphanquyen-nguoidung', N'Xem tất cả người dùng đã phân quyền'),

@@ -140,18 +140,26 @@ namespace qlsinhvien.Entities
         XemTheoLopQuanLi_DiemSinhVien,
         [StringValue("xemtheolopmonhoc-diemsinhvien")]
         XemTheoLopMonHoc_DiemSinhVien,
-        [StringValue("suatheomasinhvien-diemsinhvien")]
-        SuaTheoMaSinhVien_DiemSinhVien,
-        [StringValue("suatheolopmonhoc-diemsinhvien")]
-        SuaTheoLopMonHoc_DiemSinhVien,
+        [StringValue("themmoi-diemsinhvien")]
+        ThemMoi_DiemSinhVien,
+        [StringValue("suadiemvaghichu-diemsinhvien")]
+        SuaDiemVaGhiChu_DiemSinhVien,
         [StringValue("xoadiem-diemsinhvien")]
         XoaDiemSinhVien_DiemSinhVien,
-        [StringValue("xoa-diemsinhvien")]
-        Xoa_DiemSinhVien,
+        [StringValue("xoakhoilopmonhoc-diemsinhvien")]
+        XoaKhoiLopMonHoc_DiemSinhVien,
+        [StringValue("xoalopmonhoc-diemsinhvien")]
+        XoaLopMonHoc_DiemSinhVien,
         [StringValue("themmoi-bomon")]
         ThemMoi_BoMon,
-        [StringValue("suathongtin-bomon")]
-        SuaThongTin_BoMon,
+        [StringValue("suaten-bomon")]
+        SuaTen_BoMon,
+        [StringValue("suagiangvien-bomon")]
+        SuaGiangVien_BoMon,
+        [StringValue("suakhoa-bomon")]
+        SuaKhoa_BoMon,
+        [StringValue("suamonhoc-bomon")]
+        SuaMonHoc_BoMon,
         [StringValue("xoa-bomon")]
         Xoa_BoMon,
         [StringValue("xemtatcachuaphanquyen-nguoidung")]
