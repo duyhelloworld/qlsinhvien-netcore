@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using qlsinhvien.Atributes;
 using qlsinhvien.Dto;
 using qlsinhvien.Entities;
 using qlsinhvien.Services;
@@ -15,48 +16,72 @@ namespace qlsinhvien.Controllers
             _service = service;
         }
 
-        [HttpGet("{masinhvien}")]
-        public async Task<IEnumerable<DiemSinhVienModel>> GetById(int masinhvien)
+        [HttpGet]
+        [PhanQuyen(EQuyen.XemTatCa_DiemSinhVien)]
+        public async Task<IEnumerable<DiemSinhVienDetail>> GetAll()
         {
-            return await _service.GetByIdAsync(masinhvien);
+            return await _service.GetAll();
         }
 
-        [HttpGet("malopmonhoc")]
-        public async Task<IEnumerable<DiemSinhVienModel>> GetByLopMonHoc(int malopmonhoc)
+        [HttpGet("{masinhvien:int:min(1)}")]
+        [PhanQuyen(EQuyen.XemTheoMa_DiemSinhVien)]
+        public async Task<IEnumerable<DiemSinhVienDetail>> GetById(int masinhvien)
         {
-            return await _service.GetByLopMonHocAsync(malopmonhoc);
+            return await _service.GetById(masinhvien);
         }
 
-        [HttpGet("malopquanli")]
-        public async Task<IEnumerable<DiemSinhVienModel>> GetByLopQuanLi(int malopquanli)
+        [HttpGet("lopmonhoc/{malopmonhoc:int:min(1)}")]
+        [PhanQuyen(EQuyen.XemTheoLopMonHoc_DiemSinhVien)]
+        public async Task<IEnumerable<DiemSinhVienDetail>> GetByLopMonHoc(int malopmonhoc)
         {
-            return await _service.GetByLopQuanLiAsync(malopquanli);
+            return await _service.GetByLopMonHoc(malopmonhoc);
+        }
+
+        [HttpGet("lopquanli/{malopquanli:int:min(1)}")]
+        [PhanQuyen(EQuyen.XemTheoLopQuanLi_DiemSinhVien)]
+        public async Task<IEnumerable<DiemSinhVienDetail>> GetByLopQuanLi(int malopquanli)
+        {
+            return await _service.GetByLopQuanLi(malopquanli);
+        }
+
+        [HttpPost]
+        [PhanQuyen(EQuyen.ThemMoi_DiemSinhVien)]
+        public async Task<DiemSinhVienDetail> ThemMoi([FromBody] DiemSinhVienDto diemSinhVien)
+        {
+            return await _service.ThemMoi(diemSinhVien);
         }
 
         [HttpPut("{masinhvien}")]
-        public async Task<IActionResult> UpdateDiemSinhVien(int masinhvien, [FromBody] DiemSinhVienDto diemSinhVien)
+        [PhanQuyen(EQuyen.SuaDiemVaGhiChu_DiemSinhVien)]
+        public async Task<DiemSinhVienDetail> SuaDiemVaGhiChu(int maSinhVien, [FromBody] DiemSinhVienDto diemSinhVien)
         {
-            var diem = await _service.UpdateAsync(masinhvien, diemSinhVien);
-            return Ok(diem);
+            return await _service.SuaDiemVaGhiChu(maSinhVien, diemSinhVien);
         }
 
-        [HttpPut("{malopmonhoc}")]
-        public async Task<IActionResult> UpdateDiemSinhVienTheoLopMonHoc(int malopmonhoc, [FromBody] DiemSinhVienDto diemSinhVien)
+        [HttpDelete("{masinhvien:int:min(1)}/diem/{malopmonhoc:int:min(1)}")]
+        public async Task XoaDiemTheoLopMonHoc(int masinhvien, int malopmonhoc)
         {
-            var diem = await _service.UpdateTheoLopMonHoc(malopmonhoc, diemSinhVien);
-            return Ok(diem);
+            // Diem => null
+            await _service.XoaTheoLopMonHoc(masinhvien, malopmonhoc);
         }
 
-        [HttpDelete("{masinhvien}")]
-        public async Task DeleteDiemSinhVien(int masinhvien, DiemSinhVienDto diemSinhVienDto)
+        [HttpDelete("{masinhvien:int:min(1)}/lopmonhoc/{malopmonhoc:int:min(1)}")]
+        public async Task XoaKhoiLopMonHoc(int masinhvien, int malopmonhoc)
         {
-            await _service.RemoveAsync(masinhvien, diemSinhVienDto);
+            // Xoa 1 dong diem 
+            await _service.XoaKhoiLopMonHoc(masinhvien, malopmonhoc);
         }
 
-        [HttpDelete("{malopmonhoc}")]
-        public async Task DeleteDiemSinhVienTheoLopMonHoc(int malopmonhoc, DiemSinhVienDto diemSinhVienDto)
+        [HttpDelete("{masinhvien:int:min(1)}/diem")]
+        public async Task XoaSinhVien(int masinhvien)
         {
-            await _service.RemoveTheoLopMonHoc(malopmonhoc, diemSinhVienDto);
+            await _service.XoaSinhVien(masinhvien);
+        }
+
+        [HttpDelete("lopmonhoc/{malopmonhoc}")]
+        public async Task XoaLopMonHoc(int maLopMonHoc)
+        {
+            await _service.XoaLopMonHoc(maLopMonHoc);
         }
     }
 }

@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
 using qlsinhvien.Dto;
 using qlsinhvien.Entities;
 
@@ -6,15 +5,15 @@ namespace qlsinhvien.Services;
 
 public interface IDiemSinhVienService
 {
-    public Task<IEnumerable<DiemSinhVien>> GetAllAsync();
-    public Task<IEnumerable<DiemSinhVienModel>> GetByIdAsync(int maSinhVien);
-    public Task<IEnumerable<DiemSinhVienModel>> GetByLopQuanLiAsync(int maLopQuanLi);
-    public Task<IEnumerable<DiemSinhVienModel>> GetByLopMonHocAsync(int maLopMonHoc);
-    // public Task<DiemSinhVien> AddNewAsync(DiemSinhVienDto diemSinhVienDto);
-    public Task<DiemSinhVien> UpdateAsync(int maSinhVien, DiemSinhVienDto diemSinhVienDto);
-    public Task<DiemSinhVien> RemoveAsync(int maSinhVien, DiemSinhVienDto diemSinhVienDto);
-    // public Task<DiemSinhVien> RemoveRangeAsync(ICollection<int> maDiemSinhViens);
-    public Task<DiemSinhVien> UpdateTheoLopMonHoc(int maLopMonHoc, DiemSinhVienDto diemSinhVienDto);
-    public Task<DiemSinhVien> RemoveTheoLopMonHoc(int maLopMonHoc, DiemSinhVienDto diemSinhVienDto);
-    public Task DeleteByLopMonHoc(int maLopMonHoc);
+    public Task<IEnumerable<DiemSinhVienDetail>> GetAll();
+    public Task<IEnumerable<DiemSinhVienDetail>> GetById(int maSinhVien);
+    public Task<IEnumerable<DiemSinhVienDetail>> GetByLopQuanLi(int maLopQuanLi);
+    public Task<IEnumerable<DiemSinhVienDetail>> GetByLopMonHoc(int maLopMonHoc);
+    public Task<DiemSinhVienDetail> ThemMoi(DiemSinhVienDto diemSinhVienDto);
+    public Task<DiemSinhVienDetail> SuaDiemVaGhiChu(int maSinhVien, DiemSinhVienDto diemSinhVienDto);
+    public Task XoaTheoLopMonHoc(int maSinhVien, int MaLopMonHoc);
+    public Task XoaKhoiLopMonHoc(int maSinhVien, int MaLopMonHoc);
+    public Task XoaLopMonHoc(int maLopMonHoc);
+    public Task XoaSinhVien(int maSinhVien);
+
 }

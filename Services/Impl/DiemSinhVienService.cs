@@ -15,175 +15,107 @@ public class DiemSinhVienService : IDiemSinhVienService
         _context = context;
     }
 
-    async Task<IEnumerable<Entities.DiemSinhVien>> IDiemSinhVienService.GetAllAsync()
+    public async Task<IEnumerable<DiemSinhVienDetail>> GetAll()
     {
-        return await _context.DiemSinhViens.ToListAsync();
+        return await _context.DiemSinhViens
+            .Select(s => DiemSinhVienDetail.Convert(s))
+            .ToListAsync();
     }
 
-    public async Task<IEnumerable<DiemSinhVienModel>> GetByIdAsync(int maSinhVien)
+    public async Task<IEnumerable<DiemSinhVienDetail>> GetById(int maSinhVien)
     {
-        var kq = await _context.DiemSinhViens.FindAsync(maSinhVien);
-        if (kq == null)
-        {
-            throw new ServiceException(404, $"Không có điểm của sinh viên có mã {maSinhVien}");
-        }
-
-        var query = from diem in _context.DiemSinhViens
-                    join lmh in _context.LopMonHocs on diem.MaLopMonHoc equals lmh.MaLopMonHoc
-                    join mh in _context.MonHocs on lmh.MonHoc.MaMonHoc equals mh.MaMonHoc
-                    join sv in _context.SinhViens on diem.MaSinhVien equals sv.MaSinhVien
-                    where diem.MaSinhVien == maSinhVien
-                    select new DiemSinhVienModel
-                    {
-                        MaSinhVien = maSinhVien,
-                        HoTen = sv.HoTen,
-                        MaMonHoc = mh.MaMonHoc,
-                        TenMonHoc = mh.TenMonHoc,
-                        DiemChuyenCan = diem.DiemChuyenCan,
-                        DiemGiuaKi = diem.DiemGiuaKi,
-                        DiemCuoiKi = diem.DiemCuoiKi
-                    };
-                    // select new DiemSinhVien
-                    // {
-                    //     SinhVien = sv,
-                    //     LopMonHoc = lmh,
-                    //     DiemChuyenCan = diem.DiemChuyenCan,
-                    //     DiemGiuaKi = diem.DiemGiuaKi,
-                    //     DiemCuoiKi = diem.DiemCuoiKi
-                    // };
-        return await query.ToListAsync();
+        return await _context.DiemSinhViens
+            .Where(s => s.MaSinhVien == maSinhVien)
+            .Select(s => DiemSinhVienDetail.Convert(s))
+            .ToListAsync();
     }
 
-
-    async Task<IEnumerable<DiemSinhVienModel>> IDiemSinhVienService.GetByLopMonHocAsync(int maLopMonHoc)
+    public async Task<IEnumerable<DiemSinhVienDetail>> GetByLopQuanLi(int maLopQuanLi)
     {
-        var kq = await _context.LopMonHocs.FindAsync(maLopMonHoc);
-        if (kq == null)
-        {
-            throw new ServiceException(404, $"Không có điểm của lớp môn học có mã {maLopMonHoc}");
-        }
-
-        var query = from diem in _context.DiemSinhViens
-                    join lmh in _context.LopMonHocs on diem.MaLopMonHoc equals lmh.MaLopMonHoc
-                    join mh in _context.MonHocs on lmh.MonHoc.MaMonHoc equals mh.MaMonHoc
-                    join sv in _context.SinhViens on diem.MaSinhVien equals sv.MaSinhVien
-                    where diem.MaLopMonHoc == maLopMonHoc
-                    select new DiemSinhVienModel
-                    {
-                        MaLopMonHoc = maLopMonHoc,
-                        HoTen = sv.HoTen,
-                        MaMonHoc = mh.MaMonHoc,
-                        TenMonHoc = mh.TenMonHoc,
-                        DiemChuyenCan = diem.DiemChuyenCan,
-                        DiemGiuaKi = diem.DiemGiuaKi,
-                        DiemCuoiKi = diem.DiemCuoiKi
-                    };
-
-        return await query.ToListAsync();
+        return await _context.DiemSinhViens
+            .Include(s => s.SinhVien)
+            .Where(s => s.SinhVien.MaLopQuanLi == maLopQuanLi)
+            .Select(s => DiemSinhVienDetail.Convert(s))
+            .ToListAsync();
     }
 
-    async Task<IEnumerable<Entities.DiemSinhVienModel>> IDiemSinhVienService.GetByLopQuanLiAsync(int maLopQuanLi)
+    public async Task<IEnumerable<DiemSinhVienDetail>> GetByLopMonHoc(int maLopMonHoc)
     {
-        var kq = await _context.LopQuanLis.FindAsync(maLopQuanLi);
-        if (kq == null)
-        {
-            throw new ServiceException(404, $"Không có điểm của lớp môn học có mã {maLopQuanLi}");
-        }
-
-        var query = from diem in _context.DiemSinhViens
-                    join lmh in _context.LopMonHocs on diem.MaLopMonHoc equals lmh.MaLopMonHoc
-                    join mh in _context.MonHocs on lmh.MonHoc.MaMonHoc equals mh.MaMonHoc
-                    join sv in _context.SinhViens on diem.MaSinhVien equals sv.MaSinhVien
-                    join lql in _context.LopQuanLis on sv.MaLopQuanLi equals lql.MaLopQuanLi
-                    where lql.MaLopQuanLi == maLopQuanLi
-                    select new DiemSinhVienModel
-                    {
-                        MaLopQuanLi = maLopQuanLi,
-                        HoTen = sv.HoTen,
-                        MaMonHoc = mh.MaMonHoc,
-                        TenMonHoc = mh.TenMonHoc,
-                        DiemChuyenCan = diem.DiemChuyenCan,
-                        DiemGiuaKi = diem.DiemGiuaKi,
-                        DiemCuoiKi = diem.DiemCuoiKi
-                    };
-
-        return await query.ToListAsync();
+        return await _context.DiemSinhViens
+            .Include(s => s.LopMonHoc)
+            .Where(s => s.MaLopMonHoc == maLopMonHoc)
+            .Select(s => DiemSinhVienDetail.Convert(s))
+            .ToListAsync();
     }
 
-    async Task<Entities.DiemSinhVien> IDiemSinhVienService.RemoveAsync(int maSinhVien, DiemSinhVienDto diemSinhVienDto)
+    public async Task<DiemSinhVienDetail> ThemMoi(DiemSinhVienDto diemSinhVienDto)
     {
-        var diem = await _context.DiemSinhViens.FindAsync(maSinhVien);
-        if (diem == null)
-        {
-            throw new ServiceException(404, $"Không có điểm của sinh viên có mã {maSinhVien}");
-        }
-        diem.DiemChuyenCan = 0;
-        diem.DiemGiuaKi = 0;
-        diem.DiemCuoiKi = 0;
-        _context.SaveChanges();
-        return diem;
+        var sinhVien = await _context.SinhViens.FindAsync(diemSinhVienDto.MaSinhVien)
+            ?? throw new ServiceException(404, $"Không tồn tại sinh viên có mã {diemSinhVienDto.MaSinhVien}");
+        var lopMonHoc = await _context.LopMonHocs.FindAsync(diemSinhVienDto.MaLopMonHoc)
+            ?? throw new ServiceException(404, $"Không tồn tại lớp môn học có mã {diemSinhVienDto.MaLopMonHoc}");
+        var diem = await _context.DiemSinhViens.FindAsync(diemSinhVienDto.MaSinhVien, diemSinhVienDto.MaLopMonHoc)
+            ?? throw new ServiceException(400, @$"Sinh viên mã {diemSinhVienDto.MaSinhVien} họ tên 
+                {sinhVien.HoTen} tại lớp môn học {lopMonHoc.TenLopMonHoc} đã tồn tại!!!");
+        var diemSinhVien = DiemSinhVienDto.Convert(diemSinhVienDto);
+        await _context.DiemSinhViens.AddAsync(diemSinhVien);
+        await _context.SaveChangesAsync();
+        return DiemSinhVienDetail.Convert(diemSinhVien);
     }
 
-    // Task<Entities.DiemSinhVien> IDiemSinhVienService.RemoveRangeAsync(ICollection<int> maDiemSinhViens)
-    // {
-    //     throw new NotImplementedException();
-    // }
-
-    async Task<Entities.DiemSinhVien> IDiemSinhVienService.UpdateAsync(int maSinhVien, DiemSinhVienDto diemSinhVienDto)
+    public async Task<DiemSinhVienDetail> SuaDiemVaGhiChu(int maSinhVien, DiemSinhVienDto diemSinhVienDto)
     {
-        var diem = await _context.DiemSinhViens.FindAsync(maSinhVien);
-        if (diem == null)
-        {
-            throw new ServiceException(404, $"Không có điểm của sinh viên có mã {maSinhVien}");
-        }
+        var diem = await _context.DiemSinhViens.FindAsync(maSinhVien, diemSinhVienDto.MaLopMonHoc)
+            ?? throw new ServiceException(404, $"Không tồn tại điểm của sinh viên có mã {maSinhVien} tại lớp môn học có mã {diemSinhVienDto.MaLopMonHoc}");
         diem.DiemChuyenCan = diemSinhVienDto.DiemChuyenCan;
         diem.DiemGiuaKi = diemSinhVienDto.DiemGiuaKi;
         diem.DiemCuoiKi = diemSinhVienDto.DiemCuoiKi;
-        _context.SaveChanges();
-        return diem;
+        diem.GhiChu = diemSinhVienDto.GhiChu;
+        await _context.SaveChangesAsync();
+        return DiemSinhVienDetail.Convert(diem);
     }
 
-    public async Task<Entities.DiemSinhVien> UpdateTheoLopMonHoc(int maLopMonHoc, DiemSinhVienDto diemSinhVienDto)
+    public async Task XoaTheoLopMonHoc(int maSinhVien, int MaLopMonHoc)
     {
-        var diem = await _context.DiemSinhViens.FindAsync(maLopMonHoc);
-        if (diem == null)
-        {
-            throw new ServiceException(404, $"Không có điểm của lớp môn học có mã {maLopMonHoc}");
-        }
-        diem.DiemChuyenCan = diemSinhVienDto.DiemChuyenCan;
-        diem.DiemGiuaKi = diemSinhVienDto.DiemGiuaKi;
-        diem.DiemCuoiKi = diemSinhVienDto.DiemCuoiKi;
-        _context.SaveChanges();
-        return diem;
+        var diem = await _context.DiemSinhViens.FindAsync(maSinhVien, MaLopMonHoc)
+            ?? throw new ServiceException(404, $"Không tồn tại điểm của sinh viên có mã {maSinhVien} tại lớp môn học có mã {MaLopMonHoc}");
+        diem.DiemChuyenCan = null;
+        diem.DiemGiuaKi = null;
+        diem.DiemCuoiKi = null;
+        await _context.SaveChangesAsync();
     }
 
-    public async Task<Entities.DiemSinhVien> RemoveTheoLopMonHoc(int maLopMonHoc, DiemSinhVienDto diemSinhVienDto)
+    public async Task XoaKhoiLopMonHoc(int maSinhVien, int maLopMonHoc)
     {
-        var diem = await _context.DiemSinhViens.FindAsync(maLopMonHoc);
-        if (diem == null)
-        {
-            throw new ServiceException(404, $"Không có điểm của sinh viên có mã {maLopMonHoc}");
-        }
-        diem.DiemChuyenCan = 0;
-        diem.DiemGiuaKi = 0;
-        diem.DiemCuoiKi = 0;
-        _context.SaveChanges();
-        return diem;
+        var diem = await _context.DiemSinhViens.FindAsync(maSinhVien, maLopMonHoc)
+            ?? throw new ServiceException(404, $"Không tồn tại sinh viên có mã {maSinhVien} trong lớp môn học có mã {maLopMonHoc}");
+        _context.DiemSinhViens.Remove(diem);
+        await _context.SaveChangesAsync();
     }
-    public async Task DeleteByLopMonHoc(int maLopMonHoc)
+
+    public async Task XoaLopMonHoc(int maLopMonHoc)
     {
-        var lop = await _context.LopMonHocs.FindAsync(maLopMonHoc);
-        if(lop == null)
+        var diems = await _context.DiemSinhViens
+            .Where(dsv => dsv.MaLopMonHoc == maLopMonHoc)
+            .ToListAsync();
+        if (diems.Count == 0)
         {
-            throw new ServiceException(404, $"Không tồn tại lớp môn học có mã {maLopMonHoc}");
+            throw new ServiceException(404, $"Lớp môn học có mã {maLopMonHoc} chưa có sinh viên nào theo học!");
         }
-        var diem = from d in _context.DiemSinhViens
-                    where d.MaLopMonHoc == maLopMonHoc
-                    select d;
-        foreach (var item in diem)
+        _context.DiemSinhViens.RemoveRange(diems);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task XoaSinhVien(int maSinhVien)
+    {
+        var diems = await _context.DiemSinhViens
+            .Where(dsv => dsv.MaSinhVien == maSinhVien)
+            .ToListAsync();
+        if (diems.Count == 0)
         {
-            _context.DiemSinhViens.Remove(item);
+            throw new ServiceException(404, $"Sinh viên có mã {maSinhVien} chưa có điểm nào!");
         }
+        _context.DiemSinhViens.RemoveRange(diems);
         await _context.SaveChangesAsync();
     }
 }
