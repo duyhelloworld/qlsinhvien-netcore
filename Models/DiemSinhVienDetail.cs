@@ -18,8 +18,13 @@ namespace qlsinhvien.Entities
         public int? MaLopQuanLi { get; set; }
         public string? TenLopQuanLi { get; set; }
 
+        [MaxValue(0, EGioiHan.MaxDiem)]
         public float? DiemChuyenCan { get; set; }
+
+        [MaxValue(0, EGioiHan.MaxDiem)]
         public float? DiemGiuaKi { get; set; }
+        
+        [MaxValue(0, EGioiHan.MaxDiem)]
         public float? DiemCuoiKi { get; set; }
         
         [MaxValue(1, EGioiHan.MaxHocKi)]
