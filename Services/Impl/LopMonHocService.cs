@@ -70,7 +70,7 @@ public class LopMonHocService : ILopMonHocService
                     select diem.MaLopMonHoc;
         foreach (var item in Diems)
         {
-            await _service.DeleteByLopMonHoc(item);
+            // await _service.DeleteByLopMonHoc(item);
         }
         var maLopMonHocs = from l in _context.LopMonHocs
                            where l.MaMonHoc == maMonHoc
@@ -89,7 +89,7 @@ public class LopMonHocService : ILopMonHocService
         {
             throw new ServiceException(404, $"Không tồn tại lớp môn học có mã {maLopMonHoc}");
         }
-        await _service.DeleteByLopMonHoc(maLopMonHoc);
+        // await _service.DeleteByLopMonHoc(maLopMonHoc);
         _context.LopMonHocs.Remove(lop);
         await _context.SaveChangesAsync();
     }
