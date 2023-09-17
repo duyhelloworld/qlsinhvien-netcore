@@ -9,13 +9,13 @@ public class DiemSinhVienDto
     [MaxValue(1, EGioiHan.MaxLopMonHoc)]
     public int MaLopMonHoc { get; set; }
 
-    [MaxValue(1, EGioiHan.MaxDiem)]
+    [MaxValue(0, EGioiHan.MaxDiem)]
     public float? DiemChuyenCan { get; set; }
 
-    [MaxValue(1, EGioiHan.MaxDiem)]
+    [MaxValue(0, EGioiHan.MaxDiem)]
     public float? DiemGiuaKi { get; set; }
 
-    [MaxValue(1, EGioiHan.MaxDiem)]
+    [MaxValue(0, EGioiHan.MaxDiem)]
     public float? DiemCuoiKi { get; set; }
 
     [MaxValue(1, EGioiHan.MaxHocKi)]
