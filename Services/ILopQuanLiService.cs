@@ -6,10 +6,10 @@ namespace qlsinhvien.Services;
 
 public interface ILopQuanLiService
 {
-    public Task<LopQuanLi> GetAll();
+    public Task<IEnumerable<LopQuanLi>> GetAll();
     public Task<LopQuanLi> GetWithSiSo();
     public Task<LopQuanLi> GetById(int maLopQuanLi);
-    public Task<LopQuanLi> GetByTen(string tenLopQuanLi);
+    public Task<IEnumerable<LopQuanLi>> GetByTen(string tenLopQuanLi);
     public Task<LopQuanLi> AddNew(LopQuanLiDto lopQuanLiDto);
     public Task<LopQuanLi> Update(int maLopQuanLi, LopQuanLiDto lopQuanLiDto);
     public Task Remove(int maLopQuanLi);

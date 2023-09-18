@@ -13,5 +13,5 @@ public class LopQuanLiDto
     [MaxValue(1, EGioiHan.MaxKhoa)]
     public int MaKhoa { get; set; }
     [MaxValue(1, EGioiHan.MaxGiangVien)]
-    public int? MaGiangVien { get; set; }
+    public int MaGiangVien { get; set; }
 }

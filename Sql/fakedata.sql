@@ -1,4 +1,4 @@
--- Active: 1694616378845@@127.0.0.1@1433@qlsinhvien
+-- Active: 1695002503980@@127.0.0.1@1433@qlsinhvien
 INSERT INTO [Khoa] ([TenKhoa])
 VALUES
   (N'Khoa Công Nghệ Thông Tin'),
