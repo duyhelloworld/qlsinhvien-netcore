@@ -18,5 +18,6 @@ public abstract class ConNguoiDto
     [RegularExpression(@"^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$", ErrorMessage = "Email này không đúng định dạng")]
     public string Email { get; set; } = null!;
 
-    public string SoDienThoai { get; set; } = "";
+    [RegularExpression("")]
+    public string SoDienThoai { get; set; } = null!;
 }
