@@ -4,7 +4,7 @@ namespace qlsinhvien.Entities;
 
 public class BoMonDto
 {
-    [Range(1, 200)]
+    [MaxValue(1, EGioiHan.MaxBoMon)]
     public int MaBoMon { get; set; }
     [Required]
     public string TenBoMon { get; set; } = null!;

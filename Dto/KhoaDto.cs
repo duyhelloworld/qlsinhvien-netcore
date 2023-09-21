@@ -1,10 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using qlsinhvien.Entities;
 
 namespace qlsinhvien.Dto;
 public class KhoaDto
 {
-    [Range(1, 20)]
+    [MaxValue(1, EGioiHan.MaxKhoa)]
     public int MaKhoa { get; set; }
     [Required]
     public string TenKhoa { get; set; } = null!;

@@ -1,14 +1,15 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using qlsinhvien.Entities;
 
 namespace qlsinhvien.Dto;
 
 public class GiangVienDto : ConNguoiDto
 {
-    [Range(1, 500)]
+    [MaxValue(1,EGioiHan.MaxGiangVien)]
     public int MaGiangVien { get; set; }
 
-    [Range(1, 500)]
+    [MaxValue(1, EGioiHan.MaxBoMon)]
     public int MaBoMon { get; set; }
 
     public int? MaLopQuanLi { get; set; }
