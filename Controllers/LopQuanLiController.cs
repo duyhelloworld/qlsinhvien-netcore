@@ -19,53 +19,54 @@ namespace qlsinhvien.Controllers
             _service = service;
         }
 
-        [HttpGet("tatca")]
+        [HttpGet("{tatca}")]
         [PhanQuyen(EQuyen.XemTatCa_LopQuanLi)]
-        public async Task<IEnumerable<LopQuanLi>> GetAll() 
+        public async Task<IEnumerable<LopQuanLi>> GetAll()
         {
             return await _service.GetAll();
         }
 
-        [HttpGet("tenlopquanli")]
-        public async Task<IEnumerable<LopQuanLi>> GetByName(string tenLopQuanLi)
+        [HttpGet("tenlop/{tenlop}")]
+        [PhanQuyen(EQuyen.XemTheoTen_LopQuanLi)]
+        public async Task<IEnumerable<LopQuanLi>> GetByTen(string tenLopQuanLi)
         {
             return await _service.GetByTen(tenLopQuanLi);
         }
 
-        [HttpGet("{malopquanli}")]
-        public async Task<LopQuanLi> GetById(int maLopQuanLi)
+        [HttpGet("malop/{malop}")]
+        [PhanQuyen(EQuyen.XemTheoMa_LopQuanLi)]
+        public async Task<ActionResult<LopQuanLi>> GetById(int malop)
         {
-            return await _service.GetById(maLopQuanLi);
+            return await _service.GetById(malop);
         }
 
         [HttpGet("siso")]
-        public async Task<LopQuanLi> GetAllWithSiSo()
+        public async Task<ActionResult<LopQuanLi>> GetWithSiSo()
         {
             return await _service.GetWithSiSo();
-        }
+        }            
+            
 
         [HttpPost]
-        public async Task<LopQuanLi> AddLopQL(LopQuanLiDto lopQuanLiDto)
+        [PhanQuyen(EQuyen.ThemMoi_LopQuanLi)]
+        public async Task<ActionResult<LopQuanLi>> AddNew(LopQuanLiDto lopQuanLiDto)
         {
             return await _service.AddNew(lopQuanLiDto);
         }
 
         [HttpPut]
-        public async Task<LopQuanLi> UpdateLopQL(int maLopQuanLi, LopQuanLiDto lopQuanLiDto) 
+        [PhanQuyen(EQuyen.SuaThongTinTheoMa_LopQuanLi)]
+        public async Task<ActionResult<LopQuanLi>> Update(int maLopQuanLi, LopQuanLiDto lopQuanLiDto)
         {
-            return await _service.Update(maLopQuanLi, lopQuanLiDto);   
+            return await _service.Update(maLopQuanLi, lopQuanLiDto);
         }
 
-        [HttpDelete("{malopquanli}")]
-        public async Task RemoveLopQL(int maLopQuanLi) 
+        [HttpDelete("{malop}")]
+        [PhanQuyen(EQuyen.Xoa_LopQuanLi)]
+        public async Task<ActionResult> Remove(int malop)
         {
-            await _service.Remove(maLopQuanLi);
-        }
-
-        [HttpDelete]
-        public async Task<LopQuanLi> RemoveLopQLByRange(ICollection<int> maLopQuanLis)
-        {
-            return await _service.RemoveRange(maLopQuanLis);
+            await _service.Remove(malop);
+            return Ok();
         }
     }
 }
