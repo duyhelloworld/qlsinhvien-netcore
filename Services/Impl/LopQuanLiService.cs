@@ -68,8 +68,8 @@ public class LopQuanLiService : ILopQuanLiService
         var lop = await _context.LopQuanLis.FindAsync(maLopQuanLi)
         ??throw new ServiceException(404, $"Không tồn tại lớp quản lí có mã {maLopQuanLi}");
         lop.TenLopQuanLi = lopQuanLiDto.TenLopQuanLi;
-        lop.MaGiangVien = lopQuanLiDto.MaGiangVien;
-        lop.MaKhoa = lopQuanLiDto.MaKhoa;
+        lop.GiangVien.MaGiangVien = lopQuanLiDto.MaGiangVien;
+        lop.Khoa.MaKhoa = lopQuanLiDto.MaKhoa;
         await _context.SaveChangesAsync();
         return lop;
     }
