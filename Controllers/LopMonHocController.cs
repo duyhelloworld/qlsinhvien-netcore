@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
+using qlsinhvien.Atributes;
 using qlsinhvien.Context;
 using qlsinhvien.Dto;
 using qlsinhvien.Entities;
+using qlsinhvien.Services;
 
 namespace qlsinhvien.Controllers
 {
@@ -9,37 +11,70 @@ namespace qlsinhvien.Controllers
     [Route("[controller]")]
     public class LopMonHocController : ControllerBase
     {
-        private readonly ApplicationContext appContext;
-        public LopMonHocController(ApplicationContext appContext)
+        private readonly ILopMonHocService _service;
+        public LopMonHocController(ILopMonHocService service)
         {
-            this.appContext = appContext;
+            _service = service;
         }
         
-        [HttpGet("{maLopMonHoc}")]
-        public ActionResult GetById(int maLopMonHoc)
+        [HttpGet("{tatca}")]
+        [PhanQuyen(EQuyen.XemTatCa_LopMonHoc)]
+        public async Task<IEnumerable<LopMonHoc>> GetAll()
         {
-            var lmh = appContext.LopMonHocs.Find(maLopMonHoc);
-            return lmh == null ? NotFound() : Ok(lmh);
+            return await _service.GetAllAsync();
+        }
+
+        [HttpGet("id={id}")]
+        [PhanQuyen(EQuyen.XemTheoMa_LopMonHoc)]
+        public async Task<LopMonHoc> GetById(int id)
+        {
+            return await _service.GetByIdAsync(id);
+        }
+
+        [HttpGet("tenlopmonhoc={tenlopmonhoc}")]
+        [PhanQuyen(EQuyen.XemTheoTen_LopMonHoc)]
+        public async Task<IEnumerable<LopMonHoc>> GetByTen(string tenlopmonhoc)
+        {
+            return await _service.GetByTenAsync(tenlopmonhoc);
+        }
+
+        [HttpGet("siso")]
+        public async Task<IEnumerable<LopMonHoc>> GetWithSiSo()
+        {
+            return await _service.GetWithSiSoAsync();
         }
         
-        [HttpGet("idGiangVien={magiangvien}")]
-        public ActionResult GetByGiangVien(int magiangvien)
+        [HttpGet("magiangvien={magiangvien}")]
+        [PhanQuyen(EQuyen.XemTheoGiangVien_LopMonHoc)]
+        public async Task<IEnumerable<LopMonHoc>> GetByGiangVien(int magiangvien)
         {
-            var lmh = appContext.LopMonHocs.Where(lmh => lmh.GiangVien.MaGiangVien == magiangvien).ToList();
-            return lmh == null ? NotFound() : Ok(lmh);
+            return await _service.GetByGiangVienAsync(magiangvien);
         }
-        // [HttpPut("{malopmonhoc}")]
-        // public ActionResult UpdateLopMonHoc(int malopmonhoc)
-        // {
-        //     var lmh = appContext.LopMonHocs.Find(malopmonhoc);
-        //     if (lmh == null)
-        //     {
-        //         return NotFound();
-        //     }
-        //     else 
-        //     {
-        //         lmh.TenLopMonHoc = LopMonHocDto.;
-        //     }
-        // }
+
+        [HttpPost]
+        [PhanQuyen(EQuyen.ThemMoi_LopMonHoc)]
+        public async Task<LopMonHoc> AddNew(LopMonHocDto lopMonHocDto)
+        {
+            return await _service.AddNewAsync(lopMonHocDto);
+        }
+
+        [HttpPut]
+        [PhanQuyen(EQuyen.SuaThongTin_LopMonHoc)]
+        public async Task<LopMonHoc> Update(int maLopMonHoc, LopMonHocDto lopMonHocDto)
+        {
+            return await _service.UpdateAsync(maLopMonHoc, lopMonHocDto);
+        }
+        [HttpDelete]
+        [PhanQuyen(EQuyen.XoaTheoMa_LopMonHoc)]
+        public async Task Remove(int maLopMonHoc)
+        {
+            await _service.RemoveAsync(maLopMonHoc);
+        }
+        [HttpDelete("monhoc={maMonHoc}")]
+        [PhanQuyen(EQuyen.XoaTheoMonHoc_LopMonHoc)]
+        public async Task RemoveTheoMonHoc(int maMonHoc)
+        {
+            await _service.RemoveTheoMonHoc(maMonHoc);
+        }
     }
 }
