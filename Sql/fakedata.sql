@@ -1,4 +1,4 @@
--- Active: 1694616378845@@127.0.0.1@1433@qlsinhvien
+-- Active: 1695002503980@@127.0.0.1@1433@qlsinhvien
 INSERT INTO [Khoa] ([TenKhoa])
 VALUES
   (N'Khoa Công Nghệ Thông Tin'),
@@ -317,8 +317,6 @@ VALUES
         ('phanquyen-nguoidung', N'Phân quyền cho người dùng'),
         ('suathongtin-nguoidung', N'Cập nhật thông tin cho người dùng'),
         ('huyphanquyen-nguoidung', N'Huỷ phân quyền cho người dùng'),
-        ('xemtheogiangvien-lopmonhoc', N'Xem thông tin lớp môn học theo mã giảng viên'),
-        ('xembanthan-sinhvien', N'Xem thông tin của bản thân sinh viên đó'),
         ('xoa-nguoidung', N'Xoá bỏ người dùng');
 INSERT INTO [Quyen_VaiTro] ([TenVaiTro], [TenQuyen])
 VALUES  
