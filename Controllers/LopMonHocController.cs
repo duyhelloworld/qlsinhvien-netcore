@@ -50,23 +50,13 @@ namespace qlsinhvien.Controllers
         {
             return await _service.GetByGiangVienAsync(magiangvien);
         }
-<<<<<<< HEAD
 
         [HttpPost]
         [PhanQuyen(EQuyen.ThemMoi_LopMonHoc)]
-=======
-        [HttpGet("tatca")]
-        public async Task<IEnumerable<LopMonHoc>> GetAll()
-        {
-            return await _service.GetAllAsync();
-        }
-        [HttpPost]
->>>>>>> 926b5447f3c6e1901a023702cdfde1476c6f24f8
         public async Task<LopMonHoc> AddNew(LopMonHocDto lopMonHocDto)
         {
             return await _service.AddNewAsync(lopMonHocDto);
         }
-<<<<<<< HEAD
 
         [HttpPut]
         [PhanQuyen(EQuyen.SuaThongTin_LopMonHoc)]
@@ -76,35 +66,15 @@ namespace qlsinhvien.Controllers
         }
         [HttpDelete]
         [PhanQuyen(EQuyen.XoaTheoMa_LopMonHoc)]
-=======
-        [HttpGet("{tenlopmonhoc}")]
-        public async Task<IEnumerable<LopMonHoc>> GetByTen(string tenLopMonHoc)
-        {
-            return await _service.GetByTenAsync(tenLopMonHoc);
-        }
-        [HttpDelete("{mamonhoc}")]
-        public async Task RemoveTheoMonHoc(int maMonHoc)
-        {
-            await _service.RemoveTheoMonHoc(maMonHoc);
-        }
-        [HttpDelete("{malopmonhoc}")]
->>>>>>> 926b5447f3c6e1901a023702cdfde1476c6f24f8
         public async Task Remove(int maLopMonHoc)
         {
             await _service.RemoveAsync(maLopMonHoc);
         }
-<<<<<<< HEAD
         [HttpDelete("monhoc={maMonHoc}")]
         [PhanQuyen(EQuyen.XoaTheoMonHoc_LopMonHoc)]
         public async Task RemoveTheoMonHoc(int maMonHoc)
         {
             await _service.RemoveTheoMonHoc(maMonHoc);
-=======
-        [HttpPut]
-        public async Task<LopMonHoc> UpdateLopMonHoc(int maLopMonHoc, LopMonHocDto lopMonHocDto)
-        {
-            return await _service.UpdateAsync(maLopMonHoc, lopMonHocDto);
->>>>>>> 926b5447f3c6e1901a023702cdfde1476c6f24f8
         }
     }
 }
