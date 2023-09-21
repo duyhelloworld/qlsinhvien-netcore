@@ -15,9 +15,9 @@ namespace qlsinhvien.Controllers
         {
             _service = service;
         }
-        
+
         [HttpGet("{maLopMonHoc}")]
-        public async Task<LopMonHoc> GetById(int maLopMonHoc)
+        public async Task<LopMonHoc?> GetById(int maLopMonHoc)
         {
             return await _service.GetByIdAsync(maLopMonHoc);
         }
