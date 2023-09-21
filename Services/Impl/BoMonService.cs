@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using qlsinhvien.Context;
-using qlsinhvien.Dto;
 using qlsinhvien.Entities;
 using qlsinhvien.Exceptions;
 
@@ -23,6 +22,32 @@ public class BoMonService : IBoMonService
     public async Task<BoMon?> GetTheoMa(int mabomon)
     {
         return await _context.BoMons.FindAsync(mabomon);
+    }
+
+    public async Task<BoMon?> GetTheoGiangVien(int MaGiangVien)
+    {
+        var giangVien = await _context.GiangViens.FindAsync(MaGiangVien)
+            ?? throw new ServiceException(404, "Giảng viên không tồn tại");
+        return await _context.BoMons
+            .FirstOrDefaultAsync(bm => bm.GiangViens.Contains(giangVien));
+    }
+
+    public async Task<IEnumerable<BoMon>> GetTheoKhoa(int MaKhoa)
+    {
+        var khoa = await _context.Khoas.FindAsync(MaKhoa)
+            ?? throw new ServiceException(404, "Khoa không tồn tại");
+        return await _context.KhoaBoMons
+            .Where(kbm => kbm.Khoa == khoa)
+            .Select(kbm => kbm.BoMon)
+            .ToListAsync();
+    }
+
+    public async Task<BoMon?> GetTheoMonHoc(int MaMonHoc)
+    {
+        var monHoc = await _context.MonHocs.FindAsync(MaMonHoc)
+            ?? throw new ServiceException(404, "Môn học không tồn tại");
+        return await _context.BoMons
+            .FirstOrDefaultAsync(bm => bm.MonHocs.Contains(monHoc));
     }
 
     public async Task<BoMon> Add(BoMonDto boMonDto)
@@ -52,7 +77,8 @@ public class BoMonService : IBoMonService
         }
         if (boMonDto.MaKhoas != null)
         {
-            var khoas = await _context.KhoaBoMons.Where(kbm => boMonDto.MaKhoas.Contains(kbm.MaKhoa))
+            var khoas = await _context.KhoaBoMons
+                .Where(kbm => boMonDto.MaKhoas.Contains(kbm.MaKhoa))
                 .ToListAsync();
             if (khoas.Count != 0)
             {
@@ -148,22 +174,9 @@ public class BoMonService : IBoMonService
 
     public async Task RemoveKhoas(int MaBoMon)
     {
-        var boMon = await _context.BoMons.FirstOrDefaultAsync(bm => bm.MaBoMon == MaBoMon)
-            ?? throw new ServiceException(400, "Bộ môn không tồn tại");
+        var boMon = await _context.BoMons.Include(bm => bm.Khoas).FirstOrDefaultAsync(bm => bm.MaBoMon == MaBoMon)
+            ?? throw new ServiceException(404, "Bộ môn không tồn tại");
         boMon.Khoas.Clear();
         await _context.SaveChangesAsync();
     }
-
-    // public async Task RemoveGiangViens(int MaBoMon)
-    // {
-    //     var boMon = await _context.BoMons.FirstOrDefaultAsync(bm => bm.MaBoMon == MaBoMon)
-    //        ?? throw new ServiceException(400, "Bộ môn không tồn tại");
-    //     boMon.GiangViens.Clear();
-    //     await _context.SaveChangesAsync();
-    // }
-
-    // public Task RemoveMonHocs(int MaBoMon)
-    // {
-    //     throw new NotImplementedException();
-    // }
 }

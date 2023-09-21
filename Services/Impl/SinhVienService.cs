@@ -3,6 +3,7 @@ using qlsinhvien.Context;
 using qlsinhvien.Dto;
 using qlsinhvien.Entities;
 using qlsinhvien.Exceptions;
+using qlsinhvien.Services.Impl.Validators;
 
 namespace qlsinhvien.Services.Impl;
 
@@ -48,37 +49,27 @@ public class SinhVienService : ISinhVienService
 
     public async Task<IEnumerable<SinhVien>> GetByLopMonHoc(int maLopMonHoc)
     {
-        var lopMonHoc = await _context.LopMonHocs.FindAsync(maLopMonHoc);
-        if (lopMonHoc == null)
-        {
-            throw new ServiceException(404, $"Không tồn tại lớp môn học mã số {maLopMonHoc}");
-        }
-        var maSinhViens = from dsv in _context.DiemSinhViens
+        var lopMonHoc = await _context.LopMonHocs.FindAsync(maLopMonHoc) 
+            ?? throw new ServiceException(404, $"Không tồn tại lớp môn học mã số {maLopMonHoc}");
+        var sinhViens = from dsv in _context.DiemSinhViens
+                join sv in _context.SinhViens 
+                    on dsv.MaSinhVien equals sv.MaSinhVien
                 where dsv.MaLopMonHoc == maLopMonHoc
-                select dsv.MaSinhVien;
-        if (maSinhViens.Count() == 0) 
-        {
-            return Enumerable.Empty<SinhVien>();
-        }
-        var sinhViens = from sv in _context.SinhViens
-                        where maSinhViens.Contains(sv.MaSinhVien)
-                        select sv;
+                select sv;
         return sinhViens;
     }
 
     public async Task<SinhVien> AddNew(SinhVienDto sinhVienDto)
     {
-        var lopQuanLi = await _context.LopQuanLis.FindAsync(sinhVienDto.MaLopQuanLi);
-        if (lopQuanLi == null) {
-            throw new ServiceException(404, $"Không tồn tại lớp quản lí mã {sinhVienDto.MaLopQuanLi}");
-        }
+        var lopQuanLi = await _context.LopQuanLis.FindAsync(sinhVienDto.MaLopQuanLi) 
+            ?? throw new ServiceException(404, $"Không tồn tại lớp quản lí mã {sinhVienDto.MaLopQuanLi}");
         var trungSdtHoacEmail = await _context.SinhViens
-            .FirstOrDefaultAsync(sv => sv.SoDienThoai.Equals(sinhVienDto.SoDienThoai)
-                || sv.Email.Equals(sinhVienDto.Email));
+            .FirstOrDefaultAsync(sv => sv.SoDienThoai == sinhVienDto.SoDienThoai
+                || sv.Email == sinhVienDto.Email);
         if (trungSdtHoacEmail != null)
         {
             string msg = "";
-            if (trungSdtHoacEmail.SoDienThoai.Equals(sinhVienDto.SoDienThoai))
+            if (trungSdtHoacEmail.SoDienThoai == sinhVienDto.SoDienThoai)
             {
                 msg = $"Số điện thoại {sinhVienDto.SoDienThoai} đã được sử dụng";
             }
@@ -88,7 +79,10 @@ public class SinhVienService : ISinhVienService
             }
             throw new ServiceException(400, msg);
         }
-
+        if (!ConNguoiValidator.IsValidToInSert(sinhVienDto))
+        {
+            throw new ServiceException(400, "Dữ liệu không hợp lệ");
+        }
         var sinhVien = new SinhVien()
         {
             HoTen = sinhVienDto.HoTen,
@@ -108,16 +102,11 @@ public class SinhVienService : ISinhVienService
     public async Task<SinhVien> UpdateProfile(int maSoSinhVien, SinhVienDto sinhVienDto)
     {
         sinhVienDto.MaSinhVien = maSoSinhVien;
-        var lopQuanLi = await _context.LopQuanLis.FindAsync(sinhVienDto.MaLopQuanLi);
-        if (lopQuanLi == null)
+        var sinhVien = await _context.SinhViens.FindAsync(maSoSinhVien) 
+            ?? throw new ServiceException(404, $"Không tồn tại sinh viên mã số {maSoSinhVien}");
+        if (!ConNguoiValidator.IsValid(sinhVienDto))
         {
-            throw new ServiceException(404, $"Không tồn tại lớp quản lí mã {sinhVienDto.MaLopQuanLi}");
-        }
-
-        var sinhVien = await _context.SinhViens.FindAsync(maSoSinhVien);
-        if (sinhVien == null)
-        {
-            throw new ServiceException(404, $"Không tồn tại sinh viên mã số {maSoSinhVien}");
+            throw new ServiceException(400, "Dữ liệu không hợp lệ");
         }
         sinhVien.HoTen = sinhVienDto.HoTen;
         sinhVien.GioiTinh = sinhVienDto.GioiTinh;
@@ -127,24 +116,17 @@ public class SinhVienService : ISinhVienService
         sinhVien.NgayVaoTruong = sinhVienDto.NgayVaoTruong;
         sinhVien.SoDienThoai = sinhVienDto.SoDienThoai;
         sinhVien.Email = sinhVienDto.Email;
-        sinhVien.LopQuanLi = lopQuanLi;
         await _context.SaveChangesAsync();
         return sinhVien;
     }
     public async Task<SinhVien> UpdateLopQuanLi(int maSoSinhVien, int maLopQuanLi)
     {
         var sinhVien = await _context.SinhViens
-            .FirstOrDefaultAsync(sv => sv.MaSinhVien == maSoSinhVien);
-        if (sinhVien == null)
-        {
-            throw new ServiceException(404, $"Sinh viên mã {maSoSinhVien} không tồn tại");
-        }
+            .FirstOrDefaultAsync(sv => sv.MaSinhVien == maSoSinhVien) 
+            ?? throw new ServiceException(404, $"Sinh viên mã {maSoSinhVien} không tồn tại");
         var lopQuanLi = await _context.LopQuanLis
-            .FirstOrDefaultAsync(lql => lql.MaLopQuanLi == maLopQuanLi);
-        if (lopQuanLi == null)
-        {
-            throw new ServiceException(404, $"Lớp quản lí mã {maLopQuanLi} không tồn tại");
-        }
+            .FirstOrDefaultAsync(lql => lql.MaLopQuanLi == maLopQuanLi) 
+            ?? throw new ServiceException(404, $"Lớp quản lí mã {maLopQuanLi} không tồn tại");
         sinhVien.LopQuanLi = lopQuanLi;
         await _context.SaveChangesAsync();
         return sinhVien;
@@ -152,11 +134,8 @@ public class SinhVienService : ISinhVienService
 
     public async Task Remove(int maSoSinhVien)
     {
-        var sinhVien = await _context.SinhViens.FindAsync(maSoSinhVien);
-        if (sinhVien == null)
-        {
-            throw new ServiceException(404, $"Không tồn tại sinh viên mã số {maSoSinhVien}");
-        }
+        var sinhVien = await _context.SinhViens.FindAsync(maSoSinhVien) 
+            ?? throw new ServiceException(404, $"Không tồn tại sinh viên mã số {maSoSinhVien}");
         var diems = from dsv in _context.DiemSinhViens
                     where dsv.MaSinhVien == maSoSinhVien
                     select dsv;
