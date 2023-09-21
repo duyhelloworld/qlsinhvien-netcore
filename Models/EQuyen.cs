@@ -146,8 +146,6 @@ namespace qlsinhvien.Entities
         SuaDiemVaGhiChu_DiemSinhVien,
         [StringValue("xoadiem-diemsinhvien")]
         XoaDiemSinhVien_DiemSinhVien,
-        [StringValue("xemtheogiangvien-lopmonhoc")]
-        XemTheoGiangVien_LopMonHoc,
         [StringValue("xoakhoilopmonhoc-diemsinhvien")]
         XoaKhoiLopMonHoc_DiemSinhVien,
         [StringValue("xoalopmonhoc-diemsinhvien")]
