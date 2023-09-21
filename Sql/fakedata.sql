@@ -317,6 +317,7 @@ VALUES
         ('phanquyen-nguoidung', N'Phân quyền cho người dùng'),
         ('suathongtin-nguoidung', N'Cập nhật thông tin cho người dùng'),
         ('huyphanquyen-nguoidung', N'Huỷ phân quyền cho người dùng'),
+        ('xemtheogiangvien-lopmonhoc', N'Xem thông tin của các lớp môn học theo giảng viên'),
         ('xoa-nguoidung', N'Xoá bỏ người dùng');
 INSERT INTO [Quyen_VaiTro] ([TenVaiTro], [TenQuyen])
 VALUES  
@@ -345,6 +346,14 @@ VALUES
         ('superadmin', 'themmoi-quyen'),
         ('superadmin', 'suathongtin-quyen'),
         ('superadmin', 'xoa-quyen'),
+        ('superadmin', 'xemtheoma-monhoc'),
+        ('superadmin', 'xemtheoten-monhoc'),
+        ('superadmin', 'suathongtintheoma-monhoc'),
+        ('superadmin', 'xemtheoma-lopquanli'),
+        ('superadmin', 'xemtheoten-lopquanli'),
+        ('superadmin', 'themmoi-lopquanli'),
+        ('superadmin', 'suathongtintheoma-lopquanli'),
+        
         ('admin', 'xemtatca-sinhvien' ),
         ('admin', 'xemtatca-giangvien' ), 
         ('admin', 'xemtatca-khoa' ), 

@@ -1,0 +1,14 @@
+Nhật kí project ngày 21/09/2023
+test môn học:
+	chưa có "add môn học mới trong controller"
+	getAll: ok
+	getByID: ok
+	getByName: ok
+	update: có vẻ có chút vấn đề với trường "lớp môn học" hoặc "mã lớp môn học"
+	Delete: chưa test vì chức năng chưa hoàn chỉnh
+test lớp quản lí:
+	GetAll, GetByID, GetByName : ok
+	GetAllWithSiSo thì chưa làm (không biết làm (có thể sẽ tìm cách làm))
+	AddNew: khi thêm bắt buộc phải có trường "malopquanli" mặc dù giá trị của trường này không ảnh hưởng gì đến đối tượng được ghi vào database (ghi "malopquanli" = 10 thì bản ghi trong db vẫn tự tăng)
+		thêm mã khoa thì bình thường nhưng không thêm được mã giảng viên (có lẽ phải là thêm cả 1 đối tượng giảng viên chứ không phải mỗi mã?)
+	

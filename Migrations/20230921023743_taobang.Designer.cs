@@ -12,8 +12,8 @@ using qlsinhvien.Context;
 namespace qlsinhvien.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20230912035301_Test")]
-    partial class Test
+    [Migration("20230921023743_taobang")]
+    partial class taobang
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,13 +51,13 @@ namespace qlsinhvien.Migrations
                     b.Property<int>("MaSinhVien")
                         .HasColumnType("int");
 
-                    b.Property<float>("DiemChuyenCan")
+                    b.Property<float?>("DiemChuyenCan")
                         .HasColumnType("real");
 
-                    b.Property<float>("DiemCuoiKi")
+                    b.Property<float?>("DiemCuoiKi")
                         .HasColumnType("real");
 
-                    b.Property<float>("DiemGiuaKi")
+                    b.Property<float?>("DiemGiuaKi")
                         .HasColumnType("real");
 
                     b.Property<string>("GhiChu")

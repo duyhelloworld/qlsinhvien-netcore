@@ -90,6 +90,8 @@ namespace qlsinhvien.Entities
         XemTatCaCungSiSo_LopMonHoc,
         [StringValue("xemtheoten-lopmonhoc")]
         XemTheoTen_LopMonHoc,
+        [StringValue("xemtheogiangvien-lopmonhoc")]
+        XemTheoGiangVien_LopMonHoc,
         [StringValue("themmoi-lopmonhoc")]
         ThemMoi_LopMonHoc,
         [StringValue("suathongtin-lopmonhoc")]

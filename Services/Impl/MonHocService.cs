@@ -48,6 +48,11 @@ public class MonHocService : IMonHocService
         return await _context.MonHocs.ToListAsync();
     }
 
+    public Task<IEnumerable<MonHoc>> GetByGiangVienAsync(int magiangvien)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<MonHoc?> GetById(int maSoMonHoc)
     {
         return await _context.MonHocs.FindAsync(maSoMonHoc);

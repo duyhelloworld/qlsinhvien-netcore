@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace qlsinhvien.Migrations
 {
     /// <inheritdoc />
-    public partial class Test : Migration
+    public partial class taobang : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -281,9 +281,9 @@ namespace qlsinhvien.Migrations
                 {
                     MaLopMonHoc = table.Column<int>(type: "int", nullable: false),
                     MaSinhVien = table.Column<int>(type: "int", nullable: false),
-                    DiemChuyenCan = table.Column<float>(type: "real", nullable: false),
-                    DiemGiuaKi = table.Column<float>(type: "real", nullable: false),
-                    DiemCuoiKi = table.Column<float>(type: "real", nullable: false),
+                    DiemChuyenCan = table.Column<float>(type: "real", nullable: true),
+                    DiemGiuaKi = table.Column<float>(type: "real", nullable: true),
+                    DiemCuoiKi = table.Column<float>(type: "real", nullable: true),
                     HocKi = table.Column<byte>(type: "tinyint", nullable: false),
                     GhiChu = table.Column<string>(type: "text", nullable: true)
                 },

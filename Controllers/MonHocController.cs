@@ -36,7 +36,8 @@ namespace qlsinhvien.Controllers
             }
             return Ok(monHoc);
         }
-        [HttpGet("getname/{name}")]
+        [HttpGet("name/{name}")]
+        [PhanQuyen(EQuyen.XemTheoTen_MonHoc)]
         public async Task<IActionResult> GetByName(string name)
         {
             var monHoc = await _service.GetByTenMon(name);
@@ -48,6 +49,7 @@ namespace qlsinhvien.Controllers
         }
 
         [HttpPut("{id}")]
+        [PhanQuyen(EQuyen.SuaThongTinTheoMa_MonHoc)]
         public async Task<IActionResult> UpdateMonHoc(int id, [FromBody] MonHocDto monHoc)
         {
             var mon = await _service.Update(id, monHoc);
@@ -55,6 +57,7 @@ namespace qlsinhvien.Controllers
         }
 
         [HttpDelete("{id}")]
+        [PhanQuyen(EQuyen.Xoa_MonHoc)]
         public async Task DeleteMonHoc(int id)
         {
             await _service.Remove(id);

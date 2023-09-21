@@ -31,6 +31,7 @@ builder.Services.AddScoped<IBoMonService, BoMonService>();
 builder.Services.AddScoped<ITaiKhoanService, TaiKhoanService>();
 builder.Services.AddScoped<IQuyenService, QuyenService>();
 builder.Services.AddScoped<INguoiDungService, NguoiDungService>();
+builder.Services.AddScoped<ILopQuanLiService, LopQuanLiService>();
 
 builder.Services.AddDbContext<ApplicationContext>(options =>
 {

@@ -41,9 +41,24 @@ public class LopQuanLiService : ILopQuanLiService
         var gv = await _context.LopQuanLis.FindAsync(lopQuanLiDto.MaGiangVien);
         if (lopQuanLiDto.MaGiangVien != 0 && gv == null)
         {
-            var giangVien = await _context.GiangViens.FindAsync(lopQuanLiDto.MaGiangVien)
-                ?? throw new ServiceException(404, $"Không có giảng viên mã số {lopQuanLiDto.MaGiangVien}");
-            lopQuanLi.GiangVien = giangVien;
+            var giangVien = await _context.GiangViens.FindAsync(lopQuanLiDto.MaGiangVien);
+                if (giangVien == null)
+            {
+                throw new ServiceException(404, $"Không có giảng viên mã số {lopQuanLiDto.MaGiangVien}");
+            }
+            else
+            {
+                lopQuanLi.GiangVien = giangVien;
+            }
+        }
+        var khoa = await _context.Khoas.FindAsync(lopQuanLiDto.MaKhoa);
+        if (khoa == null)
+        {
+            throw new ServiceException(404, $"Không có khoa mã số {lopQuanLiDto.MaKhoa}");
+        }
+        else
+        {
+            lopQuanLi.Khoa = khoa;
         }
         await _context.LopQuanLis.AddAsync(lopQuanLi);
         await _context.SaveChangesAsync();
@@ -58,7 +73,7 @@ public class LopQuanLiService : ILopQuanLiService
     public async Task Remove(int maLopQuanLi)
     {
         var lop = await _context.LopQuanLis.FindAsync(maLopQuanLi)
-        ??throw new ServiceException(404, $"Không tồn tại lớp quản lí có mã {maLopQuanLi}");
+        ?? throw new ServiceException(404, $"Không tồn tại lớp quản lí có mã {maLopQuanLi}");
         _context.LopQuanLis.Remove(lop);
         await _context.SaveChangesAsync();
     }
@@ -66,7 +81,7 @@ public class LopQuanLiService : ILopQuanLiService
     public async Task<LopQuanLi> Update(int maLopQuanLi, LopQuanLiDto lopQuanLiDto)
     {
         var lop = await _context.LopQuanLis.FindAsync(maLopQuanLi)
-        ??throw new ServiceException(404, $"Không tồn tại lớp quản lí có mã {maLopQuanLi}");
+        ?? throw new ServiceException(404, $"Không tồn tại lớp quản lí có mã {maLopQuanLi}");
         lop.TenLopQuanLi = lopQuanLiDto.TenLopQuanLi;
         lop.GiangVien.MaGiangVien = lopQuanLiDto.MaGiangVien;
         lop.Khoa.MaKhoa = lopQuanLiDto.MaKhoa;
