@@ -30,6 +30,22 @@ public class QuyenController : ControllerBase
         return ketQua == null ? NotFound() : Ok(ketQua);
     }
 
+    [HttpGet("vaitro")]
+    [PhanQuyen(EQuyen.XemTheoVaiTro_Quyen)]
+    public async Task<IActionResult> GetByVaiTro([FromQuery] string TenVaiTro)
+    {
+        var ketQua = await _service.LayTheoVaiTro(TenVaiTro);
+        return ketQua == null ? NotFound() : Ok(ketQua);
+    }
+
+    [HttpGet("vaitro")]
+    [PhanQuyen(EQuyen.XemTheoVaiTro_Quyen)]
+    public async Task<IActionResult> GetByNguoiDung([FromQuery] string TenVaiTro)
+    {
+        var ketQua = await _service.LayTheoVaiTro(TenVaiTro);
+        return ketQua == null ? NotFound() : Ok(ketQua);
+    }
+
     // [HttpPost]
     // [PhanQuyen(EQuyen.ThemMoi_Quyen)]
     // public async Task<IActionResult> ThemAsync([FromBody] QuyenDto quyenDto)
@@ -38,13 +54,13 @@ public class QuyenController : ControllerBase
     //     return Ok();
     // }
 
-    [HttpPut("{TenQuyen:alpha:minlength(1)}")]
-    [PhanQuyen(EQuyen.SuaThongTin_Quyen)]
-    public async Task<IActionResult> SuaAsync(string TenQuyen, [FromBody] QuyenDto quyenDto)
-    {
-        await _service.CapNhatQuyen(TenQuyen, quyenDto);
-        return Ok();
-    }
+    // [HttpPut("{TenQuyen:alpha:minlength(1)}")]
+    // [PhanQuyen(EQuyen.SuaThongTin_Quyen)]
+    // public async Task<IActionResult> SuaAsync(string TenQuyen, [FromBody] QuyenDto quyenDto)
+    // {
+    //     await _service.CapNhatQuyen(TenQuyen, quyenDto);
+    //     return Ok();
+    // }
 
     // [HttpDelete("{TenQuyen:alpha:minlength(1)}")]
     // [PhanQuyen(EQuyen.Xoa_Quyen)]
