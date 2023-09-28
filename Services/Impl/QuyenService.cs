@@ -1,7 +1,4 @@
-using System.Reflection;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using qlsinhvien.Atributes;
 using qlsinhvien.Context;
 using qlsinhvien.Entities;
 using qlsinhvien.Exceptions;
@@ -27,15 +24,18 @@ public class QuyenService : IQuyenService
 
     public async Task<IEnumerable<QuyenDetail>> LayTheoNguoiDung()
     {
-        return from nd in _context.NguoiDungs
+        return await (from nd in _context.NguoiDungs
             join qvt in _context.QuyenVaiTros on nd.TenVaiTro equals qvt.TenVaiTro
             join q in _context.Quyens on qvt.TenQuyen equals q.TenQuyen
+            // select new QuyenDetail { TenNguoiDung = nd.TenNguoiDung, TenVaiTro = nd.TenVaiTro ?? "", Quyens = new HashSet<QuyenDto>() {QuyenDto.Convert(q)} };
+            group q by nd into gr
+            orderby gr.Key.TenNguoiDung
             select new QuyenDetail
             {
-                TenNguoiDung = nd.TenNguoiDung,
-                TenVaiTro = nd.TenVaiTro ?? "",
-                Quyens = new HashSet<QuyenDto> { QuyenDto.Convert(q) }
-            };
+                TenNguoiDung = gr.Key.TenNguoiDung,
+                TenVaiTro = gr.Key.TenVaiTro ?? "",
+                Quyens = gr.Select(g => QuyenDto.Convert(g))
+            }).ToListAsync();
     }
 
     public async Task<IEnumerable<QuyenDto>> LayTheoTen(string TenQuyen)
@@ -49,12 +49,11 @@ public class QuyenService : IQuyenService
     public async Task<IEnumerable<QuyenDto>> LayTheoTenNguoiDung(string TenNguoiDung)
     {
         var nd = await _context.NguoiDungs.FindAsync(TenNguoiDung)
-            ?? throw new Exception("Người dùng không tồn tại");
+            ?? throw new ServiceException(404, "Người dùng không tồn tại");
         return await (from qvt in _context.QuyenVaiTros
                       join q in _context.Quyens on qvt.TenQuyen equals q.TenQuyen
                       where qvt.TenVaiTro == nd.TenVaiTro
-                      select QuyenDto.Convert(q)
-        ).ToListAsync();
+                      select QuyenDto.Convert(q)).ToListAsync();
     }
 
     public async Task<IEnumerable<QuyenDto>> LayTheoVaiTro(string TenVaiTro)

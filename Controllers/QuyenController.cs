@@ -46,6 +46,14 @@ public class QuyenController : ControllerBase
         return ketQua == null ? NotFound() : Ok(ketQua);
     }
 
+    [HttpGet("nguoidung")]
+    [PhanQuyen(EQuyen.XemTheoNguoiDung_Quyen)]
+    public async Task<IActionResult> GetByNguoiDung()
+    {
+        var ketQua = await _service.LayTheoNguoiDung();
+        return ketQua == null ? NotFound() : Ok(ketQua);
+    }
+
     // [HttpPost]
     // [PhanQuyen(EQuyen.ThemMoi_Quyen)]
     // public async Task<IActionResult> ThemAsync([FromBody] QuyenDto quyenDto)
