@@ -315,6 +315,7 @@ VALUES
         ('xemtheovaitro-nguoidung', N' Tìm kiếm các người dùng cùng vai trò'),
         ('themmoi-nguoidung', N'Thêm người dùng mới'),
         ('phanquyen-nguoidung', N'Phân quyền cho người dùng'),
+        ('phanvaitro-nguoidung', N'Phân vai trò cho người dùng'),
         ('suathongtin-nguoidung', N'Cập nhật thông tin cho người dùng'),
         ('huyphanquyen-nguoidung', N'Huỷ phân quyền cho người dùng'),
         ('xemtheogiangvien-lopmonhoc', N'Xem thông tin của các lớp môn học theo giảng viên'),

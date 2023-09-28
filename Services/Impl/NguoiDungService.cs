@@ -117,7 +117,7 @@ public class NguoiDungService : INguoiDungService
         await _context.SaveChangesAsync();
     }
 
-    public async Task PhanQuyen(ModelCapQuyen model)
+    public async Task PhanVaiTro(ModelCapVaiTro model)
     {
         var nguoiDung = await _context.NguoiDungs.FindAsync(model.TenNguoiDung)
             ?? throw new ServiceException
@@ -129,6 +129,33 @@ public class NguoiDungService : INguoiDungService
             nguoiDung.TenVaiTro = vaiTro.TenVaiTro;
             await _context.SaveChangesAsync();
         }
+    }
+
+    public async Task PhanQuyen(ModelCapQuyen model)
+    {
+        var nguoiDung = await _context.NguoiDungs.FindAsync(model.TenNguoiDung)
+            ?? throw new ServiceException(404, "Người dùng không tồn tại");
+        if (nguoiDung.TenVaiTro == null || string.IsNullOrEmpty(nguoiDung.TenVaiTro))
+        {
+            throw new ServiceException(404, "Người dùng chưa được phân vai trò");
+        }
+        var quyen = await _context.Quyens.FindAsync(model.TenQuyen)
+            ?? throw new ServiceException(404, "Quyền không hợp lệ");
+
+        var daCoQuyen = await _context.QuyenVaiTros
+            .AnyAsync(qvt => qvt.TenVaiTro == nguoiDung.TenVaiTro
+                && qvt.TenQuyen == quyen.TenQuyen);
+        if (daCoQuyen)
+        {
+            throw new ServiceException(400, "Người dùng đã có quyền này");
+        }
+        var quyenVaiTroMoi = new QuyenVaiTro
+        {
+            TenQuyen = quyen.TenQuyen,
+            TenVaiTro = nguoiDung.TenVaiTro
+        };
+        await _context.QuyenVaiTros.AddAsync(quyenVaiTroMoi);
+        await _context.SaveChangesAsync();
     }
 
     public async Task CapNhatThongTin(string TenNguoiDung, NguoiDungDto nguoiDungDto)

@@ -178,6 +178,8 @@ namespace qlsinhvien.Entities
         ThemMoi_NguoiDung,
         [StringValue("phanquyen-nguoidung")]
         PhanQuyen_NguoiDung,
+        [StringValue("phanvaitro-nguoidung")]
+        PhanVaiTro_NguoiDung,
         [StringValue("suathongtin-nguoidung")]
         SuaThongTin_NguoiDung,
         [StringValue("huyphanquyen-nguoidung")]
