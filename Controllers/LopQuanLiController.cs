@@ -35,16 +35,21 @@ namespace qlsinhvien.Controllers
 
         [HttpGet("malop/{malop}")]
         [PhanQuyen(EQuyen.XemTheoMa_LopQuanLi)]
-        public async Task<LopQuanLi> GetById(int malop)
+        public async Task<IActionResult> GetById(int malop)
         {
-            return await _service.GetById(malop);
+            var ketQua = await _service.GetById(malop);
+            if (ketQua == null)
+            {
+                return NotFound();
+            }
+            return Ok(ketQua);
         }
 
-        // [HttpGet("siso")]
-        // public async Task<ActionResult<LopQuanLi>> GetWithSiSo()
-        // {
-        //     return await _service.GetWithSiSo();
-        // }            
+        [HttpGet("siso")]
+        public async Task<ActionResult<LopQuanLi>> GetWithSiSo()
+        {
+            return await _service.GetWithSiSo();
+        }            
             
 
         [HttpPost]
