@@ -15,17 +15,21 @@ public class QuyenController : ControllerBase
         _service = quyenService;
     }
 
-    [HttpGet]
-    [PhanQuyen(EQuyen.XemTatCa_Quyen)]
-    public async Task<IActionResult> GetAllAsync()
-    {
-        return Ok(await _service.LayTatCa());
-    }
+    // [HttpGet]
+    // [PhanQuyen(EQuyen.XemTatCa_Quyen)]
+    // public async Task<IActionResult> GetAllAsync()
+    // {
+    //     return Ok(await _service.LayTatCa());
+    // }
 
-    [HttpGet("{TenQuyen:alpha:minlength(1)}")]
-    [PhanQuyen(EQuyen.XemTheoTen_Quyen)]
-    public async Task<IActionResult> GetByIdAsync(string TenQuyen)
+    [HttpGet]
+    [PhanQuyen(EQuyen.XemTheoTen_Quyen, EQuyen.XemTatCa_Quyen)]
+    public async Task<IActionResult> GetByIdAsync([FromQuery] string? TenQuyen)
     {
+        if (TenQuyen == null)
+        {
+            return Ok(await _service.LayTatCa());
+        }
         var ketQua = await _service.LayTheoTen(TenQuyen);
         return ketQua == null ? NotFound() : Ok(ketQua);
     }
@@ -38,43 +42,15 @@ public class QuyenController : ControllerBase
         return ketQua == null ? NotFound() : Ok(ketQua);
     }
 
-    [HttpGet("vaitro")]
-    [PhanQuyen(EQuyen.XemTheoVaiTro_Quyen)]
-    public async Task<IActionResult> GetByNguoiDung([FromQuery] string TenVaiTro)
-    {
-        var ketQua = await _service.LayTheoVaiTro(TenVaiTro);
-        return ketQua == null ? NotFound() : Ok(ketQua);
-    }
-
     [HttpGet("nguoidung")]
-    [PhanQuyen(EQuyen.XemTheoNguoiDung_Quyen)]
-    public async Task<IActionResult> GetByNguoiDung()
+    [PhanQuyen(EQuyen.XemTheoNguoiDung_Quyen, EQuyen.XemTheoTenNguoiDung_Quyen)]
+    public async Task<IActionResult> GetByNguoiDung([FromQuery] string? TenNguoiDung)
     {
-        var ketQua = await _service.LayTheoNguoiDung();
+        if (string.IsNullOrEmpty(TenNguoiDung))
+        {
+            return Ok(await _service.LayTheoNguoiDung());  
+        }
+        var ketQua = await _service.LayTheoTenNguoiDung(TenNguoiDung);
         return ketQua == null ? NotFound() : Ok(ketQua);
     }
-
-    // [HttpPost]
-    // [PhanQuyen(EQuyen.ThemMoi_Quyen)]
-    // public async Task<IActionResult> ThemAsync([FromBody] QuyenDto quyenDto)
-    // {
-    //     await _service.ThemQuyen(quyenDto);
-    //     return Ok();
-    // }
-
-    // [HttpPut("{TenQuyen:alpha:minlength(1)}")]
-    // [PhanQuyen(EQuyen.SuaThongTin_Quyen)]
-    // public async Task<IActionResult> SuaAsync(string TenQuyen, [FromBody] QuyenDto quyenDto)
-    // {
-    //     await _service.CapNhatQuyen(TenQuyen, quyenDto);
-    //     return Ok();
-    // }
-
-    // [HttpDelete("{TenQuyen:alpha:minlength(1)}")]
-    // [PhanQuyen(EQuyen.Xoa_Quyen)]
-    // public async Task<IActionResult> XoaAsync(string TenQuyen)
-    // {
-    //     await _service.XoaQuyen(TenQuyen);
-    //     return Ok();
-    // }
 }
