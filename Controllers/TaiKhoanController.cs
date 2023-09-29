@@ -32,13 +32,6 @@ public class TaiKhoanController : ControllerBase
     [HttpGet("dangxuat")]
     public async Task DangXuat()
     {   
-        var xacThuc = HttpContext.Request.Headers["Authorization"]!.FirstOrDefault();
-        if (xacThuc != null && xacThuc.StartsWith("Bearer "))
-        {
-            xacThuc = xacThuc.Replace("Bearer ", "");
-            await _service.DangXuat(xacThuc);
-            await Task.FromResult(Ok());
-        }
-        HttpContext.Response.StatusCode = 405;
+        await _service.DangXuat(HttpContext);
     }
 }

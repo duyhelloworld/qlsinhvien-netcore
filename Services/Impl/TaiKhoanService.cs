@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Net;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using qlsinhvien.Context;
@@ -26,7 +27,7 @@ public class TaiKhoanService : ITaiKhoanService
         var tonTaiTenTk = await _context.NguoiDungs.AnyAsync(nd => nd.TenNguoiDung == model.TenNguoiDung);
         if (tonTaiTenTk) 
         {
-            throw new ServiceException(400, "Username đã tồn tại");
+            throw new ServiceException(HttpStatusCode.BadRequest, "Username đã tồn tại");
         }
         
         var nguoiDung = new NguoiDung() 
@@ -71,14 +72,20 @@ public class TaiKhoanService : ITaiKhoanService
             };
         } else 
         {
-            throw new ServiceException(400, "Tài khoản chưa được cấp quyền");
+            throw new ServiceException(HttpStatusCode.BadRequest, "Tài khoản chưa được cấp quyền");
         }
     }
 
-    public async Task DangXuat(string token)
+    public async Task DangXuat(HttpContext context)
     {
+        var xacThuc = context.Request.Headers["Authorization"]!.FirstOrDefault();
+        if (xacThuc == null || !xacThuc.StartsWith("Bearer "))
+        {
+            throw new ServiceException(HttpStatusCode.BadRequest, "Không có token");
+        }
+        xacThuc = xacThuc.Replace("Bearer ", "");
         var tokenHandler = new JwtSecurityTokenHandler();
-        var validateResult = await tokenHandler.ValidateTokenAsync(token, new TokenValidationParameters()
+        var validateResult = await tokenHandler.ValidateTokenAsync(xacThuc, new TokenValidationParameters()
         {
             ValidateIssuer = true,
             ValidIssuer = _configuration["JWT:Issuer"]!,
