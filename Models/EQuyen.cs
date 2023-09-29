@@ -184,6 +184,8 @@ namespace qlsinhvien.Entities
         SuaThongTin_NguoiDung,
         [StringValue("huyphanquyen-nguoidung")]
         HuyPhanQuyen_NguoiDung,
+        [StringValue("huyvaitro-nguoidung")]
+        HuyVaiTro_NguoiDung,
         [StringValue("xoa-nguoidung")]
         Xoa_NguoiDung,
         [StringValue("xemtheovaitro-quyen")]
