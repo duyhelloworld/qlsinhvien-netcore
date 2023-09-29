@@ -96,11 +96,19 @@ public class NguoiDungController : ControllerBase
         await _service.CapNhatThongTin(TenNguoiDung, nguoiDungDto);
     }
     
-    [HttpDelete("phanquyen")]
-    [PhanQuyen(EQuyen.HuyPhanQuyen_NguoiDung)]
-    public async Task HuyPhanQuyenAsync([FromQuery] string TenNguoiDung)
+    [HttpDelete("phanvaitro")]
+    [PhanQuyen(EQuyen.HuyVaiTro_NguoiDung)]
+    public async Task HuyVaiTroAsync([FromBody] ModelCapQuyen model)
     {
-        await _service.HuyPhanQuyen(TenNguoiDung);
+        await _service.HuyQuyen(model);
+    }
+
+
+    [HttpDelete("phanquyen")]
+    [PhanQuyen(EQuyen.HuyVaiTro_NguoiDung)]
+    public async Task HuyVaiTroAsync([FromQuery] string TenNguoiDung)
+    {
+        await _service.HuyVaiTro(TenNguoiDung);
     }
 
     [HttpDelete]
