@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 using qlsinhvien.Context;
 using qlsinhvien.Dto;
 using qlsinhvien.Entities;
@@ -44,7 +45,7 @@ public class LopQuanLiService : ILopQuanLiService
             var giangVien = await _context.GiangViens.FindAsync(lopQuanLiDto.MaGiangVien);
                 if (giangVien == null)
             {
-                throw new ServiceException(404, $"Không có giảng viên mã số {lopQuanLiDto.MaGiangVien}");
+                throw new ServiceException(HttpStatusCode.NotFound, $"Không có giảng viên mã số {lopQuanLiDto.MaGiangVien}");
             }
             else
             {
@@ -54,7 +55,7 @@ public class LopQuanLiService : ILopQuanLiService
         var khoa = await _context.Khoas.FindAsync(lopQuanLiDto.MaKhoa);
         if (khoa == null)
         {
-            throw new ServiceException(404, $"Không có khoa mã số {lopQuanLiDto.MaKhoa}");
+            throw new ServiceException(HttpStatusCode.NotFound, $"Không có khoa mã số {lopQuanLiDto.MaKhoa}");
         }
         else
         {
@@ -73,7 +74,7 @@ public class LopQuanLiService : ILopQuanLiService
     public async Task Remove(int maLopQuanLi)
     {
         var lop = await _context.LopQuanLis.FindAsync(maLopQuanLi)
-        ?? throw new ServiceException(404, $"Không tồn tại lớp quản lí có mã {maLopQuanLi}");
+        ?? throw new ServiceException(HttpStatusCode.NotFound, $"Không tồn tại lớp quản lí có mã {maLopQuanLi}");
         _context.LopQuanLis.Remove(lop);
         await _context.SaveChangesAsync();
     }
@@ -81,9 +82,9 @@ public class LopQuanLiService : ILopQuanLiService
     public async Task<LopQuanLi> Update(int maLopQuanLi, LopQuanLiDto lopQuanLiDto)
     {
         var lop = await _context.LopQuanLis.FindAsync(maLopQuanLi)
-        ?? throw new ServiceException(404, $"Không tồn tại lớp quản lí có mã {maLopQuanLi}");
+            ?? throw new ServiceException(HttpStatusCode.NotFound, $"Không tồn tại lớp quản lí có mã {maLopQuanLi}");
         lop.TenLopQuanLi = lopQuanLiDto.TenLopQuanLi;
-        lop.GiangVien.MaGiangVien = lopQuanLiDto.MaGiangVien;
+        lop.GiangVien!.MaGiangVien = lopQuanLiDto.MaGiangVien;
         lop.Khoa.MaKhoa = lopQuanLiDto.MaKhoa;
         await _context.SaveChangesAsync();
         return lop;

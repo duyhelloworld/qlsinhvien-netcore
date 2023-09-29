@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 using qlsinhvien.Context;
 using qlsinhvien.Dto;
 using qlsinhvien.Entities;
@@ -23,7 +24,7 @@ partial class KhoaService : IKhoaService
     public async Task<Khoa?> GetById(int maKhoa)
     {
         var khoa = await _context.Khoas.FindAsync(maKhoa) 
-            ?? throw new ServiceException(404, "Không có khoa mã này");
+            ?? throw new ServiceException(HttpStatusCode.NotFound, "Không có khoa mã này");
         return khoa;
     }
 
@@ -41,7 +42,7 @@ partial class KhoaService : IKhoaService
             .AnyAsync(k => k.TenKhoa == khoaDto.TenKhoa);
         if (checkTenKhoa)  
         {
-            throw new ServiceException(400, "Tên khoa đã tồn tại");
+            throw new ServiceException(HttpStatusCode.BadRequest, "Tên khoa đã tồn tại");
         }
         var khoa = new Khoa() 
         {
@@ -76,12 +77,12 @@ partial class KhoaService : IKhoaService
     public async Task<Khoa> Update(int maKhoa, KhoaDto khoaDto)
     {
         var khoa = await _context.Khoas.FindAsync(maKhoa)  
-            ?? throw new ServiceException(404, "Không có khoa mã này");
+            ?? throw new ServiceException(HttpStatusCode.NotFound, "Không có khoa mã này");
         var checkTenKhoa = await _context.Khoas
            .AnyAsync(k => k.TenKhoa.Equals(khoaDto.TenKhoa));
         if (checkTenKhoa)
         {
-            throw new ServiceException(400, "Tên khoa đã tồn tại");
+            throw new ServiceException(HttpStatusCode.BadRequest, "Tên khoa đã tồn tại");
         }
         khoa.TenKhoa = khoaDto.TenKhoa;
         if (khoaDto.MaBoMons != null)
@@ -115,14 +116,14 @@ partial class KhoaService : IKhoaService
             .Include(k => k.BoMons)
             .Include(k => k.LopQuanLis)
             .FirstOrDefaultAsync() 
-            ?? throw new ServiceException(404, "Không có khoa mã này");
+            ?? throw new ServiceException(HttpStatusCode.NotFound, "Không có khoa mã này");
         if (khoa.BoMons != null)
         {
             khoa.BoMons.Clear();
         }
         if (khoa.LopQuanLis != null)
         {
-            throw new ServiceException(400, @$"Khoa đang có {khoa.LopQuanLis.Count} 
+            throw new ServiceException(HttpStatusCode.BadRequest, @$"Khoa đang có {khoa.LopQuanLis.Count} 
                 lớp quản lí. Hãy thay đổi khoa của các lớp đó trước");
         }
         await _context.SaveChangesAsync();

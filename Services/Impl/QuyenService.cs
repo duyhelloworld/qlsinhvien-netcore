@@ -3,6 +3,7 @@ using qlsinhvien.Context;
 using qlsinhvien.Entities;
 using qlsinhvien.Exceptions;
 using qlsinhvien.Models;
+using System.Net;
 
 namespace qlsinhvien.Services.Impl;
 
@@ -27,7 +28,6 @@ public class QuyenService : IQuyenService
         return await (from nd in _context.NguoiDungs
             join qvt in _context.QuyenVaiTros on nd.TenVaiTro equals qvt.TenVaiTro
             join q in _context.Quyens on qvt.TenQuyen equals q.TenQuyen
-            // select new QuyenDetail { TenNguoiDung = nd.TenNguoiDung, TenVaiTro = nd.TenVaiTro ?? "", Quyens = new HashSet<QuyenDto>() {QuyenDto.Convert(q)} };
             group q by nd into gr
             orderby gr.Key.TenNguoiDung
             select new QuyenDetail
@@ -49,7 +49,7 @@ public class QuyenService : IQuyenService
     public async Task<IEnumerable<QuyenDto>> LayTheoTenNguoiDung(string TenNguoiDung)
     {
         var nd = await _context.NguoiDungs.FindAsync(TenNguoiDung)
-            ?? throw new ServiceException(404, "Người dùng không tồn tại");
+            ?? throw new ServiceException(HttpStatusCode.NotFound, "Người dùng không tồn tại");
         return await (from qvt in _context.QuyenVaiTros
                       join q in _context.Quyens on qvt.TenQuyen equals q.TenQuyen
                       where qvt.TenVaiTro == nd.TenVaiTro

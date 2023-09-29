@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using Microsoft.EntityFrameworkCore;
 using qlsinhvien.Context;
 using qlsinhvien.Dto;
@@ -25,13 +25,13 @@ public class LopMonHocService : ILopMonHocService
         if (lopMonHocDto.MaGiangVien != 0)
         {
             var giangVien = await _context.GiangViens.FindAsync(lopMonHocDto.MaGiangVien)
-                ?? throw new ServiceException(404, $"Không có giảng viên mã số {lopMonHocDto.MaGiangVien}");
+                ?? throw new ServiceException(HttpStatusCode.NotFound, $"Không có giảng viên mã số {lopMonHocDto.MaGiangVien}");
             lopMonHoc.GiangVien = giangVien;
         }
         if (lopMonHocDto.MaMonHoc != 0)
         {
             var monHoc = await _context.MonHocs.FindAsync(lopMonHocDto.MaMonHoc)
-                ?? throw new ServiceException(404, $"Không có môn học mã số {lopMonHocDto.MaMonHoc}");
+                ?? throw new ServiceException(HttpStatusCode.NotFound, $"Không có môn học mã số {lopMonHocDto.MaMonHoc}");
             lopMonHoc.MonHoc = monHoc;
         }
         await _context.LopMonHocs.AddAsync(lopMonHoc);
@@ -61,7 +61,7 @@ public class LopMonHocService : ILopMonHocService
     public async Task RemoveTheoMonHoc(int maMonHoc)
     {
         var lop = await _context.LopMonHocs.FindAsync(maMonHoc) 
-            ?? throw new ServiceException(404, $"Không tồn tại lớp môn học đang dạy môn học có mã {maMonHoc}");
+            ?? throw new ServiceException(HttpStatusCode.NotFound, $"Không tồn tại lớp môn học đang dạy môn học có mã {maMonHoc}");
         var Diems = from l in _context.LopMonHocs
                     join diem in _context.DiemSinhViens on l.MaLopMonHoc equals diem.MaLopMonHoc
                     where l.MaMonHoc == maMonHoc
@@ -85,7 +85,7 @@ public class LopMonHocService : ILopMonHocService
         var lop = await _context.LopMonHocs.FindAsync(maLopMonHoc);
         if (lop == null)
         {
-            throw new ServiceException(404, $"Không tồn tại lớp môn học có mã {maLopMonHoc}");
+            throw new ServiceException(HttpStatusCode.NotFound, $"Không tồn tại lớp môn học có mã {maLopMonHoc}");
         }
         // await _service.DeleteByLopMonHoc(maLopMonHoc);
         _context.LopMonHocs.Remove(lop);
@@ -97,7 +97,7 @@ public class LopMonHocService : ILopMonHocService
         var lop = await _context.LopMonHocs.FindAsync(maLopMonHoc);
         if(lop == null)
         {
-            throw new ServiceException(404, $"Không tồn tại lớp môn học có mã {maLopMonHoc}");
+            throw new ServiceException(HttpStatusCode.NotFound, $"Không tồn tại lớp môn học có mã {maLopMonHoc}");
         }
         lop.TenLopMonHoc = lopMonHocDto.TenLopMonHoc;
         lop.MaMonHoc = lopMonHocDto.MaMonHoc;
@@ -108,7 +108,7 @@ public class LopMonHocService : ILopMonHocService
     public async Task<IEnumerable<LopMonHoc>> GetByGiangVienAsync(int magiangvien)
     {
         var gv = await _context.GiangViens.FindAsync(magiangvien)
-        ?? throw new ServiceException(404, $"Không tồn tại giảng viên có mã {magiangvien}");
+        ?? throw new ServiceException(HttpStatusCode.NotFound, $"Không tồn tại giảng viên có mã {magiangvien}");
         var lop = from l in _context.LopMonHocs
                   join magv in _context.GiangViens on l.GiangVien.MaGiangVien equals magv.MaGiangVien
                   where magv.MaGiangVien == magiangvien

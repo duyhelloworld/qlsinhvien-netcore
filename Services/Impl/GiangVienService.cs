@@ -1,4 +1,4 @@
-using System.Linq;
+using System.Net;
 using Microsoft.EntityFrameworkCore;
 using qlsinhvien.Context;
 using qlsinhvien.Dto;
@@ -39,7 +39,7 @@ public class GiangVienService : IGiangVienService
         var boMon = await _context.BoMons.FindAsync(maBoMon);
         if (boMon == null)
         {
-            throw new ServiceException(404, $"Bộ môn mã số {maBoMon} không tồn tại");
+            throw new ServiceException(HttpStatusCode.NotFound, $"Bộ môn mã số {maBoMon} không tồn tại");
         }
         await _context.BoMons
             .Entry(boMon)
@@ -48,7 +48,7 @@ public class GiangVienService : IGiangVienService
         var giangViens = boMon.GiangViens;
         if (giangViens == null || giangViens.Count == 0)
         {
-            throw new ServiceException(404, $"Không có giảng viên nào đang dạy bộ môn {boMon.TenBoMon}!");
+            throw new ServiceException(HttpStatusCode.NotFound, $"Không có giảng viên nào đang dạy bộ môn {boMon.TenBoMon}!");
         }
         return giangViens;
     }
@@ -58,13 +58,13 @@ public class GiangVienService : IGiangVienService
         var lopQuanLi = await _context.LopQuanLis.FindAsync(maLopQuanLi);
         if (lopQuanLi == null)
         {
-            throw new ServiceException(404, $"Lớp quản lí mã số {maLopQuanLi} không tồn tại");
+            throw new ServiceException(HttpStatusCode.NotFound, $"Lớp quản lí mã số {maLopQuanLi} không tồn tại");
         }
         await _context.LopQuanLis.Entry(lopQuanLi).Reference(lql => lql.GiangVien).LoadAsync();
         var giangVien = lopQuanLi.GiangVien;
         if (giangVien == null)
         {
-            throw new ServiceException(404, $"Không có giảng viên nào đang quản lí lớp {lopQuanLi.TenLopQuanLi}!");
+            throw new ServiceException(HttpStatusCode.NotFound, $"Không có giảng viên nào đang quản lí lớp {lopQuanLi.TenLopQuanLi}!");
         }
         return giangVien;
     }
@@ -74,13 +74,13 @@ public class GiangVienService : IGiangVienService
         var lopMonHoc = await _context.LopMonHocs.FindAsync(maLopMonHoc);
         if (lopMonHoc == null)
         {
-            throw new ServiceException(404, $"Không có lớp môn học nào mã {maLopMonHoc}");
+            throw new ServiceException(HttpStatusCode.NotFound, $"Không có lớp môn học nào mã {maLopMonHoc}");
         }
         await _context.LopMonHocs.Entry(lopMonHoc).Reference(lmh => lmh.GiangVien).LoadAsync();
         var giangVien = lopMonHoc.GiangVien;
         if (giangVien == null)
         {
-            throw new ServiceException(404, $"Không có giảng viên nào đang dạy lớp {lopMonHoc.TenLopMonHoc}!");
+            throw new ServiceException(HttpStatusCode.NotFound, $"Không có giảng viên nào đang dạy lớp {lopMonHoc.TenLopMonHoc}!");
         }
         return giangVien;
     }
@@ -90,7 +90,7 @@ public class GiangVienService : IGiangVienService
         var giangVien = await _context.GiangViens.FindAsync(maGiangVien);
         if (giangVien == null)
         {
-            throw new ServiceException(404, $"Không có giảng viên nào mang mã số {maGiangVien}!");
+            throw new ServiceException(HttpStatusCode.NotFound, $"Không có giảng viên nào mang mã số {maGiangVien}!");
         }
         var lmh = await _context.LopMonHocs
             .Where(lmh => lmh.GiangVien.MaGiangVien == maGiangVien)
@@ -109,7 +109,7 @@ public class GiangVienService : IGiangVienService
         var boMon = await _context.BoMons.FindAsync(giangVienDto.MaBoMon);
         if (boMon == null)
         {
-            throw new ServiceException(404, $"Không tồn tại bộ môn có mã {giangVienDto.MaBoMon}!");
+            throw new ServiceException(HttpStatusCode.NotFound, $"Không tồn tại bộ môn có mã {giangVienDto.MaBoMon}!");
         }
         var giangVien = new GiangVien()
         {
@@ -132,11 +132,11 @@ public class GiangVienService : IGiangVienService
             var lopQuanLi = await _context.LopQuanLis.FindAsync(maLopQuanLi);
             if (lopQuanLi == null) 
             {
-                throw new ServiceException(404, $"Không tồn tại lớp mã số {maLopQuanLi}");
+                throw new ServiceException(HttpStatusCode.NotFound, $"Không tồn tại lớp mã số {maLopQuanLi}");
             }
             if (lopQuanLi.GiangVien != null)
             {
-                throw new ServiceException(400, $"Lớp này đã có giảng viên chủ nhiệm");
+                throw new ServiceException(HttpStatusCode.BadRequest, $"Lớp này đã có giảng viên chủ nhiệm");
             }
             giangVien.LopQuanLi = lopQuanLi;
         }
@@ -167,7 +167,7 @@ public class GiangVienService : IGiangVienService
             {
                 msg = $"Email {giangVien.Email} đã được sử dụng";
             }
-            throw new ServiceException(400, msg);
+            throw new ServiceException(HttpStatusCode.BadRequest, msg);
         }
         _context.GiangViens.Add(giangVien);
         _context.SaveChanges();
@@ -179,14 +179,14 @@ public class GiangVienService : IGiangVienService
         var giangVien = await _context.GiangViens.FindAsync(maGiangVien);
         if (giangVien == null)
         {
-            throw new ServiceException(404, $"Không tồn tại giảng viên mã số {maGiangVien}");
+            throw new ServiceException(HttpStatusCode.NotFound, $"Không tồn tại giảng viên mã số {maGiangVien}");
         }
         var lopMonHocs = await _context.LopMonHocs
                 .Where(lmh => maLopMonHocs.Contains(lmh.MaLopMonHoc))
                 .ToListAsync();
         if (lopMonHocs.Count == 0)
         {
-            throw new ServiceException(404, "Không tồn tại các lớp môn học này");
+            throw new ServiceException(HttpStatusCode.NotFound, "Không tồn tại các lớp môn học này");
         }
         await _context.GiangViens.Entry(giangVien).Collection(gv => gv.LopMonHocs).LoadAsync();
         var lopMonHocsMoi = giangVien.LopMonHocs.Union(lopMonHocs);
@@ -200,7 +200,7 @@ public class GiangVienService : IGiangVienService
         var giangVien = await _context.GiangViens.FindAsync(maGiangVien);
         if (giangVien == null)
         {
-            throw new ServiceException(404, $"Không tồn tại giảng viên có mã {maGiangVien}!");
+            throw new ServiceException(HttpStatusCode.NotFound, $"Không tồn tại giảng viên có mã {maGiangVien}!");
         }
         var trungSdtHoacEmail = await _context.GiangViens
             .FirstOrDefaultAsync(gv => gv.SoDienThoai.Equals(giangVienDto.SoDienThoai)
@@ -216,7 +216,7 @@ public class GiangVienService : IGiangVienService
             {
                 msg = $"Email {giangVienDto.Email} đã được sử dụng";
             }
-            throw new ServiceException(400, msg);
+            throw new ServiceException(HttpStatusCode.BadRequest, msg);
         }
 
         giangVienDto.MaGiangVien = maGiangVien;
@@ -237,17 +237,17 @@ public class GiangVienService : IGiangVienService
         var giangVien = await _context.GiangViens.FindAsync(maGiangVien);
         if (giangVien == null)
         {
-            throw new ServiceException(404, $"Không tồn tại giảng viên có mã {maGiangVien}!");
+            throw new ServiceException(HttpStatusCode.NotFound, $"Không tồn tại giảng viên có mã {maGiangVien}!");
         }
         var lopQuanLi = await _context.LopQuanLis.FindAsync(maLopQuanLi);
         if (lopQuanLi == null)
         {
-            throw new ServiceException(404, $"Không tồn tại lớp quản lí có mã {maLopQuanLi}");
+            throw new ServiceException(HttpStatusCode.NotFound, $"Không tồn tại lớp quản lí có mã {maLopQuanLi}");
         }
         await _context.Entry(lopQuanLi).Reference(lql => lql.GiangVien).LoadAsync();
         if (lopQuanLi.GiangVien != null)
         {
-            throw new ServiceException(400, $"Lớp này đã có giảng viên chủ nhiệm");
+            throw new ServiceException(HttpStatusCode.BadRequest, $"Lớp này đã có giảng viên chủ nhiệm");
         }
         giangVien.LopQuanLi = lopQuanLi;
         await _context.SaveChangesAsync();
@@ -259,12 +259,12 @@ public class GiangVienService : IGiangVienService
         var giangVien = await _context.GiangViens.FindAsync(maGiangVien);
         if (giangVien == null)
         {
-            throw new ServiceException(404, $"Không tồn tại giảng viên có mã {maGiangVien}!");
+            throw new ServiceException(HttpStatusCode.NotFound, $"Không tồn tại giảng viên có mã {maGiangVien}!");
         }
         var boMon = await _context.BoMons.FindAsync(maBoMon);
         if (boMon == null)
         {
-            throw new ServiceException(404, $"Không tồn tại bộ môn có mã {maBoMon}!");
+            throw new ServiceException(HttpStatusCode.NotFound, $"Không tồn tại bộ môn có mã {maBoMon}!");
         }
         giangVien.BoMon = boMon;
         await _context.SaveChangesAsync();
@@ -276,7 +276,7 @@ public class GiangVienService : IGiangVienService
         var giangVien = await _context.GiangViens.FindAsync(maGiangVien);
         if (giangVien == null)
         {
-            throw new ServiceException(404, $"Không tồn tại giảng viên mã số {maGiangVien}");
+            throw new ServiceException(HttpStatusCode.NotFound, $"Không tồn tại giảng viên mã số {maGiangVien}");
         }
         
         // Tìm các lớp quản lí liên quan và đặt mã giảng viên thành null
@@ -313,7 +313,7 @@ public class GiangVienService : IGiangVienService
         var lopQuanLi = await _context.LopQuanLis.FindAsync(maLopQuanLi);
         if (lopQuanLi == null)
         {
-            throw new ServiceException(404, $"Không tồn tại lớp quản lí có mã {maLopQuanLi}");
+            throw new ServiceException(HttpStatusCode.NotFound, $"Không tồn tại lớp quản lí có mã {maLopQuanLi}");
         }
         await _context.Entry(lopQuanLi).Reference(lql => lql.GiangVien).LoadAsync();
         if (lopQuanLi.GiangVien == null)
@@ -329,7 +329,7 @@ public class GiangVienService : IGiangVienService
         var giangVien = await _context.GiangViens.FindAsync(maGiangVien);
         if (giangVien == null)
         {
-            throw new ServiceException(404, $"Không tồn tại giảng viên mã số {maGiangVien}");
+            throw new ServiceException(HttpStatusCode.NotFound, $"Không tồn tại giảng viên mã số {maGiangVien}");
         }
         await _context.Entry(giangVien).Collection(gv => gv.LopMonHocs).LoadAsync();
         giangVien.LopMonHocs = Enumerable.Empty<LopMonHoc>().ToList();

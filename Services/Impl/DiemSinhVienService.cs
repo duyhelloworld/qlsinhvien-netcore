@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 using qlsinhvien.Context;
 using qlsinhvien.Dto;
 using qlsinhvien.Entities;
@@ -51,11 +52,11 @@ public class DiemSinhVienService : IDiemSinhVienService
     public async Task<DiemSinhVienDetail> ThemMoi(DiemSinhVienDto diemSinhVienDto)
     {
         var sinhVien = await _context.SinhViens.FindAsync(diemSinhVienDto.MaSinhVien)
-            ?? throw new ServiceException(404, $"Không tồn tại sinh viên có mã {diemSinhVienDto.MaSinhVien}");
+            ?? throw new ServiceException(HttpStatusCode.NotFound, $"Không tồn tại sinh viên có mã {diemSinhVienDto.MaSinhVien}");
         var lopMonHoc = await _context.LopMonHocs.FindAsync(diemSinhVienDto.MaLopMonHoc)
-            ?? throw new ServiceException(404, $"Không tồn tại lớp môn học có mã {diemSinhVienDto.MaLopMonHoc}");
+            ?? throw new ServiceException(HttpStatusCode.NotFound, $"Không tồn tại lớp môn học có mã {diemSinhVienDto.MaLopMonHoc}");
         var diem = await _context.DiemSinhViens.FindAsync(diemSinhVienDto.MaSinhVien, diemSinhVienDto.MaLopMonHoc)
-            ?? throw new ServiceException(400, @$"Sinh viên mã {diemSinhVienDto.MaSinhVien} họ tên 
+            ?? throw new ServiceException(HttpStatusCode.BadRequest, @$"Sinh viên mã {diemSinhVienDto.MaSinhVien} họ tên 
                 {sinhVien.HoTen} tại lớp môn học {lopMonHoc.TenLopMonHoc} đã tồn tại!!!");
         var diemSinhVien = DiemSinhVienDto.Convert(diemSinhVienDto);
         await _context.DiemSinhViens.AddAsync(diemSinhVien);
@@ -66,7 +67,7 @@ public class DiemSinhVienService : IDiemSinhVienService
     public async Task<DiemSinhVienDetail> SuaDiemVaGhiChu(int maSinhVien, DiemSinhVienDto diemSinhVienDto)
     {
         var diem = await _context.DiemSinhViens.FindAsync(maSinhVien, diemSinhVienDto.MaLopMonHoc)
-            ?? throw new ServiceException(404, $"Không tồn tại điểm của sinh viên có mã {maSinhVien} tại lớp môn học có mã {diemSinhVienDto.MaLopMonHoc}");
+            ?? throw new ServiceException(HttpStatusCode.NotFound, $"Không tồn tại điểm của sinh viên có mã {maSinhVien} tại lớp môn học có mã {diemSinhVienDto.MaLopMonHoc}");
         diem.DiemChuyenCan = diemSinhVienDto.DiemChuyenCan;
         diem.DiemGiuaKi = diemSinhVienDto.DiemGiuaKi;
         diem.DiemCuoiKi = diemSinhVienDto.DiemCuoiKi;
@@ -78,7 +79,7 @@ public class DiemSinhVienService : IDiemSinhVienService
     public async Task XoaTheoLopMonHoc(int maSinhVien, int MaLopMonHoc)
     {
         var diem = await _context.DiemSinhViens.FindAsync(maSinhVien, MaLopMonHoc)
-            ?? throw new ServiceException(404, $"Không tồn tại điểm của sinh viên có mã {maSinhVien} tại lớp môn học có mã {MaLopMonHoc}");
+            ?? throw new ServiceException(HttpStatusCode.NotFound, $"Không tồn tại điểm của sinh viên có mã {maSinhVien} tại lớp môn học có mã {MaLopMonHoc}");
         diem.DiemChuyenCan = null;
         diem.DiemGiuaKi = null;
         diem.DiemCuoiKi = null;
@@ -88,7 +89,7 @@ public class DiemSinhVienService : IDiemSinhVienService
     public async Task XoaKhoiLopMonHoc(int maSinhVien, int maLopMonHoc)
     {
         var diem = await _context.DiemSinhViens.FindAsync(maSinhVien, maLopMonHoc)
-            ?? throw new ServiceException(404, $"Không tồn tại sinh viên có mã {maSinhVien} trong lớp môn học có mã {maLopMonHoc}");
+            ?? throw new ServiceException(HttpStatusCode.NotFound, $"Không tồn tại sinh viên có mã {maSinhVien} trong lớp môn học có mã {maLopMonHoc}");
         _context.DiemSinhViens.Remove(diem);
         await _context.SaveChangesAsync();
     }
@@ -100,7 +101,7 @@ public class DiemSinhVienService : IDiemSinhVienService
             .ToListAsync();
         if (diems.Count == 0)
         {
-            throw new ServiceException(404, $"Lớp môn học có mã {maLopMonHoc} chưa có sinh viên nào theo học!");
+            throw new ServiceException(HttpStatusCode.NotFound, $"Lớp môn học có mã {maLopMonHoc} chưa có sinh viên nào theo học!");
         }
         _context.DiemSinhViens.RemoveRange(diems);
         await _context.SaveChangesAsync();
@@ -113,7 +114,7 @@ public class DiemSinhVienService : IDiemSinhVienService
             .ToListAsync();
         if (diems.Count == 0)
         {
-            throw new ServiceException(404, $"Sinh viên có mã {maSinhVien} chưa có điểm nào!");
+            throw new ServiceException(HttpStatusCode.NotFound, $"Sinh viên có mã {maSinhVien} chưa có điểm nào!");
         }
         _context.DiemSinhViens.RemoveRange(diems);
         await _context.SaveChangesAsync();

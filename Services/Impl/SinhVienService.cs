@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using qlsinhvien.Context;
 using qlsinhvien.Dto;
+using System.Net;
 using qlsinhvien.Entities;
 using qlsinhvien.Exceptions;
 using qlsinhvien.Services.Impl.Validators;
@@ -39,7 +40,7 @@ public class SinhVienService : ISinhVienService
         var lopQuanLi = await _context.LopQuanLis.FindAsync(maLopQuanLi);
         if (lopQuanLi == null)
         {
-            throw new ServiceException(404, $"Lớp quản lí mã số {maLopQuanLi} không tồn tại");
+            throw new ServiceException(HttpStatusCode.NotFound, $"Lớp quản lí mã số {maLopQuanLi} không tồn tại");
         }
         var sinhViens = await (from sv in _context.SinhViens
                                 where sv.MaLopQuanLi == maLopQuanLi
@@ -50,7 +51,7 @@ public class SinhVienService : ISinhVienService
     public async Task<IEnumerable<SinhVien>> GetByLopMonHoc(int maLopMonHoc)
     {
         var lopMonHoc = await _context.LopMonHocs.FindAsync(maLopMonHoc) 
-            ?? throw new ServiceException(404, $"Không tồn tại lớp môn học mã số {maLopMonHoc}");
+            ?? throw new ServiceException(HttpStatusCode.NotFound, $"Không tồn tại lớp môn học mã số {maLopMonHoc}");
         var sinhViens = from dsv in _context.DiemSinhViens
                 join sv in _context.SinhViens 
                     on dsv.MaSinhVien equals sv.MaSinhVien
@@ -62,7 +63,7 @@ public class SinhVienService : ISinhVienService
     public async Task<SinhVien> AddNew(SinhVienDto sinhVienDto)
     {
         var lopQuanLi = await _context.LopQuanLis.FindAsync(sinhVienDto.MaLopQuanLi) 
-            ?? throw new ServiceException(404, $"Không tồn tại lớp quản lí mã {sinhVienDto.MaLopQuanLi}");
+            ?? throw new ServiceException(HttpStatusCode.NotFound, $"Không tồn tại lớp quản lí mã {sinhVienDto.MaLopQuanLi}");
         var trungSdtHoacEmail = await _context.SinhViens
             .FirstOrDefaultAsync(sv => sv.SoDienThoai == sinhVienDto.SoDienThoai
                 || sv.Email == sinhVienDto.Email);
@@ -77,11 +78,11 @@ public class SinhVienService : ISinhVienService
             {
                 msg = $"Email {sinhVienDto.Email} đã được sử dụng";
             }
-            throw new ServiceException(400, msg);
+            throw new ServiceException(HttpStatusCode.BadRequest, msg);
         }
         if (!ConNguoiValidator.IsValidToInSert(sinhVienDto))
         {
-            throw new ServiceException(400, "Dữ liệu không hợp lệ");
+            throw new ServiceException(HttpStatusCode.BadRequest, "Dữ liệu không hợp lệ");
         }
         var sinhVien = new SinhVien()
         {
@@ -103,10 +104,10 @@ public class SinhVienService : ISinhVienService
     {
         sinhVienDto.MaSinhVien = maSoSinhVien;
         var sinhVien = await _context.SinhViens.FindAsync(maSoSinhVien) 
-            ?? throw new ServiceException(404, $"Không tồn tại sinh viên mã số {maSoSinhVien}");
+            ?? throw new ServiceException(HttpStatusCode.NotFound, $"Không tồn tại sinh viên mã số {maSoSinhVien}");
         if (!ConNguoiValidator.IsValid(sinhVienDto))
         {
-            throw new ServiceException(400, "Dữ liệu không hợp lệ");
+            throw new ServiceException(HttpStatusCode.BadRequest, "Dữ liệu không hợp lệ");
         }
         sinhVien.HoTen = sinhVienDto.HoTen;
         sinhVien.GioiTinh = sinhVienDto.GioiTinh;
@@ -123,10 +124,10 @@ public class SinhVienService : ISinhVienService
     {
         var sinhVien = await _context.SinhViens
             .FirstOrDefaultAsync(sv => sv.MaSinhVien == maSoSinhVien) 
-            ?? throw new ServiceException(404, $"Sinh viên mã {maSoSinhVien} không tồn tại");
+            ?? throw new ServiceException(HttpStatusCode.NotFound, $"Sinh viên mã {maSoSinhVien} không tồn tại");
         var lopQuanLi = await _context.LopQuanLis
             .FirstOrDefaultAsync(lql => lql.MaLopQuanLi == maLopQuanLi) 
-            ?? throw new ServiceException(404, $"Lớp quản lí mã {maLopQuanLi} không tồn tại");
+            ?? throw new ServiceException(HttpStatusCode.NotFound, $"Lớp quản lí mã {maLopQuanLi} không tồn tại");
         sinhVien.LopQuanLi = lopQuanLi;
         await _context.SaveChangesAsync();
         return sinhVien;
@@ -135,7 +136,7 @@ public class SinhVienService : ISinhVienService
     public async Task Remove(int maSoSinhVien)
     {
         var sinhVien = await _context.SinhViens.FindAsync(maSoSinhVien) 
-            ?? throw new ServiceException(404, $"Không tồn tại sinh viên mã số {maSoSinhVien}");
+            ?? throw new ServiceException(HttpStatusCode.NotFound, $"Không tồn tại sinh viên mã số {maSoSinhVien}");
         var diems = from dsv in _context.DiemSinhViens
                     where dsv.MaSinhVien == maSoSinhVien
                     select dsv;
