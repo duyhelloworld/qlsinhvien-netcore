@@ -21,6 +21,8 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 // Custom Attributes
 builder.Services.AddSingleton(new PhanQuyen(EQuyen.KhongCoQuyen));
 
+builder.Services.AddScoped<ErrorHandlerMiddleware>();
+
 // Services
 builder.Services.AddScoped<IGiangVienService, GiangVienService>();
 builder.Services.AddScoped<IKhoaService, KhoaService>();
@@ -41,16 +43,8 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 
 EnumExtensions.Behaviour.UseCaching = true;
 
-// builder.Services.AddAuthentication(option =>
-// {
-//     option.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-//     option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//     option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//     option.RequireAuthenticatedSignIn = true;
-// });
-
-
 var app = builder.Build();
 app.MapControllers();
+app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.Run();
