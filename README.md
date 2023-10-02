@@ -4,3 +4,11 @@
 - "pid": Province Id (tỉnh/thành phố)
 - "did": District Id (quận/huyện)
 - "cid": Commune Id (xã/phường)
+ 
+use-case
+class
+
+ca sử dụng:
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
+"1, năm 1"
+phòng, ca, môn nào, loại buổi (thực hành/ lí thuyết)
