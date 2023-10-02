@@ -5,14 +5,9 @@ namespace qlsinhvien.Dto;
 
 public class LopQuanLiDto
 {
-    [JsonRequired]
     public int MaLopQuanLi { get; set; }
+    public string TenLopQuanLi { get; set; } = null!;
 
-    [JsonRequired]
-    public string TenLopQuanLi { get; set; }
-
-    [JsonRequired]
     public int MaKhoa { get; set; }
-    // [JsonRequired]
     public GiangVien? giangVien{ get; set; }
 }

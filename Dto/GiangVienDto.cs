@@ -4,10 +4,9 @@ namespace qlsinhvien.Dto;
 
 public class GiangVienDto : ConNguoiDto
 {
-    [JsonRequired]
+    
     public int MaGiangVien { get; set; }
-
-    [JsonRequired]
+    
     public int MaBoMon { get; set; }
 
     public int? MaLopQuanLi { get; set; }
