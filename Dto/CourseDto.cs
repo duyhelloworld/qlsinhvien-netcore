@@ -1,10 +1,9 @@
-using System.Text.Json.Serialization;
-
 namespace qlsinhvien.Dto;
-public class MonHocDto
+
+public class CourseDto
 {
     
-    public int MaMonHoc { get; set; }
+    public int CourseId { get; set; }
     
     public string TenMonHoc { get; set; } = null!;
     
@@ -14,9 +13,9 @@ public class MonHocDto
 
     public string? MoTa { get; set; }
 
-    public int MaMonTienQuyet { get; set; }
+    public int? MaMonTienQuyet { get; set; }
     
-    public int MaBoMon { get; set; }
+    public int DepartmentId { get; set; }
 
-    public int MaLopMonHoc { get; set; }
+    public int CourseClassId { get; set; }
 }

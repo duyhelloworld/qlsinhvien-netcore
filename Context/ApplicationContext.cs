@@ -11,14 +11,15 @@ public class ApplicationContext : IdentityDbContext<IdentityUser>
     {
 
     }
-    // public DbSet<SinhVien> SinhViens { get; set; }
-    // public DbSet<DiemSinhVien> DiemSinhViens { get; set; }
-    // public DbSet<GiangVien> GiangViens { get; set; }
-    // public DbSet<Khoa> Khoas { get; set; }
-    // public DbSet<LopMonHoc> LopMonHocs { get; set; }
-    // public DbSet<LopQuanLi> LopQuanLis { get; set; }
-    // public DbSet<MonHoc> MonHocs { get; set; }
-    // public DbSet<BoMon> BoMons { get; set; }
+
+    public DbSet<Student> Students { get; set; }
+    public DbSet<StudentMark> StudentMarks { get; set; }
+    public DbSet<Instructor> Instructors { get; set; }
+    public DbSet<Faculty> Faculties { get; set; }
+    public DbSet<CourseClass> CourseClassses { get; set; }
+    public DbSet<ManagementClass> ManagementClassses { get; set; }
+    public DbSet<Course> Courses { get; set; }
+    public DbSet<Department> Departments { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

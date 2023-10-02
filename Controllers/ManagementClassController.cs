@@ -4,11 +4,11 @@ using qlsinhvien.Context;
 namespace qlsinhvien.Controllers;
 [ApiController]
 [Route("[controller]")]
-public class LopQuanLiController : ControllerBase
+public class ManagementClassController : ControllerBase
 {
     private readonly ApplicationContext _context;
 
-    public LopQuanLiController(ApplicationContext context)
+    public ManagementClassController(ApplicationContext context)
     {
         _context = context;
     }

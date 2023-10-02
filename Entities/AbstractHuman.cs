@@ -5,17 +5,17 @@ using Microsoft.EntityFrameworkCore;
 namespace qlsinhvien.Entities;
 
 [Index(nameof(Email), IsUnique = true)]
-[Index(nameof(SoDienThoai), IsUnique = true)]
-public class ConNguoi
+[Index(nameof(NumberPhone), IsUnique = true)]
+public class AbstractHuman
 {
     [Required]
     [StringLength(40)]
-    public string HoTen { get; set; }
+    public string Name { get; set; } = null!;
 
-    public bool? GioiTinh { get; set; }
+    public bool Sex { get; set; }
 
     [Column(TypeName = "date")]
-    public DateTime? NgaySinh { get; set; }
+    public DateTime? DateOfBirth { get; set; }
 
     [StringLength(80)]
     public string? DiaChiThuongTru { get; set; }
@@ -23,11 +23,11 @@ public class ConNguoi
     [StringLength(80)]
     public string? QueQuan { get; set; }
 
-    [Required]
-    [MaxLength(150)]
-    public string Email { get; set; }
+    [StringLength(100)]
+    [EmailAddress]
+    public string Email { get; set; } = null!;
 
-    [Required]
     [StringLength(10)]
-    public string SoDienThoai { get; set; }
+    [Phone]
+    public string NumberPhone { get; set; } = null!;
 }

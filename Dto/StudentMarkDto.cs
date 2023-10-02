@@ -1,9 +1,9 @@
 namespace qlsinhvien.Dto;
 
-public class DiemSinhVienDto
+public class StudentMarkDto
 {
-    public int MaLopMonHoc { get; set; }
-    public int MaSinhVien { get; set; }
+    public int CourseClassId { get; set; }
+    public int StudentId { get; set; }
     
     public float DiemChuyenCan { get; set; }
     

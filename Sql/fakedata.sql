@@ -7,7 +7,7 @@ VALUES
   (N'Khoa Khoa Học Tự Nhiên'),
   (N'Khoa Ngoại Ngữ');
 
-INSERT INTO [BoMon] ([TenBoMon])
+INSERT INTO [Department] ([TenDepartment])
 VALUES
   (N'Công nghệ phần mềm'),
   (N'Ngoại ngữ'),
@@ -27,7 +27,7 @@ VALUES
   (N'Marketing'),
   (N'Dịch thuật, Văn hoá và Lí thuyết tiếng');
 
-INSERT INTO [BoMonKhoa] ([KhoaMaKhoa], [BoMonsMaBoMon])
+INSERT INTO [BoMonKhoa] ([KhoaFacultyId], [BoMonsDepartmentId])
 VALUES   
   (1, 1),
   (1, 3),
@@ -48,7 +48,7 @@ VALUES
   (5, 2),
   (5, 17);
 
-INSERT INTO [GiangVien] ([HoTen], [GioiTinh], [NgaySinh], [DiaChiThuongTru], [QueQuan], [Email], [SoDienThoai], [MaBoMon])
+INSERT INTO [Instructor] ([Name], [Sex], [NgaySinh], [DiaChiThuongTru], [QueQuan], [Email], [NumberPhone], [DepartmentId])
 VALUES
   ('Nguyễn Trung Hoà', 1, '1980-05-21', 'Đà Nẵng', 'Huế', 'hoanguyen@example.com', '0123456789', 2),
   ('Đặng Trường Nam', 1, '1975-12-03', 'Hồ Chí Minh', 'Quảng Nam', 'namdang@example.com', '0987654321', 3),
@@ -61,7 +61,7 @@ VALUES
   ('Trương Hữu Thành', 1, '1970-10-09', 'Bà Rịa - Vũng Tàu', 'Cần Giờ', 'thanht[email protected]', '0965324871', 2),
   ('Lý Văn Tú', 1, '1985-07-14', 'Đắk Lắk', 'Khánh Hòa', 'tuly@example.com', '0987412365', 1);
 
-INSERT INTO [MonHoc] ([TenMonHoc], [SoTinChi], [BatBuoc], [MoTa], [MaMonTienQuyet], [MaBoMon])
+INSERT INTO [MonHoc] ([TenMonHoc], [SoTinChi], [BatBuoc], [MoTa], [MaMonTienQuyet], [DepartmentId])
 VALUES
   (N'Sinh học tế bào và phân tử', 3, 1, NULL, NULL, 5),
   (N'Vi sinh học', 3, 1, NULL, NULL, 8),
@@ -121,7 +121,7 @@ VALUES
   (N'Lịch sử Đảng Cộng sản Việt Nam', 2, 1, NULL, NULL, 9),
   (N'Tư tưởng Hồ Chí Minh', 2, 1, NULL, NULL, 9);
 
-INSERT INTO [LopQuanLi] ([TenLopQuanLi], [MaGiangVien], [MaKhoa])
+INSERT INTO [ManagementClass] ([TenManagementClass], [InstructorId], [FacultyId])
 VALUES
   (N'66IT5', 1, 1),
   (N'68KT1', 3, 2),
@@ -135,12 +135,12 @@ VALUES
   (N'69IT2', 10, 1);
 
 -- Khi lỗi mất 1 số dòng
--- SET IDENTITY_INSERT [LopQuanLi] ON;
--- INSERT INTO [LopQuanLi] ([MaLopQuanLi], [TenLopQuanLi], [MaGiangVien], [MaKhoa] )
+-- SET IDENTITY_INSERT [ManagementClass] ON;
+-- INSERT INTO [ManagementClass] ([ManagementClassId], [TenManagementClass], [InstructorId], [FacultyId] )
 -- VALUES (1, N'66IT4', 2, 2);
--- DBCC CHECKIDENT ('LopQuanLi', RESEED, 1);
+-- DBCC CHECKIDENT ('ManagementClass', RESEED, 1);
 
-INSERT INTO [LopMonHoc] ([TenLopMonHoc], [MaMonHoc], [MaGiangVien])
+INSERT INTO [CourseClass] ([TenCourseClass], [CourseId], [InstructorId])
 VALUES
   (N'68IT3', 3, 1),
   (N'64IT1', 7, 2),
@@ -153,7 +153,7 @@ VALUES
   (N'64IT1', 9, 9),
   (N'63IT2', 10, 10);
 
-INSERT INTO [SinhVien] ([NgayVaoTruong], [MaLopQuanLi], [HoTen], [GioiTinh], [NgaySinh], [DiaChiThuongTru], [QueQuan], [Email], [SoDienThoai])
+INSERT INTO [Student] ([NgayVaoTruong], [ManagementClassId], [Name], [Sex], [NgaySinh], [DiaChiThuongTru], [QueQuan], [Email], [NumberPhone])
 VALUES
   ('2008-09-01', 1, N'Nguyễn Văn An', 1, '1995-03-15', N'Hà Nội', N'Hưng Yên', N'nguyenvanan@gmail.com', '0987654321'),
   ('2009-08-15', 2, N'Phạm Thị Bình', 0, '1996-07-10', N'Thái Bình', N'Thái Bình', N'phamthibinh@gmail.com', '0976543210'),
@@ -186,7 +186,7 @@ VALUES
   ('2010-09-01', 9, N'Lê Thị Xuân', 0, '1998-06-25', N'Hồ Chí Minh', N'Thái Bình', N'lethixuan@gmail.com', '0709876543'),
   ('2011-08-15', 10, N'Trần Thị Yến', 0, '1999-05-15', N'Hà Nội', N'Thái Bình', N'tranthiyen@gmail.com', '0798765433');
 
-INSERT INTO [DiemSinhVien] ([MaLopMonHoc], [MaSinhVien], [DiemChuyenCan], [DiemGiuaKi], [DiemCuoiKi], [HocKi], [GhiChu])
+INSERT INTO [StudentMark] ([CourseClassId], [StudentId], [DiemChuyenCan], [DiemGiuaKi], [DiemCuoiKi], [HocKi], [GhiChu])
 VALUES
   (1, 10, 9.5, 9.0, 9.5, 2, N'Giỏi'),
   (2, 2, 8.5, 7.0, 9.0, 1, N'Tốt'),
