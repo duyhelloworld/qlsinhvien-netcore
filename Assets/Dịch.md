@@ -16,5 +16,5 @@
 | Loại buổi học | Type of class |
 | Phòng học | Classroom |
 | Học kì | Semester |
-| Con người | Human |
+| Con người | AbstractHuman |
 | Sinh viên | Student |
