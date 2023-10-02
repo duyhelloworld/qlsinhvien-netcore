@@ -6,13 +6,13 @@ public abstract class AbstractHumanDto
 {
     public string Name { get; set; } = null!;
 
-    public bool Sex { get; set; }
+    public bool Gender { get; set; }
 
     public DateTime DateOfBirth { get; set; }
 
-    public string? DiaChiThuongTru { get; set; }
+    public string? CurrentAddress { get; set; }
 
-    public string? QueQuan { get; set; }
+    public string? HomeTown { get; set; }
 
     [EmailAddress]
     public string Email { get; set; } = null!;

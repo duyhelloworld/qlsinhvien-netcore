@@ -48,7 +48,7 @@ VALUES
   (5, 2),
   (5, 17);
 
-INSERT INTO [Instructor] ([Name], [Sex], [NgaySinh], [DiaChiThuongTru], [QueQuan], [Email], [NumberPhone], [DepartmentId])
+INSERT INTO [Instructor] ([Name], [Gender], [NgaySinh], [CurrentAddress], [HomeTown], [Email], [NumberPhone], [DepartmentId])
 VALUES
   ('Nguyễn Trung Hoà', 1, '1980-05-21', 'Đà Nẵng', 'Huế', 'hoanguyen@example.com', '0123456789', 2),
   ('Đặng Trường Nam', 1, '1975-12-03', 'Hồ Chí Minh', 'Quảng Nam', 'namdang@example.com', '0987654321', 3),
@@ -153,7 +153,7 @@ VALUES
   (N'64IT1', 9, 9),
   (N'63IT2', 10, 10);
 
-INSERT INTO [Student] ([NgayVaoTruong], [ManagementClassId], [Name], [Sex], [NgaySinh], [DiaChiThuongTru], [QueQuan], [Email], [NumberPhone])
+INSERT INTO [Student] ([NgayVaoTruong], [ManagementClassId], [Name], [Gender], [NgaySinh], [CurrentAddress], [HomeTown], [Email], [NumberPhone])
 VALUES
   ('2008-09-01', 1, N'Nguyễn Văn An', 1, '1995-03-15', N'Hà Nội', N'Hưng Yên', N'nguyenvanan@gmail.com', '0987654321'),
   ('2009-08-15', 2, N'Phạm Thị Bình', 0, '1996-07-10', N'Thái Bình', N'Thái Bình', N'phamthibinh@gmail.com', '0976543210'),
