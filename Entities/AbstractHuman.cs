@@ -6,22 +6,22 @@ namespace qlsinhvien.Entities;
 
 [Index(nameof(Email), IsUnique = true)]
 [Index(nameof(NumberPhone), IsUnique = true)]
-public class AbstractHuman
+public abstract class AbstractHuman
 {
     [Required]
     [StringLength(40)]
     public string Name { get; set; } = null!;
 
-    public bool Sex { get; set; }
+    public bool Gender { get; set; }
 
     [Column(TypeName = "date")]
     public DateTime? DateOfBirth { get; set; }
 
     [StringLength(80)]
-    public string? DiaChiThuongTru { get; set; }
+    public AbstractClass? CurrentAddress { get; set; }
 
     [StringLength(80)]
-    public string? QueQuan { get; set; }
+    public AbstractClass? HomeTown { get; set; }
 
     [StringLength(100)]
     [EmailAddress]
