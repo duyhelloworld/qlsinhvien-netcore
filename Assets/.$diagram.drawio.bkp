@@ -46,7 +46,7 @@
                         <mxPoint x="840" y="260" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="4SsZMgTLxZ8O10cW9mSe-25" value="LopMonHoc" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;align=center;fontSize=14;" parent="1" vertex="1">
+                <mxCell id="4SsZMgTLxZ8O10cW9mSe-25" value="CourseClass" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;align=center;fontSize=14;" parent="1" vertex="1">
                     <mxGeometry x="880" y="10" width="160" height="56" as="geometry"/>
                 </mxCell>
                 <mxCell id="IPNd9HAaYlTSPgfFk1F9-11" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=ERmany;rounded=0;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" parent="1" source="4SsZMgTLxZ8O10cW9mSe-17" target="4SsZMgTLxZ8O10cW9mSe-25" edge="1">
