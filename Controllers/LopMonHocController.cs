@@ -26,9 +26,10 @@ namespace qlsinhvien.Controllers
 
         [HttpGet("id={id}")]
         [PhanQuyen(EQuyen.XemTheoMa_LopMonHoc)]
-        public async Task<LopMonHoc> GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            return await _service.GetByIdAsync(id);
+            var ketQua = await _service.GetByIdAsync(id);
+            return ketQua == null ? NotFound() : Ok(ketQua);
         }
 
         [HttpGet("tenlopmonhoc={tenlopmonhoc}")]

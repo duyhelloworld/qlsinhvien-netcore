@@ -15,8 +15,10 @@ public interface INguoiDungService
     public Task<IEnumerable<NguoiDungDto>> GetByQuyen(string TenQuyen);
     public Task Them(NguoiDungDtoDangKi nguoiDungDtoDki);
     public Task PhanQuyen(ModelCapQuyen modelCapQuyen);
+    public Task PhanVaiTro(ModelCapVaiTro modelCapVaiTro);
     public Task ThemVaPhanQuyen(NguoiDungDtoDangKi nguoiDungDtoDki);
-    public Task HuyPhanQuyen(string TenNguoiDung);
+    public Task HuyVaiTro(string TenNguoiDung);
+    public Task HuyQuyen(ModelCapQuyen modelCapQuyen);
     public Task CapNhatThongTin(string TenNguoiDung, NguoiDungDto nguoiDungDto);
     public Task Xoa(string TenNguoiDung);
 }

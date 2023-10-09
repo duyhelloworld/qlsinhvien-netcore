@@ -7,5 +7,5 @@ public interface ITaiKhoanService
     // Luồng đăng nhập
     public Task TaoTaiKhoanTrong(ModelDangKi model);
     public Task<ModelTraVe> DangNhap(ModelDangNhap model);
-    public Task DangXuat(string token);
+    public Task DangXuat(HttpContext context);
 }

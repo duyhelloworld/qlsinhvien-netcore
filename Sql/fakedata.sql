@@ -1,4 +1,4 @@
--- Active: 1695002503980@@127.0.0.1@1433@qlsinhvien
+-- Active: 1695612038229@@127.0.0.1@1433@qlsinhvien
 INSERT INTO [Khoa] ([TenKhoa])
 VALUES
   (N'Khoa Công Nghệ Thông Tin'),
@@ -258,10 +258,10 @@ VALUES
         ('suathongtintheoma-sinhvien', N'Sửa thông tin của sinh viên theo mã sinh viên'),
         ('suathongtintheolopquanli-sinhvien', N'Sửa thông tin của sinh vien theo lớp quản lí'),
         ('xoa-sinhvien', N'Xóa sinh viên'),
-        ('xemtheoten-quyen', N'Xem các quyền của ứng dụng'),
-        ('themmoi-quyen', N'Thêm mới quyền cho ứng dụng'),
-        ('suathongtin-quyen', N'Sửa thông tin của quyền'),
-        ('xoa-quyen', N'Xóa quyền theo tên'),
+        ('xemtheoten-quyen', N'Xem các quyền của ứng dụng theo tên quyền'),
+        ('xemtheovaitro-quyen', N'Xem các quyền theo vai trò'), 
+        ('xemtheonguoidung-quyen', N'Xem các quyền theo nhóm người dùng'),
+        ('xemtheotennguoidung-quyen', N'Xem các quyền theo tên người dùng'),
         ('xemtheoten-monhoc', N'Xem thông tin của môn học theo tên môn học'),
         ('themmoi-monhoc', N'Thêm mới môn học'), 
         ('suathongtintheoma-monhoc', N'Sửa thông tin của môn học theo mã môn học'),
@@ -315,10 +315,12 @@ VALUES
         ('xemtheovaitro-nguoidung', N' Tìm kiếm các người dùng cùng vai trò'),
         ('themmoi-nguoidung', N'Thêm người dùng mới'),
         ('phanquyen-nguoidung', N'Phân quyền cho người dùng'),
+        ('phanvaitro-nguoidung', N'Phân vai trò cho người dùng'),
         ('suathongtin-nguoidung', N'Cập nhật thông tin cho người dùng'),
         ('huyphanquyen-nguoidung', N'Huỷ phân quyền cho người dùng'),
         ('xemtheogiangvien-lopmonhoc', N'Xem thông tin của các lớp môn học theo giảng viên'),
         ('xoa-nguoidung', N'Xoá bỏ người dùng');
+
 INSERT INTO [Quyen_VaiTro] ([TenVaiTro], [TenQuyen])
 VALUES  
         ('superadmin', 'xemtatca-sinhvien'),
@@ -343,6 +345,9 @@ VALUES
         ('superadmin', 'huyphanquyen-nguoidung'), 
         ('superadmin', 'xoa-nguoidung'),
         ('superadmin', 'xemtheoten-quyen'),
+        ('superadmin', 'xemtheovaitro-quyen'), 
+        ('superadmin', 'xemtheonguoidung-quyen'),
+        ('superadmin', 'xemtheotennguoidung-quyen'), 
         ('superadmin', 'themmoi-quyen'),
         ('superadmin', 'suathongtin-quyen'),
         ('superadmin', 'xoa-quyen'),
@@ -353,7 +358,6 @@ VALUES
         ('superadmin', 'xemtheoten-lopquanli'),
         ('superadmin', 'themmoi-lopquanli'),
         ('superadmin', 'suathongtintheoma-lopquanli'),
-        
         ('admin', 'xemtatca-sinhvien' ),
         ('admin', 'xemtatca-giangvien' ), 
         ('admin', 'xemtatca-khoa' ), 

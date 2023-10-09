@@ -1,3 +1,4 @@
+using System.Net;
 using Microsoft.EntityFrameworkCore;
 using qlsinhvien.Context;
 using qlsinhvien.Dtos;
@@ -51,7 +52,7 @@ public class NguoiDungService : INguoiDungService
     public async Task<IEnumerable<NguoiDungDto>> GetByVaiTro(string TenVaiTro)
     {
         var vaiTro = await _context.VaiTros.FindAsync(TenVaiTro)
-            ?? throw new ServiceException(404, "Vai trò không tồn tại");
+            ?? throw new ServiceException(HttpStatusCode.NotFound, "Vai trò không tồn tại");
         return await _context.NguoiDungs
                 .Where(nd => nd.TenVaiTro == vaiTro.TenVaiTro)
                 .Select(nd => NguoiDungDto.Convert(nd)).ToListAsync();
@@ -60,11 +61,11 @@ public class NguoiDungService : INguoiDungService
     public async Task<IEnumerable<NguoiDungDto>> GetByQuyen(string TenQuyen)
     {
         var quyen = await _context.Quyens.FindAsync(TenQuyen)
-            ?? throw new ServiceException(404, "Quyền không tồn tại");
+            ?? throw new ServiceException(HttpStatusCode.NotFound, "Quyền không tồn tại");
         var quyenVaitros =  await _context.QuyenVaiTros.Where(qvt => qvt.TenQuyen == TenQuyen).ToListAsync();
         if (quyenVaitros.Count == 0)
         {
-            throw new ServiceException(404, "Quyền này chưa được phân quyền cho vai trò nào");
+            throw new ServiceException(HttpStatusCode.NotFound, "Quyền này chưa được phân quyền cho vai trò nào");
         }
         return await _context.NguoiDungs
             .Where(nd => nd.TenVaiTro != null 
@@ -93,7 +94,7 @@ public class NguoiDungService : INguoiDungService
                     .AnyAsync(nd => nd.TenNguoiDung == nguoiDungDtoDki.TenNguoiDung);
         if (daTonTai)
         {
-            throw new ServiceException(400, "Người dùng này đã tồn tại", "Hãy sử dụng tên người dùng khác");
+            throw new ServiceException(HttpStatusCode.BadRequest, "Người dùng này đã tồn tại", "Hãy sử dụng tên người dùng khác");
         }
         var nguoiDung = NguoiDungDto.Convert(nguoiDungDtoDki);
         nguoiDung.MatKhau = nguoiDungDtoDki.MatKhau;
@@ -107,34 +108,61 @@ public class NguoiDungService : INguoiDungService
                     .AnyAsync(nd => nd.TenNguoiDung == nguoiDungDtoDki.TenNguoiDung);
         if (daTonTai)
         {
-            throw new ServiceException(400, "Người dùng này đã tồn tại", "Hãy sử dụng tên người dùng khác");
+            throw new ServiceException(HttpStatusCode.BadRequest, "Người dùng này đã tồn tại", "Hãy sử dụng tên người dùng khác");
         }
         var vaiTro = await _context.VaiTros.FindAsync(nguoiDungDtoDki.TenVaiTro)
-            ?? throw new ServiceException(404, "Vai trò không tồn tại");
+            ?? throw new ServiceException(HttpStatusCode.NotFound, "Vai trò không tồn tại");
         var nguoiDung = NguoiDungDto.Convert(nguoiDungDtoDki);
         nguoiDung.MatKhau = nguoiDungDtoDki.MatKhau;
         await _context.NguoiDungs.AddAsync(nguoiDung);
         await _context.SaveChangesAsync();
     }
 
-    public async Task PhanQuyen(ModelCapQuyen model)
+    public async Task PhanVaiTro(ModelCapVaiTro model)
     {
         var nguoiDung = await _context.NguoiDungs.FindAsync(model.TenNguoiDung)
             ?? throw new ServiceException
-            (404, "Người dùng không tồn tại");
+            (HttpStatusCode.NotFound, "Người dùng không tồn tại");
         if (nguoiDung.TenVaiTro == null || string.IsNullOrEmpty(nguoiDung.TenVaiTro))
         {
             var vaiTro = await _context.VaiTros.FindAsync(model.TenVaiTro)
-                ?? throw new ServiceException(404, "Vai trò không hợp lệ");
+                ?? throw new ServiceException(HttpStatusCode.NotFound, "Vai trò không hợp lệ");
             nguoiDung.TenVaiTro = vaiTro.TenVaiTro;
             await _context.SaveChangesAsync();
         }
     }
 
+    public async Task PhanQuyen(ModelCapQuyen model)
+    {
+        var nguoiDung = await _context.NguoiDungs.FindAsync(model.TenNguoiDung)
+            ?? throw new ServiceException(HttpStatusCode.NotFound, "Người dùng không tồn tại");
+        if (nguoiDung.TenVaiTro == null || string.IsNullOrEmpty(nguoiDung.TenVaiTro))
+        {
+            throw new ServiceException(HttpStatusCode.NotFound, "Người dùng chưa được phân vai trò");
+        }
+        var quyen = await _context.Quyens.FindAsync(model.TenQuyen)
+            ?? throw new ServiceException(HttpStatusCode.NotFound, "Quyền không hợp lệ");
+
+        var daCoQuyen = await _context.QuyenVaiTros
+            .AnyAsync(qvt => qvt.TenVaiTro == nguoiDung.TenVaiTro
+                && qvt.TenQuyen == quyen.TenQuyen);
+        if (daCoQuyen)
+        {
+            throw new ServiceException(HttpStatusCode.BadRequest, "Người dùng đã có quyền này");
+        }
+        var quyenVaiTroMoi = new QuyenVaiTro
+        {
+            TenQuyen = quyen.TenQuyen,
+            TenVaiTro = nguoiDung.TenVaiTro
+        };
+        await _context.QuyenVaiTros.AddAsync(quyenVaiTroMoi);
+        await _context.SaveChangesAsync();
+    }
+
     public async Task CapNhatThongTin(string TenNguoiDung, NguoiDungDto nguoiDungDto)
     {
         var nguoiDung = await _context.NguoiDungs.FindAsync(TenNguoiDung)
-            ?? throw new ServiceException(404, "Người dùng không tồn tại");
+            ?? throw new ServiceException(HttpStatusCode.NotFound, "Người dùng không tồn tại");
         nguoiDung.TenHienThi = nguoiDungDto.TenHienThi;
         switch (nguoiDungDto.TenVaiTro)
         {
@@ -152,10 +180,10 @@ public class NguoiDungService : INguoiDungService
         await _context.SaveChangesAsync();
     }
 
-    public async Task HuyPhanQuyen(string TenNguoiDung)
+    public async Task HuyVaiTro(string TenNguoiDung)
     {
         var nguoiDung = await _context.NguoiDungs.FindAsync(TenNguoiDung)
-            ?? throw new ServiceException(404, "Người dùng không tồn tại");
+            ?? throw new ServiceException(HttpStatusCode.NotFound, "Người dùng không tồn tại");
         if (nguoiDung.TenVaiTro != null || !string.IsNullOrEmpty(nguoiDung.TenVaiTro))
         {
             nguoiDung.TenVaiTro = null;
@@ -163,10 +191,33 @@ public class NguoiDungService : INguoiDungService
         }
     }
 
+    public async Task HuyQuyen(ModelCapQuyen modelCapQuyen)
+    {
+        var nguoiDung = await _context.NguoiDungs.FindAsync(modelCapQuyen.TenNguoiDung)
+            ?? throw new ServiceException(HttpStatusCode.NotFound, "Người dùng không tồn tại");
+        if (nguoiDung.TenVaiTro == null || string.IsNullOrEmpty(nguoiDung.TenVaiTro))
+        {
+            throw new ServiceException(HttpStatusCode.BadRequest, "Người dùng chưa được phân vai trò");
+        }
+        var quyen = await _context.Quyens.FindAsync(modelCapQuyen.TenQuyen)
+            ?? throw new ServiceException(HttpStatusCode.NotFound, "Quyền không tồn tại");
+        var quyenVaiTro = await _context.QuyenVaiTros
+            .Where(qvt => qvt.TenVaiTro == nguoiDung.TenVaiTro
+                && qvt.TenQuyen == quyen.TenQuyen)
+            .FirstOrDefaultAsync();
+        if (quyenVaiTro == null)
+        {
+            throw new ServiceException(HttpStatusCode.BadRequest, "Người dùng chưa được phân quyền này");
+        }
+        _context.QuyenVaiTros.Remove(quyenVaiTro);
+        await _context.SaveChangesAsync();
+    }
+
+
     public async Task Xoa(string TenNguoiDung)
     {
         var nguoiDung = await _context.NguoiDungs.FindAsync(TenNguoiDung) 
-            ?? throw new ServiceException(404, "Người dùng không tồn tại");
+            ?? throw new ServiceException(HttpStatusCode.NotFound, "Người dùng không tồn tại");
         _context.NguoiDungs.Remove(nguoiDung);
         await _context.SaveChangesAsync();
     }

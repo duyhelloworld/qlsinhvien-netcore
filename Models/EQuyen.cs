@@ -76,8 +76,6 @@ namespace qlsinhvien.Entities
         Xoa_MonHoc,
         [StringValue("xemtatcacungsiso-lopquanli")]
         XemTatCaCungSiSo_LopQuanLi,
-        [StringValue("xemtheoten-quyen")]
-        XemTheoTen_Quyen,
         [StringValue("xemtheoten-lopquanli")]
         XemTheoTen_LopQuanLi,
         [StringValue("themmoi-lopquanli")]
@@ -180,11 +178,23 @@ namespace qlsinhvien.Entities
         ThemMoi_NguoiDung,
         [StringValue("phanquyen-nguoidung")]
         PhanQuyen_NguoiDung,
+        [StringValue("phanvaitro-nguoidung")]
+        PhanVaiTro_NguoiDung,
         [StringValue("suathongtin-nguoidung")]
         SuaThongTin_NguoiDung,
         [StringValue("huyphanquyen-nguoidung")]
         HuyPhanQuyen_NguoiDung,
+        [StringValue("huyvaitro-nguoidung")]
+        HuyVaiTro_NguoiDung,
         [StringValue("xoa-nguoidung")]
         Xoa_NguoiDung,
+        [StringValue("xemtheovaitro-quyen")]
+        XemTheoVaiTro_Quyen,
+        [StringValue("xemtheoten-quyen")]
+        XemTheoTen_Quyen,
+        [StringValue("xemtheonguoidung-quyen")]
+        XemTheoNguoiDung_Quyen,
+        [StringValue("xemtheotennguoidung-quyen")]
+        XemTheoTenNguoiDung_Quyen,
     }
 }

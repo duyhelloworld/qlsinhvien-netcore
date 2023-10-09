@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 using qlsinhvien.Context;
 using qlsinhvien.Entities;
 using qlsinhvien.Exceptions;
@@ -27,7 +28,7 @@ public class BoMonService : IBoMonService
     public async Task<BoMon?> GetTheoGiangVien(int MaGiangVien)
     {
         var giangVien = await _context.GiangViens.FindAsync(MaGiangVien)
-            ?? throw new ServiceException(404, "Giảng viên không tồn tại");
+            ?? throw new ServiceException(HttpStatusCode.NotFound, "Giảng viên không tồn tại");
         return await _context.BoMons
             .FirstOrDefaultAsync(bm => bm.GiangViens.Contains(giangVien));
     }
@@ -35,7 +36,7 @@ public class BoMonService : IBoMonService
     public async Task<IEnumerable<BoMon>> GetTheoKhoa(int MaKhoa)
     {
         var khoa = await _context.Khoas.FindAsync(MaKhoa)
-            ?? throw new ServiceException(404, "Khoa không tồn tại");
+            ?? throw new ServiceException(HttpStatusCode.NotFound, "Khoa không tồn tại");
         return await _context.KhoaBoMons
             .Where(kbm => kbm.Khoa == khoa)
             .Select(kbm => kbm.BoMon)
@@ -45,7 +46,7 @@ public class BoMonService : IBoMonService
     public async Task<BoMon?> GetTheoMonHoc(int MaMonHoc)
     {
         var monHoc = await _context.MonHocs.FindAsync(MaMonHoc)
-            ?? throw new ServiceException(404, "Môn học không tồn tại");
+            ?? throw new ServiceException(HttpStatusCode.NotFound, "Môn học không tồn tại");
         return await _context.BoMons
             .FirstOrDefaultAsync(bm => bm.MonHocs.Contains(monHoc));
     }
@@ -93,7 +94,7 @@ public class BoMonService : IBoMonService
     public async Task<BoMon> UpdateTen(int MaBoMon, string TenBoMon)
     {
         var boMon = await _context.BoMons.FindAsync(MaBoMon)
-            ??   throw new ServiceException(404, "Bộ môn không tồn tại");
+            ??   throw new ServiceException(HttpStatusCode.NotFound, "Bộ môn không tồn tại");
         boMon.TenBoMon = TenBoMon;
         await _context.SaveChangesAsync();
         return boMon;
@@ -102,7 +103,7 @@ public class BoMonService : IBoMonService
     public async Task<BoMon> UpdateGiangVien(int MaBoMon, IEnumerable<int> MaGiangViens)
     {
         var boMon = await _context.BoMons.FindAsync(MaBoMon)
-            ?? throw new ServiceException(400, "Bộ môn không tồn tại");
+            ?? throw new ServiceException(HttpStatusCode.BadRequest, "Bộ môn không tồn tại");
         var giangViens = await _context.GiangViens.Where(gv => MaGiangViens.Contains(gv.MaGiangVien))
                 .ToListAsync();
         if (giangViens.Count != 0)
@@ -116,7 +117,7 @@ public class BoMonService : IBoMonService
     public async Task<BoMon> UpdateMonHoc(int MaBoMon, IEnumerable<int> MaMonHocs)
     {
         var boMon = await _context.BoMons.FindAsync(MaBoMon)
-            ?? throw new ServiceException(404, "Bộ môn không tồn tại");
+            ?? throw new ServiceException(HttpStatusCode.NotFound, "Bộ môn không tồn tại");
         var monHocs = await _context.MonHocs.Where(mh => MaMonHocs.Contains(mh.MaMonHoc))
                 .ToListAsync();
         if (monHocs.Count != 0)
@@ -130,7 +131,7 @@ public class BoMonService : IBoMonService
     public async Task<BoMon> UpdateKhoa(int MaBoMon, IEnumerable<int> MaKhoas)
     {
         var boMon = await _context.BoMons.FindAsync(MaBoMon)
-            ?? throw new ServiceException(404, "Bộ môn không tồn tại");
+            ?? throw new ServiceException(HttpStatusCode.NotFound, "Bộ môn không tồn tại");
         var khoas = await _context.KhoaBoMons.Where(kbm => MaKhoas.Contains(kbm.MaKhoa))
                 .ToListAsync();
         if (khoas.Count != 0)
@@ -149,22 +150,22 @@ public class BoMonService : IBoMonService
             .Include(bm => bm.Khoas)
             .Include(bm => bm.MonHocs)
             .FirstOrDefaultAsync(bm => bm.MaBoMon == MaBoMon)
-            ?? throw new ServiceException(400, "Bộ môn không tồn tại");
+            ?? throw new ServiceException(HttpStatusCode.BadRequest, "Bộ môn không tồn tại");
         if (boMon.GiangViens.Count != 0)
         {
-            throw new ServiceException(400, "Bộ môn đang có giảng viên dạy học",
+            throw new ServiceException(HttpStatusCode.BadRequest, "Bộ môn đang có giảng viên dạy học",
                  "Hãy thử cập nhật bộ môn cho các giảng viên này trước",
                  boMon.GiangViens);
         }
         if (boMon.Khoas.Count != 0)
         {
-            throw new ServiceException(400, "Bộ môn đang có khoa",
+            throw new ServiceException(HttpStatusCode.BadRequest, "Bộ môn đang có khoa",
                 "Hãy thử cập nhật bộ môn cho các khoa này trước",
                  boMon.Khoas);
         }
         if (boMon.MonHocs.Count != 0)
         {
-            throw new ServiceException(400, "Bộ môn đang có môn học", 
+            throw new ServiceException(HttpStatusCode.BadRequest, "Bộ môn đang có môn học", 
                 "Hãy thử cập nhật bộ môn cho các môn học này trước",
                  boMon.MonHocs);
         }
@@ -175,7 +176,7 @@ public class BoMonService : IBoMonService
     public async Task RemoveKhoas(int MaBoMon)
     {
         var boMon = await _context.BoMons.Include(bm => bm.Khoas).FirstOrDefaultAsync(bm => bm.MaBoMon == MaBoMon)
-            ?? throw new ServiceException(404, "Bộ môn không tồn tại");
+            ?? throw new ServiceException(HttpStatusCode.NotFound, "Bộ môn không tồn tại");
         boMon.Khoas.Clear();
         await _context.SaveChangesAsync();
     }

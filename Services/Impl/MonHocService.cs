@@ -1,10 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using qlsinhvien.Context;
-using qlsinhvien.Controllers;
 using qlsinhvien.Dto;
 using qlsinhvien.Entities;
 using qlsinhvien.Exceptions;
-using qlsinhvien.Services;
+using System.Net;
 
 namespace qlsinhvien.Services.Impl;
 public class MonHocService : IMonHocService
@@ -25,7 +24,7 @@ public class MonHocService : IMonHocService
         var boMon = await _context.BoMons.FindAsync(monHocDto.MaBoMon);
         if (boMon == null)
         {
-            throw new ServiceException(404, $"Không tồn tại bộ môn{boMon}");
+            throw new ServiceException(HttpStatusCode.NotFound, $"Không tồn tại bộ môn{boMon}");
         }
         var mh = new MonHoc()
         {
@@ -72,7 +71,7 @@ public class MonHocService : IMonHocService
 
         if (mh == null)
         {
-            throw new ServiceException(404, $"Không tồn tại môn học có mã môn học: {maSoMonHoc}.");
+            throw new ServiceException(HttpStatusCode.NotFound, $"Không tồn tại môn học có mã môn học: {maSoMonHoc}.");
         }
         // await _service.RemoveTheoMonHoc(maSoMonHoc);
         _context.MonHocs.Remove(mh);
@@ -84,12 +83,12 @@ public class MonHocService : IMonHocService
         var mh = await _context.MonHocs.FindAsync(maSoMonHoc);
         if (mh == null)
         {
-            throw new ServiceException(404, $"Không tồn tại môn học có mã môn học: {maSoMonHoc}.");
+            throw new ServiceException(HttpStatusCode.NotFound, $"Không tồn tại môn học có mã môn học: {maSoMonHoc}.");
         }
         var boMon = await _context.BoMons.FindAsync(monHocDto.MaBoMon);
         if (boMon == null)
         {
-            throw new ServiceException(404, $"Không tồn tại bộ môn có mã: {monHocDto.MaBoMon}.");
+            throw new ServiceException(HttpStatusCode.NotFound, $"Không tồn tại bộ môn có mã: {monHocDto.MaBoMon}.");
         }
         monHocDto.MaMonHoc = maSoMonHoc;
         mh.TenMonHoc = monHocDto.TenMonHoc;
